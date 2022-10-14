@@ -1,7 +1,6 @@
 import { useState, useEffect, createElement } from 'react'
 import { Flex, Grid } from '../../components/Box'
 import { Container } from '../../components/Layout'
-import HeadPurple from '../../assets/images/head-purple.png'
 import { Button } from '../../components/Button'
 import { AlertIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
@@ -9,6 +8,8 @@ import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr
 import { mediaOptions } from './Data'
 import OwnerShipLock from './components/OwnershipLock/OwnershipLock'
 import CircleButton from './components/CircleButton'
+
+const HeadPurple = require('../../assets/images/head-purple.png') 
 
 const CreateSingleNFT = () => {
   const [name, setName] = useState<string>()

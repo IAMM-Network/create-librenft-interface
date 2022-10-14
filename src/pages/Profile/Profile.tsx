@@ -4,12 +4,13 @@ import { Button } from '../../components/Button'
 import { Container } from '../../components/Layout'
 import { TitleSection, Title, Description, BoxOption } from './styles'
 import Header from './components/Header'
-
-import CreatorImage from '../../assets/images/profile/profile-creator.png'
-import BuilderImage from '../../assets/images/profile/profile-builder.png'
-import CuratorImage from '../../assets/images/profile/profile-curator.png'
-import CollectorImage from '../../assets/images/profile/profile-collector.png'
 import Menu from './components/Menu'
+
+
+const CreatorImage = require('../../assets/images/profile/profile-creator.png')
+const BuilderImage = require('../../assets/images/profile/profile-builder.png')
+const CuratorImage = require('../../assets/images/profile/profile-curator.png')
+const CollectorImage = require('../../assets/images/profile/profile-collector.png')
 
 const options = [
   {

@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { Flex } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { TitleSection, Text, Section, Input, Preview, TextArea } from './styles'
-import HeadPurple from '../../assets/images/head-purple.png'
 import { Button } from '../../components/Button'
+
+const HeadPurple = require('../../assets/images/head-purple.png')
+
 
 const CreateCollection: React.FC = () => {
   const [name, setName] = useState('')

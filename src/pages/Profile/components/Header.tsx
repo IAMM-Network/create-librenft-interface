@@ -1,8 +1,10 @@
 import { Flex, Box } from '../../../components/Box'
 import { Container } from '../../../components/Layout'
 
-import profileImage from '../../../assets/images/profile/profile-picture.png'
 import styled from 'styled-components'
+
+const profileImage = require('../../../assets/images/profile/profile-picture.png')
+
 
 interface HeaderProps {
   title: string

@@ -11,3 +11,11 @@ export interface PopupContextProps {
   onDismiss: Handler
   setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+
+export interface UserProfileContextProps {
+  isConnected: boolean;
+  isCollector: boolean;
+  setIsConnected: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCollector: React.Dispatch<React.SetStateAction<boolean>>;
+}
