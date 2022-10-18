@@ -15,8 +15,12 @@
     "@walletconnect/qrcode-modal": "^1.8.0",
     "@walletconnect/sign-client": "^2.0.0-rc.2",
     "@walletconnect/types": "^2.0.0-rc.2",
+    "axios": "^1.1.2",
+    "ethers": "^5.7.1",
     "hamburger-react": "^2.5.0",
     "lodash": "^4.17.21",
+    "moralis": "^2.6.5",
+    "next-auth": "^4.13.0",
     "process": "^0.11.10",
     "react": "^17.0.2",
     "react-app-rewired": "^2.2.1",
@@ -28,6 +32,7 @@
     "styled-system": "^5.1.5",
     "typescript": "^4.4.2",
     "util": "^0.12.4",
+    "wagmi": "^0.7.2",
     "web-vitals": "^2.1.0"
   },
   "resolutions": {

@@ -4,6 +4,7 @@ import { Container } from '../Layout'
 import { HeaderWrapper } from './styles'
 import { DiscordMediaIcon, IAMMTextIcon, TwitterMediaIcon } from '../Svg'
 import { Box, Flex } from '../Box'
+import { Button } from '../Button'
 import Hamburger from 'hamburger-react'
 
 const socialMedia = () => (
@@ -31,7 +32,11 @@ const Header: React.FC = () => {
   const { pathname } = useLocation()
   const [isOpen, setIsOpen] = useState(false)
 
-  const getRender = (): boolean => pathname !== '/'
+  const getRender = (): boolean => {
+    if (pathname === '/collection/iamm') return false
+
+    return pathname !== '/'
+  }
 
   if (pathname !== '/profile-dashboard')
     return (
@@ -39,7 +44,10 @@ const Header: React.FC = () => {
         <Container maxWidth='90%'>
           <Flex alignItems='center' justifyContent='space-between' width='100%'>
             <IAMMTextIcon width='100px' fill='white' />
-            {getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : socialMedia()}
+            <Flex>
+              <Button>Wallet</Button>
+              {getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : socialMedia()}
+            </Flex>
           </Flex>
         </Container>
       </HeaderWrapper>

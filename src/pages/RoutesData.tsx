@@ -1,5 +1,6 @@
 import { CreateCollection } from './CreateCollection'
 import { CreateSingleNFT } from './CreateSingleNFT'
+import { Collection } from './Collection'
 import { Home } from './Home'
 import Profile from './Profile/Profile'
 
@@ -20,4 +21,8 @@ export const RoutesData = [
     view: <Profile />,
     path: 'profile-dashboard',
   },
+  {
+    view: <Collection />,
+    path: 'collection/:collection_name'
+  }
 ]

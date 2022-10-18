@@ -1,7 +1,13 @@
-import { PopupContext } from './contexts'
+import { PopupContext, UserProfile } from './contexts'
 
 const Providers: React.FC = ({ children }) => {
-  return <PopupContext>{children}</PopupContext>
+  return (
+    <UserProfile>
+      <PopupContext>
+        {children}
+      </PopupContext>)
+    </UserProfile>
+  )
 }
 
 export default Providers

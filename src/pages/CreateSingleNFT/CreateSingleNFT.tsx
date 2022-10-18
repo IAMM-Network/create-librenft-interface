@@ -2,7 +2,7 @@ import { useState, useEffect, createElement } from 'react'
 import { Flex, Grid } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import { AlertIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
+import { AlertIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -11,50 +11,67 @@ import CircleButton from './components/CircleButton'
 
 const HeadPurple = require('../../assets/images/head-purple.png') 
 
+interface NftProperties {
+  trait_type: string,
+  value: number | string,
+  max_value?: number,
+  display_type: string
+}
+
+interface NftMetadata {
+  name: string,
+  image_url: string,
+  description: string,
+  external_url: string,
+  properties?: NftProperties
+}
+
+interface NFTTimeframe {
+  from: number,
+  to: number
+}
+
+interface NFTConfig {
+  fractional: boolean | number,
+  rentable: boolean,
+  timeframe: boolean | NFTTimeframe,
+  nsfw: boolean,
+  supply: number
+}
+
+const defaultNftMetadata = {
+  name: "",
+  image_url: "",
+  description: "",
+  external_url: ""
+}
+
+const nftDefaultConfig = {
+  fractional: false,
+  rentable: false,
+  timeframe: false,
+  nsfw: false,
+  supply: 1
+}
+
 const CreateSingleNFT = () => {
-  const [name, setName] = useState<string>()
   const [mediaSelected, setMediaSelected] = useState<number>(0)
   const [selectedFile, setSelectedFile] = useState(undefined)
   const [preview, setPreview] = useState<string>()
-  const [externalLink, setExternalLink] = useState<string>()
-  const [description, setDescription] = useState<string>()
-  const [supply, setSupply] = useState(0)
+  const [nftConfig, setNftConfig] = useState<NFTConfig>(nftDefaultConfig)
+  const [nftMetadata, setNftMetadata] = useState<NftMetadata>(defaultNftMetadata)
 
-  // NFT Smart Settings
-  /*
-  const [smartNFT, setSmartNFT] = useState({
-    multiSignature: false,
-    fractional: false,
-    qty: 1,
-    transferable: false,
-    mint: 'creator',
-    unlockeableContent: false,
-    timeframe: false,
-    deadline: false,
-    timeline: false,
-    composable: false,
-    interoperable: false,
-    extensible: false,
-  });
-  */
+  //file type options
+  const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
 
-  /*
-  const [nftProperties, setNFTProperties] = useState([
-    {
-      type: '',
-      name: '',
-    },
-  ]);
-  */
 
-  /*
-  const [nftLevels, setNFTLevels] = useState([
-    {
-      name: '',
-      value: [1, 6],
-    },
-  ]);
-  */
+  useEffect(() => {
+    console.log(nftConfig)
+  }, [nftConfig])
+
+  useEffect(() => {
+    console.log(nftMetadata)
+  }, [nftMetadata])
 
   const [mintingStatus, setMintingStatus] = useState<number>(0)
 
@@ -93,12 +110,12 @@ const CreateSingleNFT = () => {
           </Text>
           <Text>*Required fields</Text>
         </TitleSection>
-
+|
         <Section justifyContent='left'>
           <Text weight={600} size='14px'>
             Display name*
           </Text>
-          <Input type='text' placeholder='Item name' value={name} onChange={e => setName(e.target.value)} />
+          <Input type='text' placeholder='Item name' value={nftMetadata.name} onChange={e => setNftMetadata({...nftMetadata, name: e.target.value})} />
         </Section>
 
         <Section>
@@ -108,7 +125,12 @@ const CreateSingleNFT = () => {
 
           <Grid gridTemplateColumns='1fr 1fr' gridTemplateRows='auto' gridGap='1rem' width='100%'>
             {mediaOptions.map((e, index) => (
-              <MediaWrapper active={index === mediaSelected} onClick={() => setMediaSelected(index)}>
+              <MediaWrapper key={`${index}-e`} active={index === mediaSelected} onClick={() => {
+                setSelectedFile(undefined)
+                setAllowedFormat(mediaOptions[index].formats)
+                setMediaSelected(index)
+                setPreview("")
+              }}>
                 <Grid>
                   {createElement(e.icon, {
                     fill: index === mediaSelected ? 'white' : '#696969',
@@ -125,11 +147,11 @@ const CreateSingleNFT = () => {
 
         <Section>
           <Text weight={600} size='14px'>
-            Upload fileitem
+            Upload file
           </Text>
-          <Text margin='0.5rem 0 0 0'>File types supported: JPG, PNG, GIF, SVG.</Text>
-          <Text margin='0px'>Max Size: 100MB</Text>
-          <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} />
+          <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(", ")}.</Text>
+          <Text margin='0px'>Max Size: 15mb</Text>
+          <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(", ")} />
         </Section>
 
         <Section>
@@ -137,7 +159,9 @@ const CreateSingleNFT = () => {
             Preview
           </Text>
           <Preview>
-            <img alt='head-purple' src={selectedFile ? preview : HeadPurple} width={251} />
+            {!selectedFile && <img alt='head-purple' src={HeadPurple} />}
+            {selectedFile && mediaSelected === 0 && <img alt='head-purple' src={selectedFile && preview} />}
+            {selectedFile && mediaSelected === 1 && <><video controls><source src={selectedFile && preview} /></video></>}
           </Preview>
         </Section>
 
@@ -152,8 +176,8 @@ const CreateSingleNFT = () => {
           <Input
             type='text'
             placeholder='https://yoursite.io/item/123'
-            value={externalLink}
-            onChange={e => setExternalLink(e.target.value)}
+            value={nftMetadata.external_url}
+            onChange={e => setNftMetadata({...nftMetadata, external_url: e.target.value})}
           />
         </Section>
 
@@ -166,8 +190,8 @@ const CreateSingleNFT = () => {
           </Text>
           <TextArea
             placeholder='We suggest a nice and detailed description for your item, but 120 character only.'
-            value={description}
-            onChange={e => setDescription(e.target.value)}
+            value={nftMetadata.description}
+            onChange={e => setNftMetadata({...nftMetadata, description: e.target.value})}
           />
         </Section>
 
@@ -191,19 +215,24 @@ const CreateSingleNFT = () => {
               <CircleButton active={false} onClick={() => alert('Timelock')} />
             </Grid>
           </Grid>
+          
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <OpenEyeIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Generative</Text>
-              <Text margin='0'>Lorem ipsum dolor sit amet</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={true} onClick={() => alert('Generative')} />
-            </Grid>
-          </Grid>
+         {
+          /*
+           <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+           <Grid alignSelf='center'>
+             <OpenEyeIcon fill='#8B40F4' />
+           </Grid>
+           <Grid flexDirection='column' width='100%'>
+             <Text weight={600}>Generative</Text>
+             <Text margin='0'>Lorem ipsum dolor sit amet</Text>
+           </Grid>
+           <Grid width='100%' alignItems='center' justifyContent='right'>
+             <CircleButton active={true} onClick={() => alert('Generative')} />
+           </Grid>
+         </Grid>
+         */
+         }
         </Section>
 
         <Section>
@@ -269,7 +298,7 @@ const CreateSingleNFT = () => {
                 rightBorderColor='#8B40F4'
                 knobColor='#1A1A1A'
                 name='toggle-nsfw'
-                onToggle={e => console.log('onToggle', (e.target as HTMLInputElement).checked)}
+                onToggle={e => {setNftConfig({...nftConfig, nsfw: (e.target as HTMLInputElement).checked })}}
               />
             </Grid>
           </Grid>
@@ -280,7 +309,11 @@ const CreateSingleNFT = () => {
             Supply
           </Text>
           <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
-          <Input type='number' placeholder='#' value={supply} onChange={e => setSupply(parseInt(e.target.value, 10))} />
+          <Input type='number' placeholder='#' value={nftConfig.supply} onChange={e => {
+            if (parseInt(e.target.value) >= 1) {
+              setNftConfig({...nftConfig, supply: parseInt(e.target.value, 10)})
+            }
+          }} />
         </Section>
 
         <Hr />
