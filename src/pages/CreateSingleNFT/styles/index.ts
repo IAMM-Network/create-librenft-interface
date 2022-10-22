@@ -57,10 +57,20 @@ export const Preview = styled(Flex)`
   border: 1px solid #8b40f4;
   height: 202px;
   padding: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
   justify-content: center;
 
   img {
     margin: 0;
+    width: 250px;
+    max-width: fit-content;
+  }
+
+  video {
+    margin: 0;
+    width: 250px;
+    max-width: fit-content;
   }
 `
 

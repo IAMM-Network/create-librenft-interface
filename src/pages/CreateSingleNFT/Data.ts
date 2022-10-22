@@ -3,24 +3,29 @@ import { AudioFileIcon, ImageFileIcon, StarIcon, VideFileIcon, SvgProps } from '
 
 export interface MediaOptionsProps {
   icon: React.FC<SvgProps>
-  text: string
+  text: string,
+  formats: string[]
 }
 
 export const mediaOptions: MediaOptionsProps[] = [
   {
     icon: ImageFileIcon,
     text: 'Image',
+    formats: ["JPG", "PNG", "GIF", "WEBP"]
   },
   {
     icon: VideFileIcon,
     text: 'Video',
+    formats: ["MP4"]
   },
   {
     icon: AudioFileIcon,
     text: 'Audio',
+    formats: ["MP3"]
   },
   {
     icon: StarIcon,
     text: 'Custom',
+    formats: ["JPG", "PNG", "GIF", "WEBP", "MP4", "MP3"]
   },
 ]

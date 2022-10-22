@@ -30,6 +30,8 @@ export { default as TransferableIcon } from './Icons/TransferableIcon'
 export { default as TwitterMediaIcon } from './Icons/TwitterMediaIcon'
 export { default as VerticalBarsIcon } from './Icons/VerticalBarsIcon'
 export { default as VideFileIcon } from './Icons/VideoFileIcon'
+export { default as WalletConnectIcon } from './Icons/WalletConnectIcon'
+export { default as MetaMaskIcon } from './Icons/MetaMaskIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'

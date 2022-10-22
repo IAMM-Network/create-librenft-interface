@@ -1,61 +1,105 @@
 import { useState, useEffect, createElement } from 'react'
+import DatePicker, { DayRange, DayValue } from 'react-modern-calendar-datepicker'
 import { Flex, Grid } from '../../components/Box'
 import { Container } from '../../components/Layout'
-import HeadPurple from '../../assets/images/head-purple.png'
 import { Button } from '../../components/Button'
-import { AlertIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
+import { AlertIcon, KeyIcon, LockIcon, StarIcon, TextBaseIcon, TimeframeIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
-import OwnerShipLock from './components/OwnershipLock/OwnershipLock'
 import CircleButton from './components/CircleButton'
+import OwnershipLock from './components/dialogs/OwnershipLock'
+
+
+const HeadPurple = require('../../assets/images/head-purple.png') 
+
+interface NftProperties {
+  trait_type: string,
+  value: number | string,
+  max_value?: number,
+  display_type: string
+}
+
+interface NftMetadata {
+  name: string,
+  image_url: string,
+  description: string,
+  external_url: string,
+  properties?: NftProperties
+}
+
+interface NFTTimeframe {
+  from: number,
+  to: number
+}
+
+interface NFTConfig {
+  fractional: number,
+  rentable: boolean,
+  timeframe: boolean | NFTTimeframe,
+  unlockable: boolean | string,
+  nsfw: boolean,
+  supply: number
+}
+
+const defaultNftMetadata = {
+  name: "",
+  image_url: "",
+  description: "",
+  external_url: ""
+}
+
+const nftDefaultConfig = {
+  fractional: 1,
+  rentable: false,
+  timeframe: false,
+  unlockable: false,
+  nsfw: false,
+  supply: 1
+}
 
 const CreateSingleNFT = () => {
-  const [name, setName] = useState<string>()
+  //media preview
   const [mediaSelected, setMediaSelected] = useState<number>(0)
   const [selectedFile, setSelectedFile] = useState(undefined)
   const [preview, setPreview] = useState<string>()
-  const [externalLink, setExternalLink] = useState<string>()
-  const [description, setDescription] = useState<string>()
-  const [supply, setSupply] = useState(0)
 
-  // NFT Smart Settings
-  /*
-  const [smartNFT, setSmartNFT] = useState({
-    multiSignature: false,
-    fractional: false,
-    qty: 1,
-    transferable: false,
-    mint: 'creator',
-    unlockeableContent: false,
-    timeframe: false,
-    deadline: false,
-    timeline: false,
-    composable: false,
-    interoperable: false,
-    extensible: false,
-  });
-  */
+  //nft
+  const [nftConfig, setNftConfig] = useState<NFTConfig>(nftDefaultConfig)
+  const [nftMetadata, setNftMetadata] = useState<NftMetadata>(defaultNftMetadata)
 
-  /*
-  const [nftProperties, setNFTProperties] = useState([
-    {
-      type: '',
-      name: '',
-    },
-  ]);
-  */
+  //switchs
+  const [isFractional, setIsFractional] = useState<boolean>(false)
+  const [isUnlockableContent, setIsUnlockableContent] = useState<boolean>(false)
+  const [isTimeframe, setIsTimeframe] = useState<boolean>(false)
 
-  /*
-  const [nftLevels, setNFTLevels] = useState([
-    {
-      name: '',
-      value: [1, 6],
-    },
-  ]);
-  */
+  //file type options
+  const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
+
+  //pages
+  const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
+  const [isTimeLock, setIsTimeLock] = useState<boolean>(false)
+
+  //timelock options
+  const [selectedTimeFrame, setSelectedTimeframe] = useState<DayRange>({
+    from: null,
+    to: null
+  })
 
   const [mintingStatus, setMintingStatus] = useState<number>(0)
+
+
+  const isOwnershipLockActive = () => nftConfig.rentable || nftConfig.fractional>1
+  const isTimelockActive = () => (isUnlockableContent && nftConfig.unlockable && String(nftConfig.unlockable) !== "") || 
+                                 (isTimeframe && !!nftConfig.timeframe && !!selectedTimeFrame.from && !!selectedTimeFrame.to)
+  
+  useEffect(() => {
+    console.log(nftConfig)
+  }, [nftConfig])
+
+  useEffect(() => {
+    console.log(nftMetadata)
+  }, [nftMetadata])
 
   const onSelectedImage = (e: any) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -83,6 +127,140 @@ const CreateSingleNFT = () => {
     return () => URL.revokeObjectURL(objectUrl)
   }, [selectedFile])
 
+  const calendarToDate = (calendar: DayValue) => calendar ? String(`${calendar.month}/${calendar.day}/${calendar.year}`) : String(" ")
+
+  //custom calendar input
+  const renderCustomInput = ({ ref }:any) => (
+    <Input 
+    readOnly
+      ref={ref} // necessary
+      placeholder="Select timeframe"
+      value={selectedTimeFrame.from  && selectedTimeFrame.to ?
+        `${calendarToDate(selectedTimeFrame.from)} - ${calendarToDate(selectedTimeFrame.to)}`
+        : ''}
+      style={{
+        background: '#8B40F4',
+        width: '100%',
+        textAlign: 'center',
+        fontWeight: '900',
+        padding: '1rem 2rem'
+      }}
+    />
+  )
+
+
+  if (isOwnershipLock)
+    return <OwnershipLock 
+      isFractional={isFractional}
+      nftConfig={nftConfig}
+      setIsFractional={setIsFractional}
+      setNftConfig={setNftConfig}
+      setIsOwnershipLock={setIsOwnershipLock}
+    />
+
+  if (isTimeLock) {
+    return (
+      <Flex width='100vw' height='100vh' background="#1A1A1A" top="0px" left="0px" position='fixed'>
+        <Container maxWidth='90%'>
+          <Flex flexDirection='column' paddingTop='32px'>
+            <Text weight={600} size='21px'>
+              Add Timelock
+            </Text>
+            
+            <Hr />
+  
+            <Section>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <LockIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Unlockable Content</Text>
+                  <Text margin='0'>Include unlockable content that can only be revealed by the owner of the item.</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Toggle
+                    checked={isUnlockableContent}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-isfractional'
+                    onToggle={e => {
+                      setIsUnlockableContent((e.target as HTMLInputElement).checked)
+                    }}
+                  />
+                </Grid>
+              </Grid>
+
+            {isUnlockableContent && (
+              <>
+              <TextArea
+                rows={4}
+                placeholder='Enter content (access key, code to redeem, link to a file, etc.)'
+                value={nftConfig.unlockable && typeof nftConfig.unlockable === "string" ? nftConfig.unlockable : ''} 
+                onChange={(e) => setNftConfig({...nftConfig, unlockable: e.target.value})}
+              />
+              <Text><a href="https://www.markdownguide.org/cheat-sheet/" target='__blank'>Markdown</a> is supported</Text>
+              </>
+            )}
+
+            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <TimeframeIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Timeframe</Text>
+                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Toggle
+                    checked={isTimeframe}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-rentable'
+                    onToggle={e => setIsTimeframe((e.target as HTMLInputElement).checked)}
+                  />
+                </Grid>
+              </Grid>
+
+              {isTimeframe && (
+                <Flex justifyContent='center' marginTop='1rem'>
+                <DatePicker
+                  renderInput={renderCustomInput}
+                    value={selectedTimeFrame}
+                    onChange={(e) => {
+                      setSelectedTimeframe(e)
+                      setNftConfig({...nftConfig, timeframe: { 
+                        from: Math.floor(new Date(calendarToDate(e.from)).getTime() / 1000),
+                        to: Math.floor(new Date(calendarToDate(e.to)).getTime() / 1000) 
+                        }
+                      })
+                    }}
+                    colorPrimary='#180A33'
+                    colorPrimaryLight='#8B40F4'
+                  />
+                 </Flex>
+              )}
+
+            </Section>
+  
+            <Hr />
+  
+            <Flex justifyContent='center'>
+              <Button variant='cta' onClick={() => setIsTimeLock(false)}>Save</Button>
+            </Flex>
+  
+          </Flex>
+        </Container>
+      </Flex>
+    )
+  }
+
   return (
     <Container maxWidth='90%'>
       <Flex flexDirection='column' paddingTop='104px'>
@@ -92,12 +270,12 @@ const CreateSingleNFT = () => {
           </Text>
           <Text>*Required fields</Text>
         </TitleSection>
-
+|
         <Section justifyContent='left'>
           <Text weight={600} size='14px'>
             Display name*
           </Text>
-          <Input type='text' placeholder='Item name' value={name} onChange={e => setName(e.target.value)} />
+          <Input type='text' placeholder='Item name' value={nftMetadata.name} onChange={e => setNftMetadata({...nftMetadata, name: e.target.value})} />
         </Section>
 
         <Section>
@@ -107,7 +285,12 @@ const CreateSingleNFT = () => {
 
           <Grid gridTemplateColumns='1fr 1fr' gridTemplateRows='auto' gridGap='1rem' width='100%'>
             {mediaOptions.map((e, index) => (
-              <MediaWrapper active={index === mediaSelected} onClick={() => setMediaSelected(index)}>
+              <MediaWrapper key={`${index}-e`} active={index === mediaSelected} onClick={() => {
+                setSelectedFile(undefined)
+                setAllowedFormat(mediaOptions[index].formats)
+                setMediaSelected(index)
+                setPreview("")
+              }}>
                 <Grid>
                   {createElement(e.icon, {
                     fill: index === mediaSelected ? 'white' : '#696969',
@@ -124,11 +307,11 @@ const CreateSingleNFT = () => {
 
         <Section>
           <Text weight={600} size='14px'>
-            Upload fileitem
+            Upload file
           </Text>
-          <Text margin='0.5rem 0 0 0'>File types supported: JPG, PNG, GIF, SVG.</Text>
-          <Text margin='0px'>Max Size: 100MB</Text>
-          <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} />
+          <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(", ")}.</Text>
+          <Text margin='0px'>Max Size: 15mb</Text>
+          <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(", ")} />
         </Section>
 
         <Section>
@@ -136,7 +319,9 @@ const CreateSingleNFT = () => {
             Preview
           </Text>
           <Preview>
-            <img alt='head-purple' src={selectedFile ? preview : HeadPurple} width={251} />
+            {!selectedFile && <img alt='head-purple' src={HeadPurple} />}
+            {selectedFile && mediaSelected === 0 && <img alt='head-purple' src={selectedFile && preview} />}
+            {selectedFile && mediaSelected === 1 && <><video controls><source src={selectedFile && preview} /></video></>}
           </Preview>
         </Section>
 
@@ -151,8 +336,8 @@ const CreateSingleNFT = () => {
           <Input
             type='text'
             placeholder='https://yoursite.io/item/123'
-            value={externalLink}
-            onChange={e => setExternalLink(e.target.value)}
+            value={nftMetadata.external_url}
+            onChange={e => setNftMetadata({...nftMetadata, external_url: e.target.value})}
           />
         </Section>
 
@@ -165,8 +350,8 @@ const CreateSingleNFT = () => {
           </Text>
           <TextArea
             placeholder='We suggest a nice and detailed description for your item, but 120 character only.'
-            value={description}
-            onChange={e => setDescription(e.target.value)}
+            value={nftMetadata.description}
+            onChange={e => setNftMetadata({...nftMetadata, description: e.target.value})}
           />
         </Section>
 
@@ -176,7 +361,18 @@ const CreateSingleNFT = () => {
           </Text>
           <Text margin='0.5rem 0 0 0'>Select the predefined smartPlugins</Text>
 
-          <OwnerShipLock />
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+            <Grid alignSelf='center'>
+              <KeyIcon fill='#8B40F4' />
+            </Grid>
+            <Grid flexDirection='column' width='100%'>
+              <Text weight={600}>Ownership Lock</Text>
+              <Text margin='0'>Lorem ipsum dolor sit amet</Text>
+            </Grid>
+            <Grid width='100%' alignItems='center' justifyContent='right'>
+              <CircleButton active={isOwnershipLockActive()} onClick={() => setIsOwnershipLock(true)} />
+            </Grid>
+          </Grid>
 
           <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
@@ -187,22 +383,27 @@ const CreateSingleNFT = () => {
               <Text margin='0'>Lorem ipsum dolor sit amet</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={false} onClick={() => alert('Timelock')} />
+              <CircleButton active={isTimelockActive()} onClick={() => setIsTimeLock(true)} />
             </Grid>
           </Grid>
+          
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <OpenEyeIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Generative</Text>
-              <Text margin='0'>Lorem ipsum dolor sit amet</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={true} onClick={() => alert('Generative')} />
-            </Grid>
-          </Grid>
+         {
+          /*
+           <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+           <Grid alignSelf='center'>
+             <OpenEyeIcon fill='#8B40F4' />
+           </Grid>
+           <Grid flexDirection='column' width='100%'>
+             <Text weight={600}>Generative</Text>
+             <Text margin='0'>Lorem ipsum dolor sit amet</Text>
+           </Grid>
+           <Grid width='100%' alignItems='center' justifyContent='right'>
+             <CircleButton active={true} onClick={() => alert('Generative')} />
+           </Grid>
+         </Grid>
+         */
+         }
         </Section>
 
         <Section>
@@ -262,13 +463,14 @@ const CreateSingleNFT = () => {
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
               <Toggle
+                checked={nftConfig.nsfw}
                 leftBackgroundColor='#696969'
                 rightBackgroundColor='#8B40F4'
                 leftBorderColor='#696969'
                 rightBorderColor='#8B40F4'
                 knobColor='#1A1A1A'
                 name='toggle-nsfw'
-                onToggle={e => console.log('onToggle', (e.target as HTMLInputElement).checked)}
+                onToggle={e => {setNftConfig({...nftConfig, nsfw: (e.target as HTMLInputElement).checked })}}
               />
             </Grid>
           </Grid>
@@ -279,7 +481,11 @@ const CreateSingleNFT = () => {
             Supply
           </Text>
           <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
-          <Input type='number' placeholder='#' value={supply} onChange={e => setSupply(parseInt(e.target.value, 10))} />
+          <Input type='number' placeholder='#' value={nftConfig.supply} onChange={e => {
+            if (parseInt(e.target.value) >= 1) {
+              setNftConfig({...nftConfig, supply: parseInt(e.target.value, 10)})
+            }
+          }} />
         </Section>
 
         <Hr />

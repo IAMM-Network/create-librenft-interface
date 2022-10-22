@@ -5,6 +5,8 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import Providers from './Providers'
 
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+
 ReactDOM.render(
   <React.StrictMode>
     <Providers>
