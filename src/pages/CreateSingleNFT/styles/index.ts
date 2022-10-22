@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Grid } from '../../../components/Box'
+import { space } from 'styled-system'
 
 interface TextProps {
   color?: string
@@ -98,4 +99,11 @@ export const Hr = styled.hr`
   margin-bottom: 2rem;
   margin-top: 1rem;
   border-color: #8b40f4;
+`
+
+export const A = styled.a`
+  ${space}
+  color: #8b40f4;
+  font-weight: 600;
+  text-decoration: underline;
 `

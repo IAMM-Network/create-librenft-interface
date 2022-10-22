@@ -7,18 +7,18 @@ import { Button } from '../../../../components/Button'
 import { Dispatch, SetStateAction } from 'react'
 
 interface NFTTimeframe {
-    from: number,
-    to: number
+  from: number,
+  to: number
 }
 
 interface NFTConfig {
-    fractional: number,
-    rentable: boolean,
-    timeframe: boolean | NFTTimeframe,
-    unlockable: boolean | string,
-    nsfw: boolean,
-    supply: number
-  }
+  fractional: number,
+  rentable: boolean,
+  timeframe: boolean | NFTTimeframe,
+  unlockable: boolean | string,
+  nsfw: boolean,
+  supply: number
+}
 
 interface OwnershipLockProps {
   isFractional: boolean,
