@@ -39,7 +39,7 @@ export const Input = styled.input`
 
   ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: white;
+    color: #696969;
     opacity: 1; /* Firefox */
   }
 `
