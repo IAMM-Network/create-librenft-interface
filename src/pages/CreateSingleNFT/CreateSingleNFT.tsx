@@ -1,5 +1,5 @@
 import { useState, useEffect, createElement } from 'react'
-import { DayRange, DayValue } from 'react-modern-calendar-datepicker'
+import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
@@ -9,32 +9,33 @@ import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr
 import { mediaOptions } from './Data'
 import CircleButton from './components/CircleButton'
 import OwnershipLock from './components/dialogs/OwnershipLock'
+import Properties from './components/dialogs/Properties'
 import TimeLock from './components/dialogs/TimeLock'
 
 
 const HeadPurple = require('../../assets/images/head-purple.png') 
 
-interface NftProperties {
+export interface NftProperties {
   trait_type: string,
-  value: number | string,
+  value:  string,
   max_value?: number,
-  display_type: string
+  display_type?: string
 }
 
-interface NftMetadata {
+export interface NftMetadata {
   name: string,
   image_url: string,
   description: string,
   external_url: string,
-  properties?: NftProperties
+  properties: NftProperties[]
 }
 
-interface NFTTimeframe {
+export interface NFTTimeframe {
   from: number,
   to: number
 }
 
-interface NFTConfig {
+export interface NFTConfig {
   fractional: number,
   rentable: boolean,
   timeframe: boolean | NFTTimeframe,
@@ -43,11 +44,12 @@ interface NFTConfig {
   supply: number
 }
 
-const defaultNftMetadata = {
+export const defaultNftMetadata = {
   name: "",
   image_url: "",
   description: "",
-  external_url: ""
+  external_url: "",
+  properties: []
 }
 
 const nftDefaultConfig = {
@@ -80,6 +82,7 @@ const CreateSingleNFT = () => {
   //pages
   const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
   const [isTimeLock, setIsTimeLock] = useState<boolean>(false)
+  const [isProperties, setIsProperties] = useState<boolean>(false)
 
   //timelock options
   const [selectedTimeFrame, setSelectedTimeframe] = useState<DayRange>({
@@ -93,6 +96,9 @@ const CreateSingleNFT = () => {
   const isOwnershipLockActive = () => nftConfig.rentable || nftConfig.fractional>1
   const isTimelockActive = () => (isUnlockableContent && nftConfig.unlockable && String(nftConfig.unlockable) !== "") || 
                                  (isTimeframe && !!nftConfig.timeframe && !!selectedTimeFrame.from && !!selectedTimeFrame.to)
+  const isPropertiesActive = () => nftMetadata.properties.length > 0
+
+  const isCreateActive = () => false
   
   useEffect(() => {
     console.log(nftConfig)
@@ -149,6 +155,14 @@ const CreateSingleNFT = () => {
     setIsTimeLock={setIsTimeLock}
     setSelectedTimeframe={setSelectedTimeframe}
    />
+  }
+
+  if (isProperties) {
+    return <Properties 
+      nftMetadata={nftMetadata}
+      setIsOwnershipLock={setIsProperties}
+      setNftMetadata={setNftMetadata}
+    />
   }
 
   return (
@@ -313,7 +327,7 @@ const CreateSingleNFT = () => {
               <Text margin='0'>Text traits that show up as rectangles</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={true} onClick={() => alert('Properties')} />
+              <CircleButton active={isPropertiesActive()} onClick={() => setIsProperties(true)} />
             </Grid>
           </Grid>
 
@@ -326,7 +340,7 @@ const CreateSingleNFT = () => {
               <Text margin='0'>Numerical trait that show up as a progress bar</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={false} onClick={() => alert('Levels')} />
+              <CircleButton active={true} onClick={() => alert('Levels')} />
             </Grid>
           </Grid>
 
@@ -381,7 +395,7 @@ const CreateSingleNFT = () => {
         <Hr />
 
         <Flex justifyContent='center' marginBottom='6rem'>
-          <Button onClick={createNFT} variant='cta'>
+          <Button onClick={isCreateActive() ? createNFT : () => null} variant={isCreateActive() ? "cta" : "secondary"}>
             {mintingStatus === 0 ? 'Create' : 'Minting...'}
           </Button>
         </Flex>
