@@ -21,19 +21,26 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
 
   const addProperty = () => {
     if (allowAddMore()) {
-      setNftMetadata(prevMetadata => {
-        return { ...prevMetadata, properties: [...prevMetadata.properties, currentProperty] }
-      })
+      setNftMetadata(prevMetadata => ({ ...prevMetadata, properties: [...prevMetadata.properties, currentProperty] }))
       setCurrentProperty(defaultProperty)
     }
   }
 
-  const allowAddMore = () => currentProperty.trait_type.length > 0 && currentProperty.value.length > 0
+  const allowAddMore = (): boolean => currentProperty.trait_type.length > 0 && currentProperty.value.length > 0
 
-  const removeProperty = (i:number) => {
+  const removeProperty = (i: number) => {
     setNftMetadata(prevMetadata => {
-      const newProperties = prevMetadata.properties.filter((property, index) => index !== i )
-      return {...prevMetadata, properties: newProperties}
+      const newProperties = prevMetadata.properties.filter((property, index) => index !== i)
+      return { ...prevMetadata, properties: newProperties }
+    })
+  }
+
+  const editProperty = (i: number, key: string, value: string) => {
+    setNftMetadata(prevMetadata => {
+      const newProperty = { ...prevMetadata.properties[i], [key]: value }
+      prevMetadata.properties[i] = newProperty
+      const newProperties = [...prevMetadata.properties]
+      return { ...prevMetadata, properties: newProperties }
     })
   }
 
@@ -53,7 +60,7 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
               nftMetadata.properties.map(({ trait_type, value }, index) => (
                 <Flex key={`${index}-${trait_type}-${value}`} position='relative' flexDirection='row' marginTop='1rem'>
                   <button
-                    onClick={() => removeProperty(index) }
+                    onClick={() => removeProperty(index)}
                     style={{
                       position: 'absolute',
                       top: 0,
@@ -61,23 +68,28 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
                       background: 'none',
                       border: 'none',
                       color: 'white',
-                      fontSize: '1.3rem',
+                      fontSize: '1rem',
                       fontWeight: 'lighter',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                   >
-                    X
+                    x
                   </button>
                   <Box marginRight='.3rem'>
                     <Text>Type</Text>
                     <Flex flexDirection='row'>
-                      <Input value={trait_type} type='text' placeholder='Character' onChange={() => null} />
+                      <Input
+                        value={trait_type}
+                        type='text'
+                        placeholder='Character'
+                        onChange={e => editProperty(index, 'trait_type', e.target.value)}
+                      />
                     </Flex>
                   </Box>
                   <Box>
                     <Text>Name</Text>
                     <Flex flexDirection='column'>
-                      <Input value={value} type='text' placeholder='Male' onChange={() => null} />
+                      <Input value={value} type='text' placeholder='Male' onChange={e => editProperty(index, 'value', e.target.value)} />
                     </Flex>
                   </Box>
                 </Flex>
@@ -110,10 +122,7 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
           </Section>
 
           <Flex margin='2rem 0' justifyContent='center'>
-            <Button
-              variant={`${allowAddMore() ? "primary" : "secondary"}`}
-              onClick={() => addProperty()}
-            >
+            <Button variant={`${allowAddMore() ? 'primary' : 'secondary'}`} onClick={() => addProperty()}>
               ADD MORE
             </Button>
           </Flex>
