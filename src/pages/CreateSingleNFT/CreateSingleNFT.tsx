@@ -166,7 +166,7 @@ const CreateSingleNFT = () => {
   }
 
   return (
-    <Container maxWidth='90%'>
+    <Container>
       <Flex flexDirection='column' paddingTop='104px'>
         <TitleSection>
           <Text weight={600} size='21px'>
