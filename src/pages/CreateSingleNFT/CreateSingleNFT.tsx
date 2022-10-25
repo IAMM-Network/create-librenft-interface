@@ -11,15 +11,18 @@ import CircleButton from './components/CircleButton'
 import OwnershipLock from './components/dialogs/OwnershipLock'
 import Properties from './components/dialogs/Properties'
 import TimeLock from './components/dialogs/TimeLock'
+import Levels from './components/dialogs/Levels'
 
 
 const HeadPurple = require('../../assets/images/head-purple.png') 
 
 export interface NftProperties {
   trait_type: string,
-  value:  string,
-  max_value?: number,
-  display_type?: string
+  value:  string | number,
+}
+
+export interface NftLevels extends NftProperties {
+  max_value?:  number,
 }
 
 export interface NftMetadata {
@@ -28,6 +31,7 @@ export interface NftMetadata {
   description: string,
   external_url: string,
   properties: NftProperties[]
+  levels: NftLevels[]
 }
 
 export interface NFTTimeframe {
@@ -49,7 +53,8 @@ export const defaultNftMetadata = {
   image_url: "",
   description: "",
   external_url: "",
-  properties: []
+  properties: [],
+  levels: []
 }
 
 const nftDefaultConfig = {
@@ -79,10 +84,12 @@ const CreateSingleNFT = () => {
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
 
-  //pages
+  //dialos
   const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
   const [isTimeLock, setIsTimeLock] = useState<boolean>(false)
   const [isProperties, setIsProperties] = useState<boolean>(false)
+  const [isLevels, setIsLevels] = useState<boolean>(false)
+
 
   //timelock options
   const [selectedTimeFrame, setSelectedTimeframe] = useState<DayRange>({
@@ -97,6 +104,7 @@ const CreateSingleNFT = () => {
   const isTimelockActive = () => (isUnlockableContent && nftConfig.unlockable && String(nftConfig.unlockable) !== "") || 
                                  (isTimeframe && !!nftConfig.timeframe && !!selectedTimeFrame.from && !!selectedTimeFrame.to)
   const isPropertiesActive = () => nftMetadata.properties.length > 0
+  const isLevelsActive = () => nftMetadata.levels.length > 0
 
   const isCreateActive = () => false
   
@@ -165,8 +173,16 @@ const CreateSingleNFT = () => {
     />
   }
 
+  if (isLevels) {
+    return <Levels 
+      nftMetadata={nftMetadata}
+      setIsLevels={setIsLevels}
+      setNftMetadata={setNftMetadata}
+    />
+  }
+
   return (
-    <Container maxWidth='90%'>
+    <Container>
       <Flex flexDirection='column' paddingTop='104px'>
         <TitleSection>
           <Text weight={600} size='21px'>
@@ -340,7 +356,7 @@ const CreateSingleNFT = () => {
               <Text margin='0'>Numerical trait that show up as a progress bar</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={true} onClick={() => alert('Levels')} />
+              <CircleButton active={isLevelsActive()} onClick={() => setIsLevels(true)} />
             </Grid>
           </Grid>
 
