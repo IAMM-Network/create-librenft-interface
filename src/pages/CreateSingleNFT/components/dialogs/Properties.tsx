@@ -26,7 +26,7 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
     }
   }
 
-  const allowAddMore = (): boolean => currentProperty.trait_type.length > 0 && currentProperty.value.length > 0
+  const allowAddMore = (): boolean => currentProperty.trait_type.length > 0 && String(currentProperty.value).length > 0
 
   const removeProperty = (i: number) => {
     setNftMetadata(prevMetadata => {
@@ -55,8 +55,7 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
           <Hr />
 
           <Section>
-            {nftMetadata.properties &&
-              nftMetadata.properties.length > 0 &&
+            {nftMetadata.properties.length > 0 &&
               nftMetadata.properties.map(({ trait_type, value }, index) => (
                 <Flex key={`${index}-${trait_type}-${value}`} position='relative' flexDirection='row' marginTop='1rem'>
                   <button
