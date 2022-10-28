@@ -12,6 +12,7 @@ import OwnershipLock from './components/dialogs/OwnershipLock'
 import Properties from './components/dialogs/Properties'
 import TimeLock from './components/dialogs/TimeLock'
 import Levels from './components/dialogs/Levels'
+import Stats from './components/dialogs/Stats'
 
 
 const HeadPurple = require('../../assets/images/head-purple.png') 
@@ -25,6 +26,10 @@ export interface NftLevels extends NftProperties {
   max_value?:  number,
 }
 
+export interface NftStats extends NftLevels {
+  display_type: "string" | "number"
+}
+
 export interface NftMetadata {
   name: string,
   image_url: string,
@@ -32,6 +37,7 @@ export interface NftMetadata {
   external_url: string,
   properties: NftProperties[]
   levels: NftLevels[]
+  stats: NftStats[]
 }
 
 export interface NFTTimeframe {
@@ -54,7 +60,8 @@ export const defaultNftMetadata = {
   description: "",
   external_url: "",
   properties: [],
-  levels: []
+  levels: [],
+  stats: []
 }
 
 const nftDefaultConfig = {
@@ -89,6 +96,7 @@ const CreateSingleNFT = () => {
   const [isTimeLock, setIsTimeLock] = useState<boolean>(false)
   const [isProperties, setIsProperties] = useState<boolean>(false)
   const [isLevels, setIsLevels] = useState<boolean>(false)
+  const [isStats, setIsStats] = useState<boolean>(false)
 
 
   //timelock options
@@ -105,8 +113,11 @@ const CreateSingleNFT = () => {
                                  (isTimeframe && !!nftConfig.timeframe && !!selectedTimeFrame.from && !!selectedTimeFrame.to)
   const isPropertiesActive = () => nftMetadata.properties.length > 0
   const isLevelsActive = () => nftMetadata.levels.length > 0
+  const isStatsActive = () => nftMetadata.stats.length > 0
 
-  const isCreateActive = () => false
+  const isCreateActive = () => (!!nftMetadata.name) &&
+                               (!!preview)
+                               
   
   useEffect(() => {
     console.log(nftConfig)
@@ -177,6 +188,14 @@ const CreateSingleNFT = () => {
     return <Levels 
       nftMetadata={nftMetadata}
       setIsLevels={setIsLevels}
+      setNftMetadata={setNftMetadata}
+    />
+  }
+
+  if (isStats) {
+    return <Stats 
+      nftMetadata={nftMetadata}
+      setIsStats={setIsStats}
       setNftMetadata={setNftMetadata}
     />
   }
@@ -369,7 +388,7 @@ const CreateSingleNFT = () => {
               <Text margin='0'>Numerical trait that show as numbers</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={true} onClick={() => alert('Stats')} />
+              <CircleButton active={isStatsActive()} onClick={() => setIsStats(true)} />
             </Grid>
           </Grid>
 
