@@ -205,7 +205,7 @@ const CreateSingleNFT = () => {
       <Flex flexDirection='column' paddingTop='104px'>
         <TitleSection>
           <Text weight={600} size='21px'>
-            Create smartNFT
+            Create libreNFT
           </Text>
           <Text>*Required fields</Text>
         </TitleSection>
