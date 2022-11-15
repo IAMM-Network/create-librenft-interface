@@ -24,7 +24,7 @@ export const Title = styled.h1`
 
 export const HeadText = styled.h3`
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
 `
 
