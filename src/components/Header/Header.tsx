@@ -4,7 +4,6 @@ import { Container } from '../Layout'
 import { HeaderWrapper } from './styles'
 import { DiscordMediaIcon, IAMMTextIcon, TwitterMediaIcon } from '../Svg'
 import { Box, Flex } from '../Box'
-import { Button } from '../Button'
 import Hamburger from 'hamburger-react'
 
 const socialMedia = () => (
@@ -45,7 +44,6 @@ const Header: React.FC = () => {
           <Flex alignItems='center' justifyContent='space-between' width='100%'>
             <IAMMTextIcon width='100px' fill='white' />
             <Flex>
-              <Button>Wallet</Button>
               {getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : socialMedia()}
             </Flex>
           </Flex>
