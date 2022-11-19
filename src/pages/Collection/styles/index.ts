@@ -43,9 +43,7 @@ export const LevelImg = styled.img`
 
 /* Stats */
 export const StatsWrapper = styled(Grid)`
-  max-width: 90%;
   border: 0.5px solid #ffffff;
-  margin: 0 auto;
   border-radius: 18px;
   padding: 12px 8px;
 `
@@ -54,12 +52,14 @@ export const StatsValue = styled.h3`
   color: white;
   font-weight: 600;
   font-size: 18px;
+  margin: 0;
 `
 
 export const StatsItem = styled.h5`
   color: white;
   font-weight: 300;
   font-size: 10px;
+  margin: 0;
 `
 
 /* Join Community */

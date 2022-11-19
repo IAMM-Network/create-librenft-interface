@@ -24,7 +24,7 @@ const formatValue = (val: string) => {
 const formatFloorPrice = (val: string) => Number(val).toFixed(3)
 
 const Stats = () => (
-  <Box width='100%'>
+  <Box width='90%' margin="0 auto">
     <StatsWrapper gridTemplateColumns='repeat(4, 1fr)'>
       <Box borderRight='1px solid #FFFFFF' padding="0px 8px">
         <StatsValue>{formatValue(data.items)}</StatsValue>
