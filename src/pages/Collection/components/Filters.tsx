@@ -3,7 +3,7 @@ import { SearchIcon } from "../../../components/Svg"
 import { InputWrapper, TextInput } from "../styles"
 
 const Filters = () => (
-    <Flex flexDirection="column" width="100%">
+    <Flex flexDirection="column" width="90%" margin="0 auto">
         <InputWrapper>
             <Box>
                 <SearchIcon height="20px" />
