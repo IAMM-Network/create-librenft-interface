@@ -1,23 +1,20 @@
-import { useParams } from "react-router-dom";
-
-const CollectionCover = require("../../assets/images/collections/iamm/collection_cover.png")
+import { useParams } from 'react-router-dom'
+import { Cover, Description, Filters, GridItems, JoinCommunity, Stats } from './components'
 
 const Collection = () => {
-    //get the collectio name given by the URL collection_name param
-    let { collection_name: collectionName } = useParams()
+  //get the collection name given by the URL collection_name param
+  const { collection_name: collectionName } = useParams()
 
-    return (
-        <>
-            <div id="header">
-                <div className="width:100vw" id="header-cover">
-                    <img className="width: 100vw" src={CollectionCover} alt={`${collectionName}-collection-cover`} />
-                </div>
-                <div id="header-picture"></div>
-            </div>
-
-            <div>Collection: {collectionName}</div>
-        </>    
-    )
+  return (
+    <>
+      <Cover collectionName={String(collectionName)} />
+      <Description collectionName={String(collectionName)} />
+      <Stats />
+      <JoinCommunity />
+      <Filters />
+      <GridItems />
+    </>
+  )
 }
 
-export default Collection;
+export default Collection

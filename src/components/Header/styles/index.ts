@@ -8,6 +8,7 @@ export const HeaderWrapper = styled(Box)<{ main?: boolean }>`
   height: 80px;
   position: fixed;
   width: 100vw;
+  z-index: 100;
 
   .container {
     display: flex;
@@ -15,3 +16,5 @@ export const HeaderWrapper = styled(Box)<{ main?: boolean }>`
     width: 100%;
   }
 `
+
+/** Items */
