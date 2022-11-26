@@ -1,4 +1,4 @@
-import React, { cloneElement, ElementType, isValidElement } from 'react'
+import { cloneElement, ElementType, isValidElement } from 'react'
 import StyledButton from './StyledButton'
 import { variants, ButtonProps } from './types'
 
