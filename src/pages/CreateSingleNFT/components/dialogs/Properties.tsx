@@ -45,7 +45,7 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
   }
 
   return (
-    <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' overflow='auto'>
+    <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' overflow='auto' zIndex={1000}>
       <Container maxWidth='90%'>
         <Flex flexDirection='column' paddingTop='32px'>
           <Text weight={600} size='21px'>

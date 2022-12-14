@@ -1,36 +1,34 @@
-import { Flex, Grid } from '../../../../components/Box'
+import { Box, Flex, Grid } from '../../../../components/Box'
 import { Container } from '../../../../components/Layout'
-import { AlertIcon } from '../../../../components/Svg'
+import { AlertIcon, TransferableIcon } from '../../../../components/Svg'
 import { Section, Hr, Text, Input } from '../../styles'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
 import { Dispatch, SetStateAction } from 'react'
-
-interface NFTTimeframe {
-  from: number,
-  to: number
-}
-
-interface NFTConfig {
-  fractional: number,
-  rentable: boolean,
-  timeframe: boolean | NFTTimeframe,
-  unlockable: boolean | string,
-  nsfw: boolean,
-  supply: number
-}
+import { NFTConfig } from '../../CreateSingleNFT'
+import { Calendar, DayRange } from 'react-modern-calendar-datepicker'
 
 interface OwnershipLockProps {
-  isFractional: boolean,
-  nftConfig: NFTConfig,
-  setIsOwnershipLock: Dispatch<SetStateAction<boolean>>,
-  setIsFractional: Dispatch<SetStateAction<boolean>>,
-  setNftConfig: Dispatch<SetStateAction<NFTConfig>>,
+  isFractional: boolean
+  nftConfig: NFTConfig
+  selectedRentableTimeFrame: DayRange
+  setSelectedRentableTimeframe: Dispatch<SetStateAction<DayRange>>
+  setIsOwnershipLock: Dispatch<SetStateAction<boolean>>
+  setIsFractional: Dispatch<SetStateAction<boolean>>
+  setNftConfig: Dispatch<SetStateAction<NFTConfig>>
 }
 
-const OwnershipLock = ({ isFractional, nftConfig, setIsFractional, setNftConfig, setIsOwnershipLock }: OwnershipLockProps) => {
+const OwnershipLock = ({
+  isFractional,
+  nftConfig,
+  setIsFractional,
+  setNftConfig,
+  setIsOwnershipLock,
+  selectedRentableTimeFrame,
+  setSelectedRentableTimeframe,
+}: OwnershipLockProps) => {
   return (
-    <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed'>
+    <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000}>
       <Container maxWidth='90%'>
         <Flex flexDirection='column' paddingTop='32px'>
           <Text weight={600} size='21px'>
@@ -41,11 +39,51 @@ const OwnershipLock = ({ isFractional, nftConfig, setIsFractional, setNftConfig,
 
           <Section>
             <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-              <Grid alignSelf='center'>
-                <AlertIcon fill='#8B40F4' />
+              <Grid alignSelf='start' justifySelf='center'>
+                <AlertIcon width={15} fill='#8B40F4' />
               </Grid>
               <Grid flexDirection='column' width='100%'>
-                <Text weight={600}>Fractional</Text>
+                <Text margin='0px' weight={600}>
+                  Rentable
+                </Text>
+                <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+              </Grid>
+              <Grid width='100%' alignItems='center' justifyContent='right'>
+                <Toggle
+                  checked={nftConfig.rentable}
+                  leftBackgroundColor='#696969'
+                  rightBackgroundColor='#8B40F4'
+                  leftBorderColor='#696969'
+                  rightBorderColor='#8B40F4'
+                  knobColor='#1A1A1A'
+                  name='toggle-rentable'
+                  onToggle={e => {
+                    setNftConfig({ ...nftConfig, rentable: (e.target as HTMLInputElement).checked })
+                  }}
+                />
+              </Grid>
+            </Grid>
+
+            {nftConfig.rentable && (
+              <Box marginBottom='1rem'>
+                <Calendar
+                value={selectedRentableTimeFrame}
+                onChange={setSelectedRentableTimeframe}
+                colorPrimary='#8B40F4'
+                calendarClassName='custom-calendar'
+                colorPrimaryLight='#8B40F4'
+              />
+              </Box>
+            )}
+
+            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
+              <Grid alignSelf='start' justifySelf='center'>
+                <AlertIcon width={15} fill='#8B40F4' />
+              </Grid>
+              <Grid flexDirection='column' width='100%'>
+                <Text margin='0px' weight={600}>
+                  Fractional
+                </Text>
                 <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
               </Grid>
               <Grid width='100%' alignItems='center' justifyContent='right'>
@@ -67,6 +105,7 @@ const OwnershipLock = ({ isFractional, nftConfig, setIsFractional, setNftConfig,
 
             {isFractional && (
               <Input
+                style={{ marginBottom: '1rem' }}
                 type='number'
                 value={nftConfig.fractional}
                 placeholder='how many fractions?'
@@ -79,24 +118,26 @@ const OwnershipLock = ({ isFractional, nftConfig, setIsFractional, setNftConfig,
             )}
 
             <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-              <Grid alignSelf='center'>
-                <AlertIcon fill='#8B40F4' />
+              <Grid alignSelf='start' justifySelf='center'>
+                <TransferableIcon width={15} fill='#8B40F4' />
               </Grid>
               <Grid flexDirection='column' width='100%'>
-                <Text weight={600}>Rentable</Text>
+                <Text margin='0px' weight={600}>
+                  Transferable
+                </Text>
                 <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
               </Grid>
               <Grid width='100%' alignItems='center' justifyContent='right'>
                 <Toggle
-                  checked={nftConfig.rentable}
+                  checked={nftConfig.transferable}
                   leftBackgroundColor='#696969'
                   rightBackgroundColor='#8B40F4'
                   leftBorderColor='#696969'
                   rightBorderColor='#8B40F4'
                   knobColor='#1A1A1A'
-                  name='toggle-rentable'
+                  name='toggle-transferable'
                   onToggle={e => {
-                    setNftConfig({ ...nftConfig, rentable: (e.target as HTMLInputElement).checked })
+                    setNftConfig({ ...nftConfig, transferable: (e.target as HTMLInputElement).checked })
                   }}
                 />
               </Grid>

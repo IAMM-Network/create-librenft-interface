@@ -14,3 +14,35 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+/** REACT MODERN CALENDAR DATEPICKER  */
+
+.custom-calendar {
+  color: #FFFFFF !important;
+  width: 100% !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  background: #1A1A1A !important;
+  border: 1px solid #8B40F4 !important;
+  border-radius: 0px !important;
+}
+
+.custom-today-day {
+  color: #FFFFFF !important;
+}
+
+.custom-today-day::after {
+  visibility: hidden; /* hide small border under the text */
+}
+
+.Calendar__day {
+  color: white !important;
+}
+
+.Calendar__monthText {
+  color: #8B40F4 !important;
+}
+
+.Calendar__yearText {
+  color: #8B40F4 !important;
+}

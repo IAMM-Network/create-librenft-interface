@@ -34,5 +34,7 @@ export { default as VideFileIcon } from './Icons/VideoFileIcon'
 export { default as WalletConnectIcon } from './Icons/WalletConnectIcon'
 export { default as MetaMaskIcon } from './Icons/MetaMaskIcon'
 
+export { default as LoadingIcon } from './LoadingIcon'
+
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'
