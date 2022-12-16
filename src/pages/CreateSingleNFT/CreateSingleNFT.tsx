@@ -515,7 +515,7 @@ const CreateSingleNFT = () => {
         </Section>
         <Section>
           <Text weight={600} size='14px'>
-            Supply
+            Supply*
           </Text>
           <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
           <Input
