@@ -54,6 +54,7 @@ export interface NFTConfig {
   unlockable: boolean | string
   nsfw: boolean
   supply: number
+  creatorEarnings: string
 }
 
 export const defaultNftMetadata = {
@@ -74,6 +75,7 @@ const nftDefaultConfig = {
   unlockable: false,
   nsfw: false,
   supply: 1,
+  creatorEarnings: ""
 }
 
 export enum CreateSingleNftTypes {
@@ -144,27 +146,27 @@ const CreateSingleNFT = () => {
     nativeCurrency: {
       name: 'pCKB',
       symbol: 'pCKB',
-      decimals: 18
+      decimals: 18,
     },
-    rpcUrls: ["https://v1.testnet.godwoken.io/rpc"],
-    blockExplorerUrls: ["https://v1.testnet.gwscan.com", "https://gw-testnet-explorer.nervosdao.community"],
-    iconUrls: ["https://raw.githubusercontent.com/nervosnetwork/ckb-explorer-frontend/master/public/favicon.ico"]
+    rpcUrls: ['https://v1.testnet.godwoken.io/rpc'],
+    blockExplorerUrls: ['https://v1.testnet.gwscan.com', 'https://gw-testnet-explorer.nervosdao.community'],
+    iconUrls: ['https://raw.githubusercontent.com/nervosnetwork/ckb-explorer-frontend/master/public/favicon.ico'],
   }
 
   const getAccounts = async () => {
-    const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
     if (accounts.length > 0) {
-      setIsConnected(true);
+      setIsConnected(true)
     }
-    return accounts;
+    return accounts
   }
 
   async function addGodwokenNetwork() {
     if (typeof window.ethereum !== 'undefined') {
       await window.ethereum.request({
         method: 'wallet_addEthereumChain',
-        params: [NetworkConfig]
-      });
+        params: [NetworkConfig],
+      })
     }
   }
 
@@ -174,22 +176,21 @@ const CreateSingleNFT = () => {
       setNetworkId(parseInt(networkId))
       return parseInt(networkId)
     }
-    return 0;
+    return 0
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const MetaMaskInitialization = async () => {
     try {
+      const accounts = await getAccounts()
+      console.log('account connected:', accounts[0])
 
-      const accounts = await getAccounts();
-      console.log("account connected:", accounts[0]);
-
-      const networkId = await getNetworkId();
+      const networkId = await getNetworkId()
       if (networkId !== REQUIRED_NETWORK_ID) {
         await addGodwokenNetwork()
       }
-    } catch(e) {
-      console.error(e);
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -241,7 +242,7 @@ const CreateSingleNFT = () => {
     const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig)
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT.address)
-    }    
+    }
   }
 
   useEffect(() => {
@@ -428,19 +429,22 @@ const CreateSingleNFT = () => {
             </Grid>
           </Grid>
 
-           <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
-           <Grid alignSelf='center'>
-             <OpenEyeIcon fill='#696969' />
-           </Grid>
-           <Grid flexDirection='column' width='100%'>
-             <Text color="#696969" weight={600}>Generative</Text>
-             <Text color="#696969" margin='0'>Lorem ipsum dolor sit amet</Text>
-           </Grid>
-           <Grid width='100%' alignItems='center' justifyContent='right'>
-             <CircleButton disabled active={false} onClick={() => null} />
-           </Grid>
-         </Grid>
-        
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+            <Grid alignSelf='center'>
+              <OpenEyeIcon fill='#696969' />
+            </Grid>
+            <Grid flexDirection='column' width='100%'>
+              <Text color='#696969' weight={600}>
+                Generative
+              </Text>
+              <Text color='#696969' margin='0'>
+                Lorem ipsum dolor sit amet
+              </Text>
+            </Grid>
+            <Grid width='100%' alignItems='center' justifyContent='right'>
+              <CircleButton disabled active={false} onClick={() => null} />
+            </Grid>
+          </Grid>
         </Section>
         <Section>
           <Text weight={600} size='14px'>
@@ -514,20 +518,44 @@ const CreateSingleNFT = () => {
           </Grid>
         </Section>
         <Section>
-          <Text weight={600} size='14px'>
-            Supply*
-          </Text>
-          <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
-          <Input
-            type='number'
-            placeholder='#'
-            value={nftConfig.supply}
-            onChange={e => {
-              if (parseInt(e.target.value) >= 1) {
-                setNftConfig({ ...nftConfig, supply: parseInt(e.target.value, 10) })
-              }
-            }}
-          />
+          <Flex flexDirection='column'>
+            <Text weight={600} size='14px'>
+              Supply*
+            </Text>
+            <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
+            <Input
+              type='number'
+              placeholder='#'
+              value={nftConfig.supply}
+              onChange={e => {
+                if (parseInt(e.target.value) >= 1) {
+                  setNftConfig({ ...nftConfig, supply: parseInt(e.target.value, 10) })
+                }
+              }}
+            />
+          </Flex>
+
+          <Flex flexDirection='column' mt="1rem">
+            <Text weight={600} size='14px'>
+              Creator Earnings
+            </Text>
+            <Text margin='0.5rem 0 0 0'>
+              Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid monthly to a payout address of your choosing.
+            </Text>
+            <Input
+              type='number'
+              placeholder='e.g. 2.5'
+              value={parseFloat(nftConfig.creatorEarnings)}
+              onChange={e => {
+                if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
+                  setNftConfig({ ...nftConfig, creatorEarnings: String(e.target.value) })
+                }
+                else {
+                  setNftConfig({ ...nftConfig, creatorEarnings: '' })
+                }
+              }}
+            />
+          </Flex>
         </Section>
         <Hr />
         <Flex justifyContent='center' marginBottom='0.5rem'>
