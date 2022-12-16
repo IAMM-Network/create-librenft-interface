@@ -3,7 +3,7 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import { AlertIcon, KeyIcon, LoadingIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
+import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -428,20 +428,19 @@ const CreateSingleNFT = () => {
             </Grid>
           </Grid>
 
-          {/*
            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
            <Grid alignSelf='center'>
-             <OpenEyeIcon fill='#8B40F4' />
+             <OpenEyeIcon fill='#696969' />
            </Grid>
            <Grid flexDirection='column' width='100%'>
-             <Text weight={600}>Generative</Text>
-             <Text margin='0'>Lorem ipsum dolor sit amet</Text>
+             <Text color="#696969" weight={600}>Generative</Text>
+             <Text color="#696969" margin='0'>Lorem ipsum dolor sit amet</Text>
            </Grid>
            <Grid width='100%' alignItems='center' justifyContent='right'>
-             <CircleButton active={true} onClick={() => alert('Generative')} />
+             <CircleButton disabled active={false} onClick={() => null} />
            </Grid>
          </Grid>
-         */}
+        
         </Section>
         <Section>
           <Text weight={600} size='14px'>
