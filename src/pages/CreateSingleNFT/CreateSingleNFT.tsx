@@ -5,7 +5,7 @@ import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
 import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
-import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
+import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, Select, Option } from './styles'
 import { mediaOptions } from './Data'
 import CircleButton from './components/CircleButton'
 import OwnershipLock from './components/dialogs/OwnershipLock'
@@ -75,7 +75,7 @@ const nftDefaultConfig = {
   unlockable: false,
   nsfw: false,
   supply: 1,
-  creatorEarnings: ""
+  creatorEarnings: '',
 }
 
 export enum CreateSingleNftTypes {
@@ -100,6 +100,7 @@ const CreateSingleNFT = () => {
   const [isFractional, setIsFractional] = useState<boolean>(false)
   const [isUnlockableContent, setIsUnlockableContent] = useState<boolean>(false)
   const [isTimeframe, setIsTimeframe] = useState<boolean>(false)
+  const [isCollectionSelected, setIsCollectionSelected] = useState<boolean>(false)
 
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
@@ -535,12 +536,13 @@ const CreateSingleNFT = () => {
             />
           </Flex>
 
-          <Flex flexDirection='column' mt="1rem">
+          <Flex flexDirection='column' mt='1rem'>
             <Text weight={600} size='14px'>
               Creator Earnings
             </Text>
             <Text margin='0.5rem 0 0 0'>
-              Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid monthly to a payout address of your choosing.
+              Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid
+              monthly to a payout address of your choosing.
             </Text>
             <Input
               type='number'
@@ -549,12 +551,45 @@ const CreateSingleNFT = () => {
               onChange={e => {
                 if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
                   setNftConfig({ ...nftConfig, creatorEarnings: String(e.target.value) })
-                }
-                else {
+                } else {
                   setNftConfig({ ...nftConfig, creatorEarnings: '' })
                 }
               }}
             />
+          </Flex>
+
+          <Flex flexDirection='column' mt='1rem'>
+            <Flex>
+              <Text weight={600} size='14px'>
+                Collection
+              </Text>
+
+              <Grid width='100%' alignItems='center' justifyContent='right'>
+                <Toggle
+                  checked={isCollectionSelected}
+                  leftBackgroundColor='#696969'
+                  rightBackgroundColor='#8B40F4'
+                  leftBorderColor='#696969'
+                  rightBorderColor='#8B40F4'
+                  knobColor='#1A1A1A'
+                  name='toggle-collection'
+                  onToggle={e => setIsCollectionSelected((e.target as HTMLInputElement).checked)}
+                />
+              </Grid>
+            </Flex>
+            <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
+
+            {isCollectionSelected && (
+              <Flex flexDirection='column' mt='1rem'>
+                <Select placeholder="Select collection" name="collection" id="collection">
+                  <Option value="">Select a collection</Option>
+                  <Option value="">Collection 1</Option>
+                  <Option value="">Collection 2</Option>
+                  <Option value="">Collection 3</Option>
+                  <Option value="">Collection 4</Option>
+                </Select>
+              </Flex>
+            )}
           </Flex>
         </Section>
         <Hr />

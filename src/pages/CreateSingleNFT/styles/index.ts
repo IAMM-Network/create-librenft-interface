@@ -107,3 +107,22 @@ export const A = styled.a`
   font-weight: 600;
   text-decoration: underline;
 `
+
+export const Select = styled.select`
+  background: transparent;
+  border: 1px solid #8b40f4;
+  padding:  1rem;
+  border-radius: 8px;
+  color: #696969;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+
+  ::placeholder {
+    color: #696969;
+  }
+`
+
+export const Option = styled.option`
+  background: red;
+`
