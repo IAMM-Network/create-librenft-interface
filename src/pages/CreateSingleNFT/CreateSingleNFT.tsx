@@ -5,7 +5,7 @@ import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
 import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
-import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, Select, Option } from './styles'
+import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
 import CircleButton from './components/CircleButton'
 import OwnershipLock from './components/dialogs/OwnershipLock'
@@ -15,6 +15,7 @@ import Levels from './components/dialogs/Levels'
 import Stats from './components/dialogs/Stats'
 import PinataService from '../../services/PINATA'
 import NFTService from '../../services/NFTService'
+import SelectCollection from './components/SelectCollection'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -101,6 +102,7 @@ const CreateSingleNFT = () => {
   const [isUnlockableContent, setIsUnlockableContent] = useState<boolean>(false)
   const [isTimeframe, setIsTimeframe] = useState<boolean>(false)
   const [isCollectionSelected, setIsCollectionSelected] = useState<boolean>(false)
+  const [isSelectCollectionOpen, setIsSelectCollectionOpen] = useState<boolean>(false)
 
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
@@ -134,6 +136,26 @@ const CreateSingleNFT = () => {
   const isStatsActive = () => nftMetadata.stats.length > 0
 
   const isCreateActive = () => !!nftMetadata.name && !!preview
+
+  //Collections
+  const collections = [
+    {
+      id: 1,
+      name: 'collection 1'
+    },
+    {
+      id: 2,
+      name: 'collection 2'
+    },
+    {
+      id: 3,
+      name: 'collection 3'
+    },
+    {
+      id: 4,
+      name: 'collection 4'
+    }
+  ]
 
   //MetaMask Installed
   const [isConnected, setIsConnected] = useState<boolean>(false)
@@ -579,17 +601,7 @@ const CreateSingleNFT = () => {
             </Flex>
             <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
 
-            {isCollectionSelected && (
-              <Flex flexDirection='column' mt='1rem'>
-                <Select placeholder="Select collection" name="collection" id="collection">
-                  <Option value="">Select a collection</Option>
-                  <Option value="">Collection 1</Option>
-                  <Option value="">Collection 2</Option>
-                  <Option value="">Collection 3</Option>
-                  <Option value="">Collection 4</Option>
-                </Select>
-              </Flex>
-            )}
+            {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
           </Flex>
         </Section>
         <Hr />
