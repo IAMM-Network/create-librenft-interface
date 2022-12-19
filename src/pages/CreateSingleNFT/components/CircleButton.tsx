@@ -3,6 +3,7 @@ import styled from 'styled-components'
 interface CircleButtonProps {
   active: boolean
   onClick?: () => any
+  disabled?: boolean
 }
 
 interface TextProps {
@@ -27,9 +28,9 @@ const Text = styled.h6<TextProps>`
   margin: 0;
 `
 
-const CircleButton: React.FC<CircleButtonProps> = ({ active, ...props }) => (
-  <StyledCircleButton active={active} {...props}>
-    <Text>+</Text>
+const CircleButton: React.FC<CircleButtonProps> = ({ active, disabled, ...props }) => (
+  <StyledCircleButton active={active} {...props} style={{ cursor: disabled ? "not-allowed" : "pointer" }}>
+    <Text color={disabled ? "#7e7d7d" :"white"}>+</Text>
   </StyledCircleButton>
 )
 

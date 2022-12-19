@@ -2,11 +2,12 @@ import { Box, Flex, Grid } from '../../../../components/Box'
 import { Calendar, DayRange } from 'react-modern-calendar-datepicker'
 import { Container } from '../../../../components/Layout'
 import { Text, Hr, Section, TextArea, A } from '../../styles'
-import { LockIcon, TimeframeIcon } from '../../../../components/Svg'
+import { DeadlineIcon, LockIcon, TimeframeIcon, TimelineIcon } from '../../../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { NFTConfig } from '../../CreateSingleNFT'
+import { unstable_batchedUpdates } from 'react-dom'
 
 interface TimeLockProps {
   nftConfig: NFTConfig
@@ -31,8 +32,7 @@ const TimeLock = ({
   setIsTimeLock,
   setSelectedTimeframe,
 }: TimeLockProps) => {
-
- // TODO date string upper Calendar
+  // TODO date string upper Calendar
 
   return (
     <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000}>
@@ -47,8 +47,8 @@ const TimeLock = ({
 
             <Section>
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <LockIcon fill='#8B40F4' />
+                <Grid alignSelf='center' justifySelf='center'>
+                  <LockIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Unlockable Content</Text>
@@ -88,8 +88,8 @@ const TimeLock = ({
               )}
 
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <TimeframeIcon fill='#8B40F4' />
+                <Grid alignSelf='center' justifySelf='center'>
+                  <TimeframeIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Timeframe</Text>
@@ -120,6 +120,54 @@ const TimeLock = ({
                   />
                 </Flex>
               )}
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
+                <Grid alignSelf='center' justifySelf='center'>
+                  <DeadlineIcon width={15} fill='#696969' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Deadline</Text>
+                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Toggle
+                    disabled
+                    checked={false}
+                    backgroundColorDisabled='#1A1A1A'
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-deadline'
+                    onToggle={e => () => null}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
+                <Grid alignSelf='center' justifySelf='center'>
+                  <TimelineIcon width={15} fill='#696969' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Timeline</Text>
+                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Toggle
+                    disabled
+                    checked={false}
+                    backgroundColorDisabled='#1A1A1A'
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-timeline'
+                    onToggle={e => () => null}
+                  />
+                </Grid>
+              </Grid>
             </Section>
 
             <Hr />
