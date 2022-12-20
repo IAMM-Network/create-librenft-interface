@@ -38,6 +38,10 @@ export { default as VerticalBarsIcon } from './Icons/VerticalBarsIcon'
 export { default as VideFileIcon } from './Icons/VideoFileIcon'
 export { default as WalletConnectIcon } from './Icons/WalletConnectIcon'
 export { default as MetaMaskIcon } from './Icons/MetaMaskIcon'
+export { default as DaiIcon } from './Icons/DaiIcon'
+export { default as EtherIcon } from './Icons/EtherIcon'
+export { default as NervosIcon } from './Icons/NervosIcon'
+export { default as DolarIcon } from './Icons/DolarIcon'
 
 export { default as LoadingIcon } from './LoadingIcon'
 

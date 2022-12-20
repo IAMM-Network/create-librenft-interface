@@ -3,17 +3,7 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import {
-  AlertIcon,
-  FreezeMetadata,
-  KeyIcon,
-  LoadingIcon,
-  OpenEyeIcon,
-  StarIcon,
-  TextBaseIcon,
-  TimelockIcon,
-  VerticalBarsIcon,
-} from '../../components/Svg'
+import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon, DaiIcon, NervosIcon, EtherIcon, DolarIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -27,6 +17,7 @@ import PinataService from '../../services/PINATA'
 import NFTService from '../../services/NFTService'
 import SelectCollection from './components/SelectCollection'
 import Congratulations from './components/dialogs/Congratulations'
+import FileUploader from './components/input/FileUploader'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -271,7 +262,7 @@ const CreateSingleNFT = () => {
     setStatus(CreateSingleNftTypes.CreatingMetadata)
     const sanitizedJson = {
       ...nftMetadata,
-      image_url: `ipfs://${imageCID}`,
+      image_url: `https://gateway.pinata.cloud/ipfs/${imageCID}`,
     }
 
     setImageCid(imageCID)
@@ -394,11 +385,12 @@ const CreateSingleNFT = () => {
         </Section>
         <Section>
           <Text weight={600} size='14px'>
-            Upload file
+            Upload file*
           </Text>
           <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(', ')}.</Text>
           <Text margin='0px'>Max Size: 15mb</Text>
-          <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(', ')} />
+          {/* <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(', ')} /> */}
+          <FileUploader handleFile={onSelectedImage}></FileUploader>
         </Section>
         <Section>
           <Text weight={600} size='14px'>
@@ -450,33 +442,33 @@ const CreateSingleNFT = () => {
           </Text>
           <Text margin='0.5rem 0 0 0'>Select the predefined smartPlugins</Text>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <KeyIcon fill='#8B40F4' />
             </Grid>
             <Grid flexDirection='column' width='100%'>
               <Text weight={600}>Ownership Lock</Text>
-              <Text margin='0'>Lorem ipsum dolor sit amet</Text>
+              <Text margin='0'>Rentable, Fractional & Transferable</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
               <CircleButton active={isOwnershipLockActive()} onClick={() => setIsOwnershipLock(true)} />
             </Grid>
           </Grid>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <TimelockIcon fill='#8B40F4' />
             </Grid>
             <Grid flexDirection='column' width='100%'>
               <Text weight={600}>Timelock</Text>
-              <Text margin='0'>Lorem ipsum dolor sit amet</Text>
+              <Text margin='0'>Unlockable Content & Timeframe</Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
               <CircleButton active={isTimelockActive()} onClick={() => setIsTimeLock(true)} />
             </Grid>
           </Grid>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <OpenEyeIcon fill='#696969' />
             </Grid>
@@ -498,10 +490,10 @@ const CreateSingleNFT = () => {
             Impact
           </Text>
           <Text margin='0.5rem 0 0 0'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Make use of this features to bring more value flow to your smartNFT and create an impact on the network
           </Text>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <TextBaseIcon fill='#8B40F4' />
             </Grid>
@@ -514,7 +506,7 @@ const CreateSingleNFT = () => {
             </Grid>
           </Grid>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <StarIcon fill='#8B40F4' />
             </Grid>
@@ -527,7 +519,7 @@ const CreateSingleNFT = () => {
             </Grid>
           </Grid>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <VerticalBarsIcon fill='#8B40F4' />
             </Grid>
@@ -540,7 +532,7 @@ const CreateSingleNFT = () => {
             </Grid>
           </Grid>
 
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
               <AlertIcon fill='#8B40F4' />
             </Grid>
@@ -592,7 +584,7 @@ const CreateSingleNFT = () => {
           </Grid>
         </Section>
         <Section>
-          <Flex flexDirection='column'>
+          {/* <Flex flexDirection='column'>
             <Text weight={600} size='14px'>
               Supply*
             </Text>
@@ -607,7 +599,7 @@ const CreateSingleNFT = () => {
                 }
               }}
             />
-          </Flex>
+          </Flex> */}
 
           <Flex flexDirection='column' mt='1rem'>
             <Text weight={600} size='14px'>
@@ -632,6 +624,20 @@ const CreateSingleNFT = () => {
           </Flex>
 
           <Flex flexDirection='column' mt='1rem'>
+            <Text weight={600} size='14px'>
+              Payment tokens *
+            </Text>
+            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center'>
+              <Grid alignSelf='center'>
+                <NervosIcon fill='#8B40F4' />
+              </Grid>
+              <Grid alignSelf='center'>
+                <DaiIcon fill='#8B40F4' />
+              </Grid>
+            </Grid>
+          </Flex>
+
+          {/* <Flex flexDirection='column' mt='1rem'>
             <Flex>
               <Text weight={600} size='14px'>
                 Collection
@@ -651,11 +657,8 @@ const CreateSingleNFT = () => {
               </Grid>
             </Flex>
             <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
-
-            {isCollectionSelected && (
-              <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />
-            )}
-          </Flex>
+            {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
+          </Flex> */}
         </Section>
         <Hr />
         <Flex justifyContent='center' marginBottom='0.5rem'>
