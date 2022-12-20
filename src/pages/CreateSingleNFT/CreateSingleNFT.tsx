@@ -3,7 +3,7 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
+import { AlertIcon, FreezeMetadata, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -143,20 +143,20 @@ const CreateSingleNFT = () => {
   const collections = [
     {
       id: 1,
-      name: 'collection 1'
+      name: 'collection 1',
     },
     {
       id: 2,
-      name: 'collection 2'
+      name: 'collection 2',
     },
     {
       id: 3,
-      name: 'collection 3'
+      name: 'collection 3',
     },
     {
       id: 4,
-      name: 'collection 4'
-    }
+      name: 'collection 4',
+    },
   ]
 
   //MetaMask Installed
@@ -544,11 +544,14 @@ const CreateSingleNFT = () => {
 
           <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
             <Grid alignSelf='center'>
-              <AlertIcon fill='#8B40F4' />
+              <FreezeMetadata fill='#8B40F4' />
             </Grid>
             <Grid flexDirection='column' width='100%'>
               <Text weight={600}>Freeze metadata</Text>
-              <Text margin='0'>Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file storage.</Text>
+              <Text margin='0'>
+                Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                storage.
+              </Text>
             </Grid>
             <Grid width='100%' alignItems='center' justifyContent='right'>
               <Toggle
@@ -627,7 +630,9 @@ const CreateSingleNFT = () => {
             </Flex>
             <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
 
-            {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
+            {isCollectionSelected && (
+              <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />
+            )}
           </Flex>
         </Section>
         <Hr />
