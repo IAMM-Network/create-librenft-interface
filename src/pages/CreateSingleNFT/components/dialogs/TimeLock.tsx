@@ -35,7 +35,7 @@ const TimeLock = ({
   // TODO date string upper Calendar
 
   return (
-    <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000}>
+    <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000} justifyContent='center'>
       <Box overflowY='scroll' paddingBottom='3rem'>
         <Container maxWidth='90%'>
           <Flex flexDirection='column' paddingTop='32px'>
