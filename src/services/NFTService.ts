@@ -2,12 +2,12 @@ import { ethers, ContractFactory } from 'ethers'
 import NFTABI from '../data/LibreNFT721.json'
 
 class NFTService {
-  static async mintNFT(cid: string, config: any) {
+  static async mintNFT(cid: string, config: any, name: string) {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const factory = new ContractFactory(NFTABI.abi, NFTABI.bytecode, provider.getSigner())
     
     const contract = await factory.deploy(
-      "IAMM",
+      name,
       "IAMM",
       "ipfs://",
       cid,
