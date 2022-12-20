@@ -16,6 +16,7 @@ import Stats from './components/dialogs/Stats'
 import PinataService from '../../services/PINATA'
 import NFTService from '../../services/NFTService'
 import SelectCollection from './components/SelectCollection'
+import Congratulations from './components/dialogs/Congratulations'
 import FileUploader from './components/input/FileUploader'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
@@ -57,6 +58,7 @@ export interface NFTConfig {
   nsfw: boolean
   supply: number
   creatorEarnings: string
+  freeze_metadata: boolean
 }
 
 export const defaultNftMetadata = {
@@ -78,6 +80,7 @@ const nftDefaultConfig = {
   nsfw: false,
   supply: 1,
   creatorEarnings: '',
+  freeze_metadata: true,
 }
 
 export enum CreateSingleNftTypes {
@@ -128,6 +131,11 @@ const CreateSingleNFT = () => {
 
   const [status, setStatus] = useState<CreateSingleNftTypes>(CreateSingleNftTypes.None)
 
+  /// NFT minted status
+  const [isNFTMinted, setIsNFTMinted] = useState<boolean>(false)
+  const [imageCid, setImageCid] = useState<string>('')
+  const [mintedContract, setMintedContract] = useState<string>('')
+
   const isOwnershipLockActive = () => nftConfig.rentable || nftConfig.fractional > 1
   const isTimelockActive = () =>
     (isUnlockableContent && nftConfig.unlockable && String(nftConfig.unlockable) !== '') ||
@@ -142,20 +150,20 @@ const CreateSingleNFT = () => {
   const collections = [
     {
       id: 1,
-      name: 'collection 1'
+      name: 'collection 1',
     },
     {
       id: 2,
-      name: 'collection 2'
+      name: 'collection 2',
     },
     {
       id: 3,
-      name: 'collection 3'
+      name: 'collection 3',
     },
     {
       id: 4,
-      name: 'collection 4'
-    }
+      name: 'collection 4',
+    },
   ]
 
   //MetaMask Installed
@@ -257,6 +265,8 @@ const CreateSingleNFT = () => {
       image_url: `https://gateway.pinata.cloud/ipfs/${imageCID}`,
     }
 
+    setImageCid(imageCID)
+
     setStatus(CreateSingleNftTypes.FreezingMetadata)
     const cid = await PinataService.PinJSONToIPFS(sanitizedJson)
 
@@ -266,6 +276,8 @@ const CreateSingleNFT = () => {
     const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig)
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT.address)
+      setMintedContract(mintedNFT.address)
+      setIsNFTMinted(true)
     }
   }
 
@@ -284,6 +296,8 @@ const CreateSingleNFT = () => {
 
   return (
     <Container>
+      {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
+
       {isOwnershipLock && (
         <OwnershipLock
           selectedRentableTimeFrame={selectedRentableTimeFrame}
@@ -541,6 +555,33 @@ const CreateSingleNFT = () => {
               />
             </Grid>
           </Grid>
+
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+            <Grid alignSelf='center'>
+              <FreezeMetadata fill='#8B40F4' />
+            </Grid>
+            <Grid flexDirection='column' width='100%'>
+              <Text weight={600}>Freeze metadata</Text>
+              <Text margin='0'>
+                Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                storage.
+              </Text>
+            </Grid>
+            <Grid width='100%' alignItems='center' justifyContent='right'>
+              <Toggle
+                disabled
+                backgroundColorDisabled='#1A1A1A'
+                checked={nftConfig.freeze_metadata}
+                leftBackgroundColor='#696969'
+                rightBackgroundColor='#8B40F4'
+                leftBorderColor='#696969'
+                rightBorderColor='#8B40F4'
+                knobColor='#1A1A1A'
+                name='toggle-freeze-metadata'
+                onToggle={e => () => null}
+              />
+            </Grid>
+          </Grid>
         </Section>
         <Section>
           {/* <Flex flexDirection='column'>
@@ -616,7 +657,6 @@ const CreateSingleNFT = () => {
               </Grid>
             </Flex>
             <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
-
             {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
           </Flex> */}
         </Section>
