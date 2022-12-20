@@ -21,7 +21,7 @@ const App: FC = () => {
           </div>
         </BrowserRouter>
         <div className='footer'>
-          <span>Footer</span>
+          <span></span> {/*Footer*/}
         </div>
       </div>
     </div>
