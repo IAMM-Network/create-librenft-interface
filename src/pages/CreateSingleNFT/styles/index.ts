@@ -56,7 +56,7 @@ export const MediaWrapper = styled(Grid)<{ active?: boolean }>`
 export const Preview = styled(Flex)`
   align-items: center;
   border: 1px solid #8b40f4;
-  height: 202px;
+  min-height: 202px;
   padding: 1rem;
   padding-top: 4rem;
   padding-bottom: 4rem;
