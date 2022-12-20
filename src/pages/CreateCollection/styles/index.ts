@@ -79,3 +79,13 @@ export const TextArea = styled.textarea`
     opacity: 1; /* Firefox */
   }
 `
+
+export const Select = styled.select`
+  margin-top: 1rem;
+  background: transparent;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #8b40f4;
+  color: white;
+  outline: none;
+`

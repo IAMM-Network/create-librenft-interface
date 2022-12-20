@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Flex } from '../../components/Box'
 import { Container } from '../../components/Layout'
-import { TitleSection, Text, Section, Input, Preview, TextArea } from './styles'
+import { TitleSection, Text, Section, Input, Preview, TextArea, Select } from './styles'
 import { Button } from '../../components/Button'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
@@ -45,7 +45,7 @@ const CreateCollection: React.FC = () => {
   }, [selectedFile])
 
   return (
-    <Container maxWidth='90%'>
+    <Container maxWidth='90%' paddingY="1rem">
       <Flex flexDirection='column' paddingTop='104px'>
         <TitleSection>
           <Text weight={600} size='21px'>
@@ -70,7 +70,7 @@ const CreateCollection: React.FC = () => {
           <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} />
         </Section>
 
-        <Section>
+        <Section width="100vw">
           <Text weight={600} size='14px'>
             Preview
           </Text>
@@ -88,7 +88,7 @@ const CreateCollection: React.FC = () => {
           <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} />
         </Section>
 
-        <Section>
+        <Section width="100vw">
           <Text weight={600} size='14px'>
             Preview
           </Text>
@@ -106,7 +106,7 @@ const CreateCollection: React.FC = () => {
           <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} />
         </Section>
 
-        <Section>
+        <Section width="100vw">
           <Text weight={600} size='14px'>
             Preview
           </Text>
@@ -141,10 +141,10 @@ const CreateCollection: React.FC = () => {
             Adding a category will help make your item discoverable at IAMM. We recommend to use what people is already using, but you can
             create any.
           </Text>
-          <select>
+          <Select>
             <option>Art</option>
             <option>Gaming</option>
-          </select>
+          </Select>
         </Section>
 
         <Section>
