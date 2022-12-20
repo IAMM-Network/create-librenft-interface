@@ -43,8 +43,8 @@ const Profile: React.FC = () => {
       <Container maxWidth='90%'>
         <Flex flexDirection='column' paddingTop='2rem'>
           <TitleSection>
-            <Title>Lorem ipsum</Title>
-            <Description>Lorem ipsum dolor sit amet</Description>
+            <Title>Role selection</Title>
+            <Description>What are you up to do on IAMM?</Description>
           </TitleSection>
 
           <Grid gridTemplateColumns='repeat(2, 1fr)' gridTemplateRows='repeat(2, 1fr)' gridColumnGap='1rem' gridRowGap='1rem'>

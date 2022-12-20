@@ -3,7 +3,17 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import { AlertIcon, FreezeMetadata, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon } from '../../components/Svg'
+import {
+  AlertIcon,
+  FreezeMetadata,
+  KeyIcon,
+  LoadingIcon,
+  OpenEyeIcon,
+  StarIcon,
+  TextBaseIcon,
+  TimelockIcon,
+  VerticalBarsIcon,
+} from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -16,6 +26,7 @@ import Stats from './components/dialogs/Stats'
 import PinataService from '../../services/PINATA'
 import NFTService from '../../services/NFTService'
 import SelectCollection from './components/SelectCollection'
+import Congratulations from './components/dialogs/Congratulations'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -128,6 +139,11 @@ const CreateSingleNFT = () => {
   })
 
   const [status, setStatus] = useState<CreateSingleNftTypes>(CreateSingleNftTypes.None)
+
+  /// NFT minted status
+  const [isNFTMinted, setIsNFTMinted] = useState<boolean>(false)
+  const [imageCid, setImageCid] = useState<string>('')
+  const [mintedContract, setMintedContract] = useState<string>('')
 
   const isOwnershipLockActive = () => nftConfig.rentable || nftConfig.fractional > 1
   const isTimelockActive = () =>
@@ -258,6 +274,8 @@ const CreateSingleNFT = () => {
       image_url: `ipfs://${imageCID}`,
     }
 
+    setImageCid(imageCID)
+
     setStatus(CreateSingleNftTypes.FreezingMetadata)
     const cid = await PinataService.PinJSONToIPFS(sanitizedJson)
 
@@ -267,6 +285,8 @@ const CreateSingleNFT = () => {
     const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig)
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT.address)
+      setMintedContract(mintedNFT.address)
+      setIsNFTMinted(true)
     }
   }
 
@@ -285,6 +305,8 @@ const CreateSingleNFT = () => {
 
   return (
     <Container>
+      {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
+
       {isOwnershipLock && (
         <OwnershipLock
           selectedRentableTimeFrame={selectedRentableTimeFrame}

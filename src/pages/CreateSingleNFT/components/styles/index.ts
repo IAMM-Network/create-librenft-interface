@@ -43,3 +43,31 @@ export const Select = styled(Flex)<SelectCollectionProps>`
     transform: ${({ isOpen }) => isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
   }
 `
+
+/** 
+ * Minted Congratulations
+ */
+
+export const CongratulationsWrapper = styled(Flex)`
+  width: 100%;
+  height: 100vh;
+  background: #1a1a1a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  overflow: hidden;
+`
+
+export const CongratulationsTitle =  styled.h1`
+  font-size: 21px;
+  color: white;
+  font-weight: 300;
+
+  a {
+    color: white;
+    font-size: 21px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+`
