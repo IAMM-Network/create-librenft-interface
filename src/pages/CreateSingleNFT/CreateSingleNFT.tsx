@@ -3,7 +3,7 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon, DaiIcon, NervosIcon, EtherIcon, DolarIcon } from '../../components/Svg'
+import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon, DaiIcon, NervosIcon, EtherIcon, DolarIcon, FreezeMetadata } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -623,7 +623,7 @@ const CreateSingleNFT = () => {
             />
           </Flex>
 
-          <Flex flexDirection='column' mt='1rem'>
+          {/* <Flex flexDirection='column' mt='1rem'>
             <Text weight={600} size='14px'>
               Payment tokens *
             </Text>
@@ -635,7 +635,7 @@ const CreateSingleNFT = () => {
                 <DaiIcon fill='#8B40F4' />
               </Grid>
             </Grid>
-          </Flex>
+          </Flex> */}
 
           {/* <Flex flexDirection='column' mt='1rem'>
             <Flex>
