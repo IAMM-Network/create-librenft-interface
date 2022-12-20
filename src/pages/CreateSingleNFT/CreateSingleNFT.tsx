@@ -273,7 +273,7 @@ const CreateSingleNFT = () => {
     console.log(cid)
     setStatus(CreateSingleNftTypes.Minting)
 
-    const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig)
+    const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig, nftMetadata.name)
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT.address)
       setMintedContract(mintedNFT.address)
