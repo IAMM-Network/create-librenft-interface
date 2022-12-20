@@ -56,6 +56,7 @@ export interface NFTConfig {
   nsfw: boolean
   supply: number
   creatorEarnings: string
+  freeze_metadata: boolean
 }
 
 export const defaultNftMetadata = {
@@ -77,6 +78,7 @@ const nftDefaultConfig = {
   nsfw: false,
   supply: 1,
   creatorEarnings: '',
+  freeze_metadata: true,
 }
 
 export enum CreateSingleNftTypes {
@@ -536,6 +538,30 @@ const CreateSingleNFT = () => {
                 onToggle={e => {
                   setNftConfig({ ...nftConfig, nsfw: (e.target as HTMLInputElement).checked })
                 }}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+            <Grid alignSelf='center'>
+              <AlertIcon fill='#8B40F4' />
+            </Grid>
+            <Grid flexDirection='column' width='100%'>
+              <Text weight={600}>Freeze metadata</Text>
+              <Text margin='0'>Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file storage.</Text>
+            </Grid>
+            <Grid width='100%' alignItems='center' justifyContent='right'>
+              <Toggle
+                disabled
+                backgroundColorDisabled='#1A1A1A'
+                checked={nftConfig.freeze_metadata}
+                leftBackgroundColor='#696969'
+                rightBackgroundColor='#8B40F4'
+                leftBorderColor='#696969'
+                rightBorderColor='#8B40F4'
+                knobColor='#1A1A1A'
+                name='toggle-freeze-metadata'
+                onToggle={e => () => null}
               />
             </Grid>
           </Grid>
