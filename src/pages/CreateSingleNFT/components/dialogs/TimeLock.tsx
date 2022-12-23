@@ -7,15 +7,12 @@ import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { NFTConfig } from '../../CreateSingleNFT'
-import { unstable_batchedUpdates } from 'react-dom'
 
 interface TimeLockProps {
   nftConfig: NFTConfig
   isUnlockableContent: boolean
-  isTimeframe: boolean
   selectedTimeFrame: DayRange
   setNftConfig: Dispatch<SetStateAction<NFTConfig>>
-  setIsTimeframe: Dispatch<SetStateAction<boolean>>
   setIsUnlockableContent: Dispatch<SetStateAction<boolean>>
   setIsTimeLock: Dispatch<SetStateAction<boolean>>
   setSelectedTimeframe: Dispatch<SetStateAction<DayRange>>
@@ -24,10 +21,8 @@ interface TimeLockProps {
 const TimeLock = ({
   nftConfig,
   isUnlockableContent,
-  isTimeframe,
   selectedTimeFrame,
   setNftConfig,
-  setIsTimeframe,
   setIsUnlockableContent,
   setIsTimeLock,
   setSelectedTimeframe,
@@ -97,19 +92,19 @@ const TimeLock = ({
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
-                    checked={isTimeframe}
+                    checked={nftConfig.timeframe}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
                     leftBorderColor='#696969'
                     rightBorderColor='#8B40F4'
                     knobColor='#1A1A1A'
                     name='toggle-rentable'
-                    onToggle={e => setIsTimeframe((e.target as HTMLInputElement).checked)}
+                    onToggle={e =>  setNftConfig({ ...nftConfig, timeframe: (e.target as HTMLInputElement).checked })}
                   />
                 </Grid>
               </Grid>
 
-              {isTimeframe && (
+              {nftConfig.timeframe && (
                 <Flex flexDirection='column' justifyContent='center' marginTop='1rem'>
                   <Calendar
                     value={selectedTimeFrame}

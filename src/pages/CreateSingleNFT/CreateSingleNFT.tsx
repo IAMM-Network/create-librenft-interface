@@ -53,7 +53,7 @@ export interface NFTConfig {
   fractional: number
   rentable: boolean
   transferable: boolean
-  timeframe: boolean | NFTTimeframe
+  timeframe: boolean 
   unlockable: boolean | string
   nsfw: boolean
   supply: number
@@ -104,7 +104,6 @@ const CreateSingleNFT = () => {
   //switchs
   const [isFractional, setIsFractional] = useState<boolean>(false)
   const [isUnlockableContent, setIsUnlockableContent] = useState<boolean>(false)
-  const [isTimeframe, setIsTimeframe] = useState<boolean>(false)
   const [isCollectionSelected, setIsCollectionSelected] = useState<boolean>(false)
   const [isSelectCollectionOpen, setIsSelectCollectionOpen] = useState<boolean>(false)
 
@@ -139,7 +138,7 @@ const CreateSingleNFT = () => {
   const isOwnershipLockActive = () => nftConfig.rentable || nftConfig.fractional > 1
   const isTimelockActive = () =>
     (isUnlockableContent && nftConfig.unlockable && String(nftConfig.unlockable) !== '') ||
-    (isTimeframe && !!nftConfig.timeframe && !!selectedTimeFrame.from && !!selectedTimeFrame.to)
+    (!!nftConfig.timeframe && !!selectedTimeFrame.from && !!selectedTimeFrame.to)
   const isPropertiesActive = () => nftMetadata.properties.length > 0
   const isLevelsActive = () => nftMetadata.levels.length > 0
   const isStatsActive = () => nftMetadata.stats.length > 0
@@ -273,7 +272,7 @@ const CreateSingleNFT = () => {
     console.log(cid)
     setStatus(CreateSingleNftTypes.Minting)
 
-    const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig, nftMetadata.name)
+    const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig, nftMetadata.name, selectedRentableTimeFrame, selectedRentableTimeFrame)
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT.address)
       setMintedContract(mintedNFT.address)
@@ -314,10 +313,8 @@ const CreateSingleNFT = () => {
         <TimeLock
           nftConfig={nftConfig}
           isUnlockableContent={isUnlockableContent}
-          isTimeframe={isTimeframe}
           selectedTimeFrame={selectedTimeFrame}
           setNftConfig={setNftConfig}
-          setIsTimeframe={setIsTimeframe}
           setIsUnlockableContent={setIsUnlockableContent}
           setIsTimeLock={setIsTimeLock}
           setSelectedTimeframe={setSelectedTimeframe}
