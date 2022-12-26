@@ -37,6 +37,8 @@ import { Tokens } from '../../components/Selector/types'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
+export enum PayerFee { Buyer, Creator }
+
 export interface NftProperties {
   trait_type: string
   value: string | number
@@ -76,6 +78,7 @@ export interface NFTConfig {
   creatorEarnings: string
   freeze_metadata: boolean
   payment_token: Tokens
+  payer_fee: PayerFee
 }
 
 export const defaultNftMetadata = {
@@ -99,6 +102,7 @@ const nftDefaultConfig = {
   creatorEarnings: '',
   freeze_metadata: true,
   payment_token: Tokens.pckb,
+  payer_fee: PayerFee.Buyer,
 }
 
 export enum CreateSingleNftTypes {
