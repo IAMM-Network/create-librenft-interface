@@ -668,7 +668,7 @@ const CreateSingleNFT = () => {
             <Input disabled placeholder='Add token' />
           </Flex>
 
-          {nftConfig.fractional && (
+          {nftConfig.fractional && nftConfig.fractional >= 2 && (
             <Flex flexDirection='column' mt='1rem'>
               <Text weight={600} size='14px'>
                 Whitelist
