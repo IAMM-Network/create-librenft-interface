@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 interface fileUploaderProps {
   handleFile: any
+  accept?: string
+  placeholder?: string
 }
 
 const Button = styled.button`
@@ -38,6 +40,8 @@ const FileUploader: React.FC<fileUploaderProps> = props => {
              ref={hiddenFileInput}
              onChange={handleChange}
              style={{display:'none'}} 
+             accept={props.accept}
+             placeholder={props.placeholder}
       /> 
     </>
   );
