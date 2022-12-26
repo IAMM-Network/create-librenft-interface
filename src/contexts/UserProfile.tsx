@@ -6,15 +6,18 @@ export const Context = createContext<UserProfileContextProps>({
   userAddress: "",
   isConnected: false,
   isCollector: false,
+  networkId: 0,
   setUserAddress: () =>  null,
   setIsCollector: () => null,
-  setIsConnected: () => null
+  setIsConnected: () => null,
+  setNetworkId: () => null
 })
 
 const PopupContext: React.FC = ({ children }) => {
   const [userAddress, setUserAddress] = useState<string>("")
   const [isConnected, setIsConnected] = useState(false)
   const [isCollector, setIsCollector] = useState(false)
+  const [networkId, setNetworkId] = useState<number>(0)
 
   return (
     <Context.Provider
@@ -22,9 +25,11 @@ const PopupContext: React.FC = ({ children }) => {
         userAddress,
         isConnected,
         isCollector,
+        networkId,
         setIsCollector,
         setUserAddress,
-        setIsConnected
+        setIsConnected,
+        setNetworkId
       }}
     >
       {children}

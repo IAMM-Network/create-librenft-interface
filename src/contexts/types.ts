@@ -17,7 +17,9 @@ export interface UserProfileContextProps {
   userAddress: string;
   isConnected: boolean;
   isCollector: boolean;
+  networkId: number;
   setUserAddress: React.Dispatch<React.SetStateAction<string>>;
   setIsConnected: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCollector: React.Dispatch<React.SetStateAction<boolean>>;
+  setNetworkId: React.Dispatch<React.SetStateAction<number>>;
 }
