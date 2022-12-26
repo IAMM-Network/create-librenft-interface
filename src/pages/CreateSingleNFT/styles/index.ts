@@ -28,9 +28,10 @@ export const Section = styled(Flex)`
   margin-bottom: 1rem;
 `
 
-export const Input = styled.input`
+export const Input = styled.input<{disabled?: boolean}>`
   background: transparent;
   border: 1px solid #8b40f4;
+  border-color: ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')};
   border-radius: 8px;
   box-sizing: border-box;
   color: white;

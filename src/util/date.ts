@@ -13,5 +13,5 @@ export const MONTHS_BY_NUMBER: {[key: number]: string} = {
     12: 'December',
 }
 
-export const getDate = (month: number, day: number, year: number) => new Date(`${MONTHS_BY_NUMBER[month]} ${day}, ${year}`); 
+export const getDate = (month: number, day: number, year: number) => new Date(`${MONTHS_BY_NUMBER[month]} ${day}, ${year} 00:00:00`); 
 export const getUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);

@@ -18,6 +18,8 @@ import NFTService from '../../services/NFTService'
 import SelectCollection from './components/SelectCollection'
 import Congratulations from './components/dialogs/Congratulations'
 import FileUploader from './components/input/FileUploader'
+import Selector from '../../components/Selector/Selector'
+import { Tokens } from '../../components/Selector/types'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -59,6 +61,7 @@ export interface NFTConfig {
   supply: number
   creatorEarnings: string
   freeze_metadata: boolean
+  payment_token: Tokens
 }
 
 export const defaultNftMetadata = {
@@ -81,6 +84,7 @@ const nftDefaultConfig = {
   supply: 1,
   creatorEarnings: '',
   freeze_metadata: true,
+  payment_token: Tokens.pckb
 }
 
 export enum CreateSingleNftTypes {
@@ -620,19 +624,23 @@ const CreateSingleNFT = () => {
             />
           </Flex>
 
-          {/* <Flex flexDirection='column' mt='1rem'>
+          <Flex flexDirection='column' mt='1rem'>
             <Text weight={600} size='14px'>
               Payment tokens *
             </Text>
-            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center'>
-              <Grid alignSelf='center'>
-                <NervosIcon fill='#8B40F4' />
-              </Grid>
-              <Grid alignSelf='center'>
-                <DaiIcon fill='#8B40F4' />
-              </Grid>
+            <Text margin='0.5rem 0 0 0'>
+            These tokens can be used to buy and sell your items.
+            </Text>
+            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
+              <Selector />
+              <Selector token={Tokens.eth} disabled />
+              <Selector token={Tokens.usdc} disabled />
+              <Selector token={Tokens.dai} disabled />
             </Grid>
-          </Flex> */}
+
+            <Input disabled placeholder='Add token' />
+
+          </Flex>
 
           {/* <Flex flexDirection='column' mt='1rem'>
             <Flex>
