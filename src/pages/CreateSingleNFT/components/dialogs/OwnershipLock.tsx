@@ -1,12 +1,14 @@
 import { Box, Flex, Grid } from '../../../../components/Box'
 import { Container } from '../../../../components/Layout'
-import { AlertIcon, TransferableIcon } from '../../../../components/Svg'
+import { AlertIcon, CircleCheckIcon, TransferableIcon } from '../../../../components/Svg'
 import { Section, Hr, Text, Input } from '../../styles'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
 import { Dispatch, SetStateAction } from 'react'
 import { NFTConfig } from '../../CreateSingleNFT'
 import { Calendar, DayRange } from 'react-modern-calendar-datepicker'
+import Checkbox from '../../../../components/Checkbox/Checkbox'
+import { WhoPaysTheMint } from '../../../../data/nftConfig'
 
 interface OwnershipLockProps {
   isFractional: boolean
@@ -141,6 +143,22 @@ const OwnershipLock = ({
                       setNftConfig({ ...nftConfig, transferable: (e.target as HTMLInputElement).checked })
                     }}
                   />
+                </Grid>
+              </Grid>
+
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='center'>
+                  <CircleCheckIcon width={15} fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text margin='0px' weight={600}>
+                    Who pays the mint
+                  </Text>
+                  <Text margin='0'>Choose who is paying for the NFT minting transaction fee/cost.</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Checkbox payers={WhoPaysTheMint} disabled={[1]} />
                 </Grid>
               </Grid>
             </Section>
