@@ -3,7 +3,21 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { Button } from '../../components/Button'
-import { AlertIcon, KeyIcon, LoadingIcon, OpenEyeIcon, StarIcon, TextBaseIcon, TimelockIcon, VerticalBarsIcon, DaiIcon, NervosIcon, EtherIcon, DolarIcon, FreezeMetadata } from '../../components/Svg'
+import {
+  AlertIcon,
+  KeyIcon,
+  LoadingIcon,
+  OpenEyeIcon,
+  StarIcon,
+  TextBaseIcon,
+  TimelockIcon,
+  VerticalBarsIcon,
+  DaiIcon,
+  NervosIcon,
+  EtherIcon,
+  DolarIcon,
+  FreezeMetadata,
+} from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
 import { mediaOptions } from './Data'
@@ -55,7 +69,7 @@ export interface NFTConfig {
   fractional: number
   rentable: boolean
   transferable: boolean
-  timeframe: boolean 
+  timeframe: boolean
   unlockable: boolean | string
   nsfw: boolean
   supply: number
@@ -84,7 +98,7 @@ const nftDefaultConfig = {
   supply: 1,
   creatorEarnings: '',
   freeze_metadata: true,
-  payment_token: Tokens.pckb
+  payment_token: Tokens.pckb,
 }
 
 export enum CreateSingleNftTypes {
@@ -113,6 +127,7 @@ const CreateSingleNFT = () => {
 
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
+  const [whitelist, setWhitelist] = useState<any>()
 
   //dialogs
   const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
@@ -250,6 +265,15 @@ const CreateSingleNFT = () => {
     setSelectedFile(e.target.files[0])
   }
 
+  const onSelectWhitelist = (e: any) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setWhitelist(undefined)
+      return
+    }
+
+    setWhitelist(e.target.files[0])
+  }
+
   const getTextStatus = {
     [CreateSingleNftTypes.None]: 'Create',
     [CreateSingleNftTypes.UploadingImageToIPFS]: 'Uploading image to IPFS...',
@@ -276,7 +300,13 @@ const CreateSingleNFT = () => {
     console.log(cid)
     setStatus(CreateSingleNftTypes.Minting)
 
-    const mintedNFT = await NFTService.mintNFT(String(cid), nftConfig, nftMetadata.name, selectedRentableTimeFrame, selectedRentableTimeFrame)
+    const mintedNFT = await NFTService.mintNFT(
+      String(cid),
+      nftConfig,
+      nftMetadata.name,
+      selectedRentableTimeFrame,
+      selectedRentableTimeFrame,
+    )
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT.address)
       setMintedContract(mintedNFT.address)
@@ -390,8 +420,7 @@ const CreateSingleNFT = () => {
           </Text>
           <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(', ')}.</Text>
           <Text margin='0px'>Max Size: 15mb</Text>
-          {/* <Input type='file' placeholder='Upload file...' onChange={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(', ')} /> */}
-          <FileUploader handleFile={onSelectedImage}></FileUploader>
+          <FileUploader placeholder='Upload file...' handleFile={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(', ')} />
         </Section>
         <Section>
           <Text weight={600} size='14px'>
@@ -628,9 +657,7 @@ const CreateSingleNFT = () => {
             <Text weight={600} size='14px'>
               Payment tokens *
             </Text>
-            <Text margin='0.5rem 0 0 0'>
-            These tokens can be used to buy and sell your items.
-            </Text>
+            <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
             <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
               <Selector />
               <Selector token={Tokens.eth} disabled />
@@ -639,8 +666,17 @@ const CreateSingleNFT = () => {
             </Grid>
 
             <Input disabled placeholder='Add token' />
-
           </Flex>
+
+          {nftConfig.fractional && (
+            <Flex flexDirection='column' mt='1rem'>
+              <Text weight={600} size='14px'>
+                Whitelist
+              </Text>
+              <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
+              <FileUploader handleFile={onSelectWhitelist} accept=".SCV" placeholder='Upload file...'></FileUploader>
+            </Flex>
+          )}
 
           {/* <Flex flexDirection='column' mt='1rem'>
             <Flex>
