@@ -1,4 +1,4 @@
-import { useState, useEffect, createElement } from 'react'
+import { useState, useEffect, createElement, useContext } from 'react'
 import { DayRange } from 'react-modern-calendar-datepicker'
 import { Flex, Grid, Box } from '../../components/Box'
 import { Container } from '../../components/Layout'
@@ -12,11 +12,8 @@ import {
   TextBaseIcon,
   TimelockIcon,
   VerticalBarsIcon,
-  DaiIcon,
-  NervosIcon,
-  EtherIcon,
-  DolarIcon,
   FreezeMetadata,
+  MetaMaskIcon,
 } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
@@ -34,10 +31,14 @@ import Congratulations from './components/dialogs/Congratulations'
 import FileUploader from './components/input/FileUploader'
 import Selector from '../../components/Selector/Selector'
 import { Tokens } from '../../components/Selector/types'
+import { Context as UserProfile } from '../../contexts/UserProfile'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
-export enum PayerFee { Buyer, Creator }
+export enum PayerFee {
+  Buyer,
+  Creator,
+}
 
 export interface NftProperties {
   trait_type: string
@@ -114,6 +115,9 @@ export enum CreateSingleNftTypes {
 }
 
 const CreateSingleNFT = () => {
+  // Context
+  const { isConnected, networkId, setIsConnected } = useContext(UserProfile)
+
   //media preview
   const [mediaSelected, setMediaSelected] = useState<number>(0)
   const [selectedFile, setSelectedFile] = useState(undefined)
@@ -188,10 +192,6 @@ const CreateSingleNFT = () => {
     },
   ]
 
-  //MetaMask Installed
-  const [isConnected, setIsConnected] = useState<boolean>(false)
-  const [networkId, setNetworkId] = useState<number>()
-
   const REQUIRED_NETWORK_ID = 71401
 
   const NetworkConfig = {
@@ -209,9 +209,7 @@ const CreateSingleNFT = () => {
 
   const getAccounts = async () => {
     const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    if (accounts.length > 0) {
-      setIsConnected(true)
-    }
+    if (accounts.length > 0) setIsConnected(true)
     return accounts
   }
 
@@ -224,22 +222,10 @@ const CreateSingleNFT = () => {
     }
   }
 
-  async function getNetworkId() {
-    if (typeof window.ethereum !== 'undefined') {
-      const networkId = await window.ethereum.chainId
-      setNetworkId(parseInt(networkId))
-      return parseInt(networkId)
-    }
-    return 0
-  }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const MetaMaskInitialization = async () => {
     try {
-      const accounts = await getAccounts()
-      console.log('account connected:', accounts[0])
-
-      const networkId = await getNetworkId()
+      await getAccounts()
       if (networkId !== REQUIRED_NETWORK_ID) {
         await addGodwokenNetwork()
       }
@@ -247,10 +233,6 @@ const CreateSingleNFT = () => {
       console.error(e)
     }
   }
-
-  useEffect(() => {
-    MetaMaskInitialization()
-  }, [MetaMaskInitialization])
 
   useEffect(() => {
     console.log(nftConfig)
@@ -332,394 +314,408 @@ const CreateSingleNFT = () => {
   }, [selectedFile])
 
   return (
-    <Container>
-      {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
+    <>
+      {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
+        <Grid width='100%' height='100%' justifyContent='center' alignItems='center'>
+          <Button onClick={MetaMaskInitialization} variant='cta' startIcon={<MetaMaskIcon />}>
+            Connect wallet
+          </Button>
+        </Grid>
+      ) : (
+        <Container>
+          {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
 
-      {isOwnershipLock && (
-        <OwnershipLock
-          selectedRentableTimeFrame={selectedRentableTimeFrame}
-          setSelectedRentableTimeframe={setSelectedRentableTimeframe}
-          isFractional={isFractional}
-          nftConfig={nftConfig}
-          setIsFractional={setIsFractional}
-          setNftConfig={setNftConfig}
-          setIsOwnershipLock={setIsOwnershipLock}
-        />
-      )}
-
-      {isTimeLock && (
-        <TimeLock
-          nftConfig={nftConfig}
-          isUnlockableContent={isUnlockableContent}
-          selectedTimeFrame={selectedTimeFrame}
-          setNftConfig={setNftConfig}
-          setIsUnlockableContent={setIsUnlockableContent}
-          setIsTimeLock={setIsTimeLock}
-          setSelectedTimeframe={setSelectedTimeframe}
-        />
-      )}
-
-      {isProperties && <Properties nftMetadata={nftMetadata} setIsOwnershipLock={setIsProperties} setNftMetadata={setNftMetadata} />}
-
-      {isLevels && <Levels nftMetadata={nftMetadata} setIsLevels={setIsLevels} setNftMetadata={setNftMetadata} />}
-
-      {isStats && <Stats nftMetadata={nftMetadata} setIsStats={setIsStats} setNftMetadata={setNftMetadata} />}
-
-      <Flex flexDirection='column' paddingTop='104px'>
-        <TitleSection>
-          <Text weight={600} size='21px'>
-            Create libreNFT
-          </Text>
-          <Text>*Required fields</Text>
-        </TitleSection>
-        |
-        <Section justifyContent='left'>
-          <Text weight={600} size='14px'>
-            Display name*
-          </Text>
-          <Input
-            type='text'
-            placeholder='Item name'
-            value={nftMetadata.name}
-            onChange={e => setNftMetadata({ ...nftMetadata, name: e.target.value })}
-          />
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            File type*
-          </Text>
-
-          <Grid gridTemplateColumns='1fr 1fr' gridTemplateRows='auto' gridGap='1rem' width='100%'>
-            {mediaOptions.map((e, index) => (
-              <MediaWrapper
-                style={{ cursor: index !== 3 ? 'pointer' : 'not-allowed' }}
-                key={`${index}-e`}
-                active={index === mediaSelected && index !== 3}
-                onClick={() => {
-                  if (index !== 3) {
-                    setSelectedFile(undefined)
-                    setAllowedFormat(mediaOptions[index].formats)
-                    setMediaSelected(index)
-                    setPreview('')
-                  }
-                }}
-              >
-                <Grid>
-                  {createElement(e.icon, {
-                    fill: index === mediaSelected && index !== 3 ? 'white' : '#696969',
-                    width: 70,
-                    height: 70,
-                  })}
-                  <Text size='14px' weight={600} margin='0.5rem 0 0 0' color={index === mediaSelected ? 'white' : '#696969'}>
-                    {e.text}
-                  </Text>
-                </Grid>
-              </MediaWrapper>
-            ))}
-          </Grid>
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            Upload file*
-          </Text>
-          <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(', ')}.</Text>
-          <Text margin='0px'>Max Size: 15mb</Text>
-          <FileUploader placeholder='Upload file...' handleFile={onSelectedImage} accept={allowedFormats.map(e => `.${e}`).join(', ')} />
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            Preview
-          </Text>
-          <Preview>
-            {!selectedFile && <img alt='head-purple' src={HeadPurple} />}
-            {selectedFile && mediaSelected === 0 && <img alt='head-purple' src={selectedFile && preview} />}
-            {selectedFile && mediaSelected === 1 && (
-              <>
-                <video controls>
-                  <source src={selectedFile && preview} />
-                </video>
-              </>
-            )}
-          </Preview>
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            External link
-          </Text>
-          <Text margin='0.5rem 0 0 0'>
-            IAMM will add a link to this URL on this item's detail page, so that others can click to learn more about it. You are welcome to
-            link to your own site with more details.
-          </Text>
-          <Input
-            type='text'
-            placeholder='https://yoursite.io/item/123'
-            value={nftMetadata.external_url}
-            onChange={e => setNftMetadata({ ...nftMetadata, external_url: e.target.value })}
-          />
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            Description
-          </Text>
-          <Text margin='0.5rem 0 0 0'>
-            The description will be included on the item's detail page underneath its image. Markdown syntax is supported.
-          </Text>
-          <TextArea
-            placeholder='We suggest a nice and detailed description for your item, but 120 character only.'
-            value={nftMetadata.description}
-            onChange={e => setNftMetadata({ ...nftMetadata, description: e.target.value })}
-          />
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            How smart
-          </Text>
-          <Text margin='0.5rem 0 0 0'>Select the predefined smartPlugins</Text>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <KeyIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Ownership Lock</Text>
-              <Text margin='0'>Rentable, Fractional & Transferable</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={isOwnershipLockActive()} onClick={() => setIsOwnershipLock(true)} />
-            </Grid>
-          </Grid>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <TimelockIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Timelock</Text>
-              <Text margin='0'>Unlockable Content & Timeframe</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={isTimelockActive()} onClick={() => setIsTimeLock(true)} />
-            </Grid>
-          </Grid>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <OpenEyeIcon fill='#696969' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text color='#696969' weight={600}>
-                Generative
-              </Text>
-              <Text color='#696969' margin='0'>
-                Lorem ipsum dolor sit amet
-              </Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton disabled active={false} onClick={() => null} />
-            </Grid>
-          </Grid>
-        </Section>
-        <Section>
-          <Text weight={600} size='14px'>
-            Impact
-          </Text>
-          <Text margin='0.5rem 0 0 0'>
-            Make use of this features to bring more value flow to your smartNFT and create an impact on the network
-          </Text>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <TextBaseIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Properties</Text>
-              <Text margin='0'>Text traits that show up as rectangles</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={isPropertiesActive()} onClick={() => setIsProperties(true)} />
-            </Grid>
-          </Grid>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <StarIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Levels</Text>
-              <Text margin='0'>Numerical trait that show up as a progress bar</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={isLevelsActive()} onClick={() => setIsLevels(true)} />
-            </Grid>
-          </Grid>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <VerticalBarsIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Stats</Text>
-              <Text margin='0'>Numerical trait that show as numbers</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <CircleButton active={isStatsActive()} onClick={() => setIsStats(true)} />
-            </Grid>
-          </Grid>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <AlertIcon fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>NSFW Content</Text>
-              <Text margin='0'>Set this item as explicit and sensitive content (as Not Safe For Work)</Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <Toggle
-                checked={nftConfig.nsfw}
-                leftBackgroundColor='#696969'
-                rightBackgroundColor='#8B40F4'
-                leftBorderColor='#696969'
-                rightBorderColor='#8B40F4'
-                knobColor='#1A1A1A'
-                name='toggle-nsfw'
-                onToggle={e => {
-                  setNftConfig({ ...nftConfig, nsfw: (e.target as HTMLInputElement).checked })
-                }}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
-            <Grid alignSelf='center'>
-              <FreezeMetadata fill='#8B40F4' />
-            </Grid>
-            <Grid flexDirection='column' width='100%'>
-              <Text weight={600}>Freeze metadata</Text>
-              <Text margin='0'>
-                Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
-                storage.
-              </Text>
-            </Grid>
-            <Grid width='100%' alignItems='center' justifyContent='right'>
-              <Toggle
-                disabled
-                backgroundColorDisabled='#1A1A1A'
-                checked={nftConfig.freeze_metadata}
-                leftBackgroundColor='#696969'
-                rightBackgroundColor='#8B40F4'
-                leftBorderColor='#696969'
-                rightBorderColor='#8B40F4'
-                knobColor='#1A1A1A'
-                name='toggle-freeze-metadata'
-                onToggle={e => () => null}
-              />
-            </Grid>
-          </Grid>
-        </Section>
-        <Section>
-          {/* <Flex flexDirection='column'>
-            <Text weight={600} size='14px'>
-              Supply*
-            </Text>
-            <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
-            <Input
-              type='number'
-              placeholder='#'
-              value={nftConfig.supply}
-              onChange={e => {
-                if (parseInt(e.target.value) >= 1) {
-                  setNftConfig({ ...nftConfig, supply: parseInt(e.target.value, 10) })
-                }
-              }}
+          {isOwnershipLock && (
+            <OwnershipLock
+              selectedRentableTimeFrame={selectedRentableTimeFrame}
+              setSelectedRentableTimeframe={setSelectedRentableTimeframe}
+              isFractional={isFractional}
+              nftConfig={nftConfig}
+              setIsFractional={setIsFractional}
+              setNftConfig={setNftConfig}
+              setIsOwnershipLock={setIsOwnershipLock}
             />
-          </Flex> */}
-
-          <Flex flexDirection='column' mt='1rem'>
-            <Text weight={600} size='14px'>
-              Creator Earnings
-            </Text>
-            <Text margin='0.5rem 0 0 0'>
-              Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid
-              monthly to a payout address of your choosing.
-            </Text>
-            <Input
-              type='number'
-              placeholder='e.g. 2.5'
-              value={parseFloat(nftConfig.creatorEarnings)}
-              onChange={e => {
-                if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
-                  setNftConfig({ ...nftConfig, creatorEarnings: String(e.target.value) })
-                } else {
-                  setNftConfig({ ...nftConfig, creatorEarnings: '' })
-                }
-              }}
-            />
-          </Flex>
-
-          <Flex flexDirection='column' mt='1rem'>
-            <Text weight={600} size='14px'>
-              Payment tokens *
-            </Text>
-            <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
-            <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
-              <Selector />
-              <Selector token={Tokens.eth} disabled />
-              <Selector token={Tokens.usdc} disabled />
-              <Selector token={Tokens.dai} disabled />
-            </Grid>
-
-            <Input disabled placeholder='Add token' />
-          </Flex>
-
-          {nftConfig.fractional && nftConfig.fractional >= 2 && (
-            <Flex flexDirection='column' mt='1rem'>
-              <Text weight={600} size='14px'>
-                Whitelist
-              </Text>
-              <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
-              <FileUploader handleFile={onSelectWhitelist} accept=".SCV" placeholder='Upload file...'></FileUploader>
-            </Flex>
           )}
 
-          {/* <Flex flexDirection='column' mt='1rem'>
-            <Flex>
+          {isTimeLock && (
+            <TimeLock
+              nftConfig={nftConfig}
+              isUnlockableContent={isUnlockableContent}
+              selectedTimeFrame={selectedTimeFrame}
+              setNftConfig={setNftConfig}
+              setIsUnlockableContent={setIsUnlockableContent}
+              setIsTimeLock={setIsTimeLock}
+              setSelectedTimeframe={setSelectedTimeframe}
+            />
+          )}
+
+          {isProperties && <Properties nftMetadata={nftMetadata} setIsOwnershipLock={setIsProperties} setNftMetadata={setNftMetadata} />}
+
+          {isLevels && <Levels nftMetadata={nftMetadata} setIsLevels={setIsLevels} setNftMetadata={setNftMetadata} />}
+
+          {isStats && <Stats nftMetadata={nftMetadata} setIsStats={setIsStats} setNftMetadata={setNftMetadata} />}
+
+          <Flex flexDirection='column' paddingTop='104px'>
+            <TitleSection>
+              <Text weight={600} size='21px'>
+                Create libreNFT
+              </Text>
+              <Text>*Required fields</Text>
+            </TitleSection>
+            |
+            <Section justifyContent='left'>
               <Text weight={600} size='14px'>
-                Collection
+                Display name*
+              </Text>
+              <Input
+                type='text'
+                placeholder='Item name'
+                value={nftMetadata.name}
+                onChange={e => setNftMetadata({ ...nftMetadata, name: e.target.value })}
+              />
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                File type*
               </Text>
 
-              <Grid width='100%' alignItems='center' justifyContent='right'>
-                <Toggle
-                  checked={isCollectionSelected}
-                  leftBackgroundColor='#696969'
-                  rightBackgroundColor='#8B40F4'
-                  leftBorderColor='#696969'
-                  rightBorderColor='#8B40F4'
-                  knobColor='#1A1A1A'
-                  name='toggle-collection'
-                  onToggle={e => setIsCollectionSelected((e.target as HTMLInputElement).checked)}
-                />
+              <Grid gridTemplateColumns='1fr 1fr' gridTemplateRows='auto' gridGap='1rem' width='100%'>
+                {mediaOptions.map((e, index) => (
+                  <MediaWrapper
+                    style={{ cursor: index !== 3 ? 'pointer' : 'not-allowed' }}
+                    key={`${index}-e`}
+                    active={index === mediaSelected && index !== 3}
+                    onClick={() => {
+                      if (index !== 3) {
+                        setSelectedFile(undefined)
+                        setAllowedFormat(mediaOptions[index].formats)
+                        setMediaSelected(index)
+                        setPreview('')
+                      }
+                    }}
+                  >
+                    <Grid>
+                      {createElement(e.icon, {
+                        fill: index === mediaSelected && index !== 3 ? 'white' : '#696969',
+                        width: 70,
+                        height: 70,
+                      })}
+                      <Text size='14px' weight={600} margin='0.5rem 0 0 0' color={index === mediaSelected ? 'white' : '#696969'}>
+                        {e.text}
+                      </Text>
+                    </Grid>
+                  </MediaWrapper>
+                ))}
               </Grid>
-            </Flex>
-            <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
-            {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
-          </Flex> */}
-        </Section>
-        <Hr />
-        <Flex justifyContent='center' marginBottom='0.5rem'>
-          <Button
-            style={{ width: '100px', height: '40px', justifyContent: 'center', alignItems: 'center' }}
-            onClick={isCreateActive() && status === 0 ? createNFT : () => null}
-            variant={isCreateActive() && status === 0 ? 'cta' : 'secondary'}
-          >
-            {status !== 0 ? <LoadingIcon width='300%' height='300%' /> : getTextStatus[0]}
-          </Button>
-        </Flex>
-        <Box marginBottom='6rem'>
-          <p style={{ color: '#696969' }}>{status !== 0 && getTextStatus[status]}</p>
-        </Box>
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                Upload file*
+              </Text>
+              <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(', ')}.</Text>
+              <Text margin='0px'>Max Size: 15mb</Text>
+              <FileUploader
+                placeholder='Upload file...'
+                handleFile={onSelectedImage}
+                accept={allowedFormats.map(e => `.${e}`).join(', ')}
+              />
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                Preview
+              </Text>
+              <Preview>
+                {!selectedFile && <img alt='head-purple' src={HeadPurple} />}
+                {selectedFile && mediaSelected === 0 && <img alt='head-purple' src={selectedFile && preview} />}
+                {selectedFile && mediaSelected === 1 && (
+                  <>
+                    <video controls>
+                      <source src={selectedFile && preview} />
+                    </video>
+                  </>
+                )}
+              </Preview>
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                External link
+              </Text>
+              <Text margin='0.5rem 0 0 0'>
+                IAMM will add a link to this URL on this item's detail page, so that others can click to learn more about it. You are
+                welcome to link to your own site with more details.
+              </Text>
+              <Input
+                type='text'
+                placeholder='https://yoursite.io/item/123'
+                value={nftMetadata.external_url}
+                onChange={e => setNftMetadata({ ...nftMetadata, external_url: e.target.value })}
+              />
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                Description
+              </Text>
+              <Text margin='0.5rem 0 0 0'>
+                The description will be included on the item's detail page underneath its image. Markdown syntax is supported.
+              </Text>
+              <TextArea
+                placeholder='We suggest a nice and detailed description for your item, but 120 character only.'
+                value={nftMetadata.description}
+                onChange={e => setNftMetadata({ ...nftMetadata, description: e.target.value })}
+              />
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                How smart
+              </Text>
+              <Text margin='0.5rem 0 0 0'>Select the predefined smartPlugins</Text>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <KeyIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Ownership Lock</Text>
+                  <Text margin='0'>Rentable, Fractional & Transferable</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <CircleButton active={isOwnershipLockActive()} onClick={() => setIsOwnershipLock(true)} />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <TimelockIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Timelock</Text>
+                  <Text margin='0'>Unlockable Content & Timeframe</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <CircleButton active={isTimelockActive()} onClick={() => setIsTimeLock(true)} />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <OpenEyeIcon fill='#696969' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text color='#696969' weight={600}>
+                    Generative
+                  </Text>
+                  <Text color='#696969' margin='0'>
+                    Lorem ipsum dolor sit amet
+                  </Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <CircleButton disabled active={false} onClick={() => null} />
+                </Grid>
+              </Grid>
+            </Section>
+            <Section>
+              <Text weight={600} size='14px'>
+                Impact
+              </Text>
+              <Text margin='0.5rem 0 0 0'>
+                Make use of this features to bring more value flow to your smartNFT and create an impact on the network
+              </Text>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <TextBaseIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Properties</Text>
+                  <Text margin='0'>Text traits that show up as rectangles</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <CircleButton active={isPropertiesActive()} onClick={() => setIsProperties(true)} />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <StarIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Levels</Text>
+                  <Text margin='0'>Numerical trait that show up as a progress bar</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <CircleButton active={isLevelsActive()} onClick={() => setIsLevels(true)} />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <VerticalBarsIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Stats</Text>
+                  <Text margin='0'>Numerical trait that show as numbers</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <CircleButton active={isStatsActive()} onClick={() => setIsStats(true)} />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <AlertIcon fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>NSFW Content</Text>
+                  <Text margin='0'>Set this item as explicit and sensitive content (as Not Safe For Work)</Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Toggle
+                    checked={nftConfig.nsfw}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-nsfw'
+                    onToggle={e => {
+                      setNftConfig({ ...nftConfig, nsfw: (e.target as HTMLInputElement).checked })
+                    }}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
+                <Grid alignSelf='center'>
+                  <FreezeMetadata fill='#8B40F4' />
+                </Grid>
+                <Grid flexDirection='column' width='100%'>
+                  <Text weight={600}>Freeze metadata</Text>
+                  <Text margin='0'>
+                    Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                    storage.
+                  </Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right'>
+                  <Toggle
+                    disabled
+                    backgroundColorDisabled='#1A1A1A'
+                    checked={nftConfig.freeze_metadata}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-freeze-metadata'
+                    onToggle={e => () => null}
+                  />
+                </Grid>
+              </Grid>
+            </Section>
+            <Section>
+              {/* <Flex flexDirection='column'>
+      <Text weight={600} size='14px'>
+        Supply*
+      </Text>
+      <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
+      <Input
+        type='number'
+        placeholder='#'
+        value={nftConfig.supply}
+        onChange={e => {
+          if (parseInt(e.target.value) >= 1) {
+            setNftConfig({ ...nftConfig, supply: parseInt(e.target.value, 10) })
+          }
+        }}
+      />
+    </Flex> */}
+
+              <Flex flexDirection='column' mt='1rem'>
+                <Text weight={600} size='14px'>
+                  Creator Earnings
+                </Text>
+                <Text margin='0.5rem 0 0 0'>
+                  Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid
+                  monthly to a payout address of your choosing.
+                </Text>
+                <Input
+                  type='number'
+                  placeholder='e.g. 2.5'
+                  value={parseFloat(nftConfig.creatorEarnings)}
+                  onChange={e => {
+                    if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
+                      setNftConfig({ ...nftConfig, creatorEarnings: String(e.target.value) })
+                    } else {
+                      setNftConfig({ ...nftConfig, creatorEarnings: '' })
+                    }
+                  }}
+                />
+              </Flex>
+
+              <Flex flexDirection='column' mt='1rem'>
+                <Text weight={600} size='14px'>
+                  Payment tokens *
+                </Text>
+                <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
+                  <Selector />
+                  <Selector token={Tokens.eth} disabled />
+                  <Selector token={Tokens.usdc} disabled />
+                  <Selector token={Tokens.dai} disabled />
+                </Grid>
+
+                <Input disabled placeholder='Add token' />
+              </Flex>
+
+              {nftConfig.fractional && nftConfig.fractional >= 2 && (
+                <Flex flexDirection='column' mt='1rem'>
+                  <Text weight={600} size='14px'>
+                    Whitelist
+                  </Text>
+                  <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
+                  <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder='Upload file...'></FileUploader>
+                </Flex>
+              )}
+
+              {/* <Flex flexDirection='column' mt='1rem'>
+      <Flex>
+        <Text weight={600} size='14px'>
+          Collection
+        </Text>
+
+        <Grid width='100%' alignItems='center' justifyContent='right'>
+          <Toggle
+            checked={isCollectionSelected}
+            leftBackgroundColor='#696969'
+            rightBackgroundColor='#8B40F4'
+            leftBorderColor='#696969'
+            rightBorderColor='#8B40F4'
+            knobColor='#1A1A1A'
+            name='toggle-collection'
+            onToggle={e => setIsCollectionSelected((e.target as HTMLInputElement).checked)}
+          />
+        </Grid>
       </Flex>
-    </Container>
+      <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
+      {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
+    </Flex> */}
+            </Section>
+            <Hr />
+            <Flex justifyContent='center' marginBottom='0.5rem'>
+              <Button
+                style={{ width: '100px', height: '40px', justifyContent: 'center', alignItems: 'center' }}
+                onClick={isCreateActive() && status === 0 ? createNFT : () => null}
+                variant={isCreateActive() && status === 0 ? 'cta' : 'secondary'}
+              >
+                {status !== 0 ? <LoadingIcon width='300%' height='300%' /> : getTextStatus[0]}
+              </Button>
+            </Flex>
+            <Box marginBottom='6rem'>
+              <p style={{ color: '#696969' }}>{status !== 0 && getTextStatus[status]}</p>
+            </Box>
+          </Flex>
+        </Container>
+      )}
+    </>
   )
 }
 
