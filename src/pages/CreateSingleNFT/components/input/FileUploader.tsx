@@ -5,11 +5,13 @@ interface fileUploaderProps {
   handleFile: any
   accept?: string
   placeholder?: string
+  disabled?: boolean
 }
 
-const Button = styled.button`
+const Button = styled.button<{disabled?: boolean}>`
     background: transparent;
     border: 1px solid #8b40f4;
+    border-color: ${props => props.disabled ? '#696969' : '#8b40f4'};
     border-radius: 8px;
     box-sizing: border-box;
     color: white;
@@ -19,7 +21,7 @@ const Button = styled.button`
 
     ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #696969;
+    color: ${props => props.disabled ? '#696969' : 'white'};
     opacity: 1; /* Firefox */
     }
 `;
@@ -33,10 +35,12 @@ const FileUploader: React.FC<fileUploaderProps> = props => {
   };
   return (
     <>
-      <Button onClick={handleClick}>
+      <Button disabled={props.disabled} onClick={handleClick}>
         Upload file...
       </Button>
-      <input type="file"
+      <input 
+             disabled={props.disabled}
+             type="file"
              ref={hiddenFileInput}
              onChange={handleChange}
              style={{display:'none'}} 

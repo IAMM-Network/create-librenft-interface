@@ -101,8 +101,8 @@ export const Hr = styled.hr`
   margin-top: 1rem;
   border-color: #8b40f4;
 `
-export const A = styled.a<TypographyProps & SpaceProps>`
-  color: #8b40f4;
+export const A = styled.a<TypographyProps & SpaceProps & {disabled?:boolean}>`
+  color: ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')}};
   font-weight: 600;
   text-decoration: underline;
   ${typography}

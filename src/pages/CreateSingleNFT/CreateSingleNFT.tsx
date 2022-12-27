@@ -73,7 +73,7 @@ export interface NFTConfig {
   rentable: boolean
   transferable: boolean
   timeframe: boolean
-  unlockable: boolean | string
+  unlockable: boolean | any
   nsfw: boolean
   supply: number
   creatorEarnings: string
