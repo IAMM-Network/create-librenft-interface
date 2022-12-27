@@ -16,7 +16,7 @@ import {
   MetaMaskIcon,
 } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
-import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr } from './styles'
+import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, A } from './styles'
 import { mediaOptions } from './Data'
 import CircleButton from './components/CircleButton'
 import OwnershipLock from './components/dialogs/OwnershipLock'
@@ -73,7 +73,7 @@ export interface NFTConfig {
   rentable: boolean
   transferable: boolean
   timeframe: boolean
-  unlockable: boolean | string
+  unlockable: boolean | any
   nsfw: boolean
   supply: number
   creatorEarnings: string
@@ -463,6 +463,15 @@ const CreateSingleNFT = () => {
                 value={nftMetadata.description}
                 onChange={e => setNftMetadata({ ...nftMetadata, description: e.target.value })}
               />
+              <Flex width='100%' justifyContent='center'>
+                <Text size='14px' weight={400} margin='0.5rem 0 0 0'>
+                  (
+                  <A fontWeight={400} fontSize='12px' href='https://www.markdownguide.org/' target='_blank'>
+                    Markdown
+                  </A>{' '}
+                  supported!)
+                </Text>
+              </Flex>
             </Section>
             <Section>
               <Text weight={600} size='14px'>
@@ -470,9 +479,9 @@ const CreateSingleNFT = () => {
               </Text>
               <Text margin='0.5rem 0 0 0'>Select the predefined smartPlugins</Text>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <KeyIcon fill='#8B40F4' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <KeyIcon width={15} height={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Ownership Lock</Text>
@@ -483,9 +492,9 @@ const CreateSingleNFT = () => {
                 </Grid>
               </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <TimelockIcon fill='#8B40F4' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <TimelockIcon width={15} height={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Timelock</Text>
@@ -496,9 +505,9 @@ const CreateSingleNFT = () => {
                 </Grid>
               </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <OpenEyeIcon fill='#696969' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <OpenEyeIcon width={15} height={15} fill='#696969' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text color='#696969' weight={600}>
@@ -521,9 +530,9 @@ const CreateSingleNFT = () => {
                 Make use of this features to bring more value flow to your smartNFT and create an impact on the network
               </Text>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <TextBaseIcon fill='#8B40F4' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <TextBaseIcon width={15} height={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Properties</Text>
@@ -534,9 +543,9 @@ const CreateSingleNFT = () => {
                 </Grid>
               </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <StarIcon fill='#8B40F4' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <StarIcon width={15} height={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Levels</Text>
@@ -547,9 +556,9 @@ const CreateSingleNFT = () => {
                 </Grid>
               </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <VerticalBarsIcon fill='#8B40F4' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <VerticalBarsIcon width={15} height={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>Stats</Text>
@@ -560,16 +569,17 @@ const CreateSingleNFT = () => {
                 </Grid>
               </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 6fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <AlertIcon fill='#8B40F4' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <AlertIcon width={15} height={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text weight={600}>NSFW Content</Text>
                   <Text margin='0'>Set this item as explicit and sensitive content (as Not Safe For Work)</Text>
                 </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right'>
+                <Grid width='100%' justifyContent='center' alignItems='start' marginTop='8px' marginLeft='12px'>
                   <Toggle
+                    height='20px'
                     checked={nftConfig.nsfw}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
@@ -580,33 +590,6 @@ const CreateSingleNFT = () => {
                     onToggle={e => {
                       setNftConfig({ ...nftConfig, nsfw: (e.target as HTMLInputElement).checked })
                     }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 2fr 1fr' alignItems='center'>
-                <Grid alignSelf='center'>
-                  <FreezeMetadata fill='#8B40F4' />
-                </Grid>
-                <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Freeze metadata</Text>
-                  <Text margin='0'>
-                    Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
-                    storage.
-                  </Text>
-                </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right'>
-                  <Toggle
-                    disabled
-                    backgroundColorDisabled='#1A1A1A'
-                    checked={nftConfig.freeze_metadata}
-                    leftBackgroundColor='#696969'
-                    rightBackgroundColor='#8B40F4'
-                    leftBorderColor='#696969'
-                    rightBorderColor='#8B40F4'
-                    knobColor='#1A1A1A'
-                    name='toggle-freeze-metadata'
-                    onToggle={e => () => null}
                   />
                 </Grid>
               </Grid>
@@ -698,6 +681,33 @@ const CreateSingleNFT = () => {
       <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
       {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
     </Flex> */}
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <FreezeMetadata width={15} height={15} fill='#8B40F4' />
+                </Grid>
+                <Grid width='100%'>
+                  <Text weight={600}>Freeze metadata</Text>
+                  <Text margin='0'>
+                    Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                    storage.
+                  </Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
+                  <Toggle
+                    height='20px'
+                    disabled
+                    backgroundColorDisabled='#1A1A1A'
+                    checked={nftConfig.freeze_metadata}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-freeze-metadata'
+                    onToggle={e => () => null}
+                  />
+                </Grid>
+              </Grid>
             </Section>
             <Hr />
             <Flex justifyContent='center' marginBottom='0.5rem'>

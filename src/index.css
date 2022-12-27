@@ -27,6 +27,16 @@ code {
   border-radius: 0px !important;
 }
 
+.custom-calendar-disabled {
+  color: #696969 !important;
+  width: 100% !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  background: #1A1A1A !important;
+  border: 1px solid #696969 !important;
+  border-radius: 0px !important;
+}
+
 .custom-today-day {
   color: #FFFFFF !important;
 }

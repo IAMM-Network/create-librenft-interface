@@ -1,12 +1,13 @@
 import { Box, Flex, Grid } from '../../../../components/Box'
 import { Calendar, DayRange } from 'react-modern-calendar-datepicker'
 import { Container } from '../../../../components/Layout'
-import { Text, Hr, Section, TextArea, A } from '../../styles'
+import { Text, Hr, Section, A } from '../../styles'
 import { DeadlineIcon, LockIcon, TimeframeIcon, TimelineIcon } from '../../../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { NFTConfig } from '../../CreateSingleNFT'
+import FileUploader from '../input/FileUploader'
 
 interface TimeLockProps {
   nftConfig: NFTConfig
@@ -41,16 +42,19 @@ const TimeLock = ({
             <Hr />
 
             <Section>
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='center' justifySelf='center'>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <LockIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Unlockable Content</Text>
-                  <Text margin='0'>Include unlockable content that can only be revealed by the owner of the item.</Text>
+                  <Text margin='0px' weight={600}>
+                    Unlockable Content
+                  </Text>
+                  <Text margin='0px'>Include unlockable content that can only be revealed by the owner of the item.</Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     checked={isUnlockableContent}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
@@ -65,67 +69,66 @@ const TimeLock = ({
                 </Grid>
               </Grid>
 
-              {isUnlockableContent && (
-                <>
-                  <TextArea
-                    rows={4}
-                    placeholder='Enter content (access key, code to redeem, link to a file, etc.)'
-                    value={nftConfig.unlockable && typeof nftConfig.unlockable === 'string' ? nftConfig.unlockable : ''}
-                    onChange={e => setNftConfig({ ...nftConfig, unlockable: e.target.value })}
-                  />
-                  <Text margin='1.5rem 0 1rem 0'>
-                    <A href='https://www.markdownguide.org/cheat-sheet/' target='__blank'>
-                      Markdown
-                    </A>{' '}
-                    is supported!
-                  </Text>
-                </>
-              )}
+              <FileUploader
+                disabled={!isUnlockableContent}
+                placeholder='Upload file...'
+                handleFile={(file: any) => setNftConfig({ ...nftConfig, unlockable: file.target.files[0] })}
+              />
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='center' justifySelf='center'>
+              <Flex width='100%' justifyContent='center' marginY='8px'>
+                <Text margin='0.5rem 0' size='12px' color='#696969'>
+                  (<A disabled={!isUnlockableContent}>Markdown</A> supported!)
+                </Text>
+              </Flex>
+
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <TimeframeIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Timeframe</Text>
-                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                  <Text margin='0px' weight={600}>
+                    Timeframe
+                  </Text>
+                  <Text margin='0px'>Give exclusive time utility to your NFT ex: Game levels access, clubs/communities memberships and more.</Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     checked={nftConfig.timeframe}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
                     leftBorderColor='#696969'
                     rightBorderColor='#8B40F4'
                     knobColor='#1A1A1A'
-                    name='toggle-rentable'
-                    onToggle={e =>  setNftConfig({ ...nftConfig, timeframe: (e.target as HTMLInputElement).checked })}
+                    name='toggle-timeframe'
+                    onToggle={e => setNftConfig({ ...nftConfig, timeframe: (e.target as HTMLInputElement).checked })}
                   />
                 </Grid>
               </Grid>
 
-              {nftConfig.timeframe && (
-                <Flex flexDirection='column' justifyContent='center' marginTop='1rem'>
-                  <Calendar
-                    value={selectedTimeFrame}
-                    onChange={setSelectedTimeframe}
-                    colorPrimary='#8B40F4'
-                    calendarClassName='custom-calendar'
-                    colorPrimaryLight='#8B40F4'
-                  />
-                </Flex>
-              )}
+              <Flex flexDirection='column' justifyContent='center' marginTop='1rem' marginBottom="1rem">
+                <Calendar
+                  value={selectedTimeFrame}
+                  onChange={setSelectedTimeframe}
+                  colorPrimary={nftConfig.timeframe ? '#8B40F4' : '#696969'}
+                  calendarClassName={nftConfig.timeframe ? 'custom-calendar' : 'custom-calendar-disabled'}
+                  colorPrimaryLight={nftConfig.timeframe ? '#8B40F4' : '#696969'}
+                />
+              </Flex>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='center' justifySelf='center'>
-                  <DeadlineIcon width={15} fill='#696969' />
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
+                  <DeadlineIcon width={15} height={20} fill='#696969' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Deadline</Text>
-                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                  <Text margin='0px' weight={600}>
+                    Deadline
+                  </Text>
+                  <Text margin='0px'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     disabled
                     checked={false}
                     backgroundColorDisabled='#1A1A1A'
@@ -140,16 +143,19 @@ const TimeLock = ({
                 </Grid>
               </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='center' justifySelf='center'>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <TimelineIcon width={15} fill='#696969' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Timeline</Text>
-                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                  <Text margin='0px' weight={600}>
+                    Timeline
+                  </Text>
+                  <Text margin='0px'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     disabled
                     checked={false}
                     backgroundColorDisabled='#1A1A1A'

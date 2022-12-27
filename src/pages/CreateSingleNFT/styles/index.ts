@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Grid } from '../../../components/Box'
-import { space } from 'styled-system'
+import { space, SpaceProps, typography, TypographyProps} from 'styled-system'
 
 interface TextProps {
   color?: string
@@ -40,7 +40,7 @@ export const Input = styled.input<{disabled?: boolean}>`
 
   ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #696969;
+    color: ${({ disabled }) => (disabled ? '#696969' : 'white')};
     opacity: 1; /* Firefox */
   }
 `
@@ -101,10 +101,10 @@ export const Hr = styled.hr`
   margin-top: 1rem;
   border-color: #8b40f4;
 `
-
-export const A = styled.a`
-  ${space}
-  color: #8b40f4;
+export const A = styled.a<TypographyProps & SpaceProps & {disabled?:boolean}>`
+  color: ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')}};
   font-weight: 600;
   text-decoration: underline;
+  ${typography}
+  ${space}
 `
