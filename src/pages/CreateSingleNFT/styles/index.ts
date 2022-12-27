@@ -40,7 +40,7 @@ export const Input = styled.input<{disabled?: boolean}>`
 
   ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #696969;
+    color: ${({ disabled }) => (disabled ? '#696969' : 'white')};
     opacity: 1; /* Firefox */
   }
 `

@@ -41,18 +41,21 @@ const OwnershipLock = ({
             <Hr />
 
             <Section>
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='center'>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <AlertIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text margin='0px' weight={600}>
                     Rentable
                   </Text>
-                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                  <Text margin='0'>
+                    This function will let you set up an specific rent time & date, allowing another user to utilize your NFT.
+                  </Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     checked={nftConfig.rentable}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
@@ -67,30 +70,29 @@ const OwnershipLock = ({
                 </Grid>
               </Grid>
 
-              {nftConfig.rentable && (
-                <Box marginBottom='1rem'>
-                  <Calendar
-                    value={selectedRentableTimeFrame}
-                    onChange={setSelectedRentableTimeframe}
-                    colorPrimary='#8B40F4'
-                    calendarClassName='custom-calendar'
-                    colorPrimaryLight='#8B40F4'
-                  />
-                </Box>
-              )}
+              <Box marginBottom='1rem'>
+                <Calendar
+                  value={selectedRentableTimeFrame}
+                  onChange={setSelectedRentableTimeframe}
+                  colorPrimary={nftConfig.rentable ? '#8B40F4' : '#696969'}
+                  calendarClassName={nftConfig.rentable ? 'custom-calendar' : 'custom-calendar-disabled'}
+                  colorPrimaryLight={nftConfig.rentable ? '#8B40F4' : '#696969'}
+                />
+              </Box>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='center'>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <AlertIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text margin='0px' weight={600}>
                     Fractional
                   </Text>
-                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                  <Text margin='0'>Allow your single NFT to be divided and collected in a specific number of fractions.</Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     checked={isFractional}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
@@ -106,32 +108,32 @@ const OwnershipLock = ({
                 </Grid>
               </Grid>
 
-              {isFractional && (
-                <Input
-                  style={{ marginBottom: '1rem' }}
-                  type='number'
-                  value={nftConfig.fractional}
-                  placeholder='how many fractions?'
-                  onChange={e => {
-                    if (parseInt(e.target.value) >= 1) {
-                      setNftConfig({ ...nftConfig, fractional: parseInt(e.target.value, 10) })
-                    }
-                  }}
-                />
-              )}
+              <Input
+                disabled={!isFractional}
+                style={{ marginBottom: '1rem' }}
+                type='number'
+                value={isFractional ? nftConfig.fractional : ''}
+                min={1}
+                max={100}
+                placeholder='how many fractions?'
+                onChange={e => setNftConfig({ ...nftConfig, fractional: parseInt(e.target.value, 10) })}
+              />
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='center'>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <TransferableIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text margin='0px' weight={600}>
                     Transferable
                   </Text>
-                  <Text margin='0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporm.</Text>
+                  <Text margin='0'>
+                    Enable your NFT to be transferable, if not enable NFT wont be transferable after minting to owner/buyer.
+                  </Text>
                 </Grid>
                 <Grid width='100%' alignItems='center' justifyContent='right'>
                   <Toggle
+                    height='20px'
                     checked={nftConfig.transferable}
                     leftBackgroundColor='#696969'
                     rightBackgroundColor='#8B40F4'
@@ -146,9 +148,8 @@ const OwnershipLock = ({
                 </Grid>
               </Grid>
 
-
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 4fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='center'>
+              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                <Grid alignSelf='start' justifySelf='start'>
                   <CircleCheckIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
@@ -157,7 +158,7 @@ const OwnershipLock = ({
                   </Text>
                   <Text margin='0'>Choose who is paying for the NFT minting transaction fee/cost.</Text>
                 </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right'>
+                <Grid width='100%' alignItems='start' justifyContent='end' marginTop='-12px'>
                   <Checkbox payers={WhoPaysTheMint} disabled={[1]} />
                 </Grid>
               </Grid>
