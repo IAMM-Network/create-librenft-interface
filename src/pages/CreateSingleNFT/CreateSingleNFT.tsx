@@ -32,6 +32,7 @@ import FileUploader from './components/input/FileUploader'
 import Selector from '../../components/Selector/Selector'
 import { Tokens } from '../../components/Selector/types'
 import { Context as UserProfile } from '../../contexts/UserProfile'
+import NoWalletConnected from './components/NoWalletConnected'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -316,11 +317,7 @@ const CreateSingleNFT = () => {
   return (
     <>
       {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-        <Grid width='100%' height='100%' justifyContent='center' alignItems='center'>
-          <Button onClick={MetaMaskInitialization} variant='cta' startIcon={<MetaMaskIcon />}>
-            Connect wallet
-          </Button>
-        </Grid>
+       <NoWalletConnected onConnect={MetaMaskInitialization} />
       ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
