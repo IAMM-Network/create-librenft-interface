@@ -316,7 +316,7 @@ const CreateSingleNFT = () => {
   return (
     <>
       {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-       <NoWalletConnected onConnect={MetaMaskInitialization} />
+       <NoWalletConnected />
       ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
