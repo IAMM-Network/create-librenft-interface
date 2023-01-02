@@ -36,7 +36,7 @@ const FileUploader: React.FC<fileUploaderProps> = props => {
   return (
     <>
       <Button disabled={props.disabled} onClick={handleClick}>
-        Upload file...
+        {props.placeholder}
       </Button>
       <input 
              disabled={props.disabled}

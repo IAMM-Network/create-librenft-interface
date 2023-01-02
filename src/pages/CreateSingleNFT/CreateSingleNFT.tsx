@@ -411,7 +411,7 @@ const CreateSingleNFT = () => {
               <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(', ')}.</Text>
               <Text margin='0px'>Max Size: 15mb</Text>
               <FileUploader
-                placeholder='Upload file...'
+                placeholder={selectedFile ? "Uploaded file" : 'Upload file...'}
                 handleFile={onSelectedImage}
                 accept={allowedFormats.map(e => `.${e}`).join(', ')}
               />
@@ -651,7 +651,7 @@ const CreateSingleNFT = () => {
                     Whitelist
                   </Text>
                   <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
-                  <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder='Upload file...'></FileUploader>
+                  <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder={whitelist ? "Uploaded file" : "Upload file..."}></FileUploader>
                 </Flex>
               )}
 
