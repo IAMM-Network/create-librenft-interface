@@ -13,7 +13,6 @@ import {
   TimelockIcon,
   VerticalBarsIcon,
   FreezeMetadata,
-  MetaMaskIcon,
 } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, A } from './styles'
@@ -317,7 +316,7 @@ const CreateSingleNFT = () => {
   return (
     <>
       {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-       <NoWalletConnected onConnect={MetaMaskInitialization} />
+       <NoWalletConnected />
       ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
@@ -331,6 +330,7 @@ const CreateSingleNFT = () => {
               setIsFractional={setIsFractional}
               setNftConfig={setNftConfig}
               setIsOwnershipLock={setIsOwnershipLock}
+              onClose={() => setIsOwnershipLock(false)}
             />
           )}
 
@@ -343,14 +343,15 @@ const CreateSingleNFT = () => {
               setIsUnlockableContent={setIsUnlockableContent}
               setIsTimeLock={setIsTimeLock}
               setSelectedTimeframe={setSelectedTimeframe}
+              onClose={() => setIsTimeLock(false)}
             />
           )}
 
-          {isProperties && <Properties nftMetadata={nftMetadata} setIsOwnershipLock={setIsProperties} setNftMetadata={setNftMetadata} />}
+          {isProperties && <Properties onClose={() => setIsProperties(false)} nftMetadata={nftMetadata} setIsOwnershipLock={setIsProperties} setNftMetadata={setNftMetadata} />}
 
-          {isLevels && <Levels nftMetadata={nftMetadata} setIsLevels={setIsLevels} setNftMetadata={setNftMetadata} />}
+          {isLevels && <Levels onClose={() => setIsLevels(false)} nftMetadata={nftMetadata} setIsLevels={setIsLevels} setNftMetadata={setNftMetadata} />}
 
-          {isStats && <Stats nftMetadata={nftMetadata} setIsStats={setIsStats} setNftMetadata={setNftMetadata} />}
+          {isStats && <Stats onClose={() => setIsStats(false)} nftMetadata={nftMetadata} setIsStats={setIsStats} setNftMetadata={setNftMetadata} />}
 
           <Flex flexDirection='column' paddingTop='104px'>
             <TitleSection>
@@ -412,7 +413,7 @@ const CreateSingleNFT = () => {
               <Text margin='0.5rem 0 0 0'>File types supported: {allowedFormats.join(', ')}.</Text>
               <Text margin='0px'>Max Size: 15mb</Text>
               <FileUploader
-                placeholder='Upload file...'
+                placeholder={selectedFile ? "Uploaded file" : 'Upload file...'}
                 handleFile={onSelectedImage}
                 accept={allowedFormats.map(e => `.${e}`).join(', ')}
               />
@@ -609,51 +610,60 @@ const CreateSingleNFT = () => {
       />
     </Flex> */}
 
-              <Flex flexDirection='column' mt='1rem'>
-                <Text weight={600} size='14px'>
-                  Creator Earnings
-                </Text>
-                <Text margin='0.5rem 0 0 0'>
-                  Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid
-                  monthly to a payout address of your choosing.
-                </Text>
-                <Input
-                  type='number'
-                  placeholder='e.g. 2.5'
-                  value={parseFloat(nftConfig.creatorEarnings)}
-                  onChange={e => {
-                    if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
-                      setNftConfig({ ...nftConfig, creatorEarnings: String(e.target.value) })
-                    } else {
-                      setNftConfig({ ...nftConfig, creatorEarnings: '' })
-                    }
-                  }}
-                />
-              </Flex>
+              <Section>
+                <Flex flexDirection='column'>
+                  <Text weight={600} size='14px'>
+                    Creator Earnings
+                  </Text>
+                  <Text margin='0.5rem 0 0 0'>
+                    Choose a fee when a user re-sells an item your originally created. This is deducted from the final sale price, and paid
+                    monthly to a payout address of your choosing.
+                  </Text>
+                  <Input
+                    type='number'
+                    min="0"
+                    max="100"
+                    placeholder='e.g. 2.5'
+                    value={parseFloat(nftConfig.creatorEarnings)}
+                    onChange={e => {
+                      e.preventDefault()
+                      if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
+                        setNftConfig({ ...nftConfig, creatorEarnings: parseFloat(e.target.value).toFixed(1) })
+                      } else {
+                        setNftConfig({ ...nftConfig, creatorEarnings: '' })
+                      }
+                    }}
+                  />
+                </Flex>
+              </Section>
 
-              <Flex flexDirection='column' mt='1rem'>
-                <Text weight={600} size='14px'>
-                  Payment tokens *
-                </Text>
-                <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
-                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
-                  <Selector />
-                  <Selector token={Tokens.eth} disabled />
-                  <Selector token={Tokens.usdc} disabled />
-                  <Selector token={Tokens.dai} disabled />
-                </Grid>
+             <Section>
+              <Flex flexDirection='column'>
+                  <Text weight={600} size='14px'>
+                    Payment tokens *
+                  </Text>
+                  <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
+                  <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
+                    <Selector />
+                    <Selector token={Tokens.eth} disabled />
+                    <Selector token={Tokens.usdc} disabled />
+                    <Selector token={Tokens.dai} disabled />
+                  </Grid>
 
-                <Input disabled placeholder='Add token' />
-              </Flex>
+                  <Input disabled placeholder='Add token' />
+                </Flex>
+             </Section>
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
-                <Flex flexDirection='column' mt='1rem'>
-                  <Text weight={600} size='14px'>
-                    Whitelist
-                  </Text>
-                  <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
-                  <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder='Upload file...'></FileUploader>
-                </Flex>
+                <Section>
+                  <Flex flexDirection='column' mt='1rem'>
+                    <Text weight={600} size='14px'>
+                      Whitelist
+                    </Text>
+                    <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
+                    <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder={whitelist ? "Uploaded file" : "Upload file..."}></FileUploader>
+                 </Flex>
+                </Section>
               )}
 
               {/* <Flex flexDirection='column' mt='1rem'>
@@ -678,33 +688,35 @@ const CreateSingleNFT = () => {
       <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
       {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
     </Flex> */}
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
-                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                  <FreezeMetadata width={15} height={15} fill='#8B40F4' />
+            </Section>
+            <Section>
+              <Grid width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
+                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                    <FreezeMetadata width={15} height={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid width='100%'>
+                    <Text weight={600}>Freeze metadata</Text>
+                    <Text margin='0'>
+                      Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                      storage.
+                    </Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
+                    <Toggle
+                      height='20px'
+                      disabled
+                      backgroundColorDisabled='#1A1A1A'
+                      checked={nftConfig.freeze_metadata}
+                      leftBackgroundColor='#696969'
+                      rightBackgroundColor='#8B40F4'
+                      leftBorderColor='#696969'
+                      rightBorderColor='#8B40F4'
+                      knobColor='#1A1A1A'
+                      name='toggle-freeze-metadata'
+                      onToggle={e => () => null}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid width='100%'>
-                  <Text weight={600}>Freeze metadata</Text>
-                  <Text margin='0'>
-                    Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
-                    storage.
-                  </Text>
-                </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
-                  <Toggle
-                    height='20px'
-                    disabled
-                    backgroundColorDisabled='#1A1A1A'
-                    checked={nftConfig.freeze_metadata}
-                    leftBackgroundColor='#696969'
-                    rightBackgroundColor='#8B40F4'
-                    leftBorderColor='#696969'
-                    rightBorderColor='#8B40F4'
-                    knobColor='#1A1A1A'
-                    name='toggle-freeze-metadata'
-                    onToggle={e => () => null}
-                  />
-                </Grid>
-              </Grid>
             </Section>
             <Hr />
             <Flex justifyContent='center' marginBottom='0.5rem'>

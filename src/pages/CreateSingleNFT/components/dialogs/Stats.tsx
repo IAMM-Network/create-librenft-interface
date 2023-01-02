@@ -1,4 +1,4 @@
-import { Flex } from '../../../../components/Box'
+import { Box, Flex } from '../../../../components/Box'
 import { Container } from '../../../../components/Layout'
 import { Section, Hr, Text } from '../../styles'
 import { Button } from '../../../../components/Button'
@@ -6,11 +6,14 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { NftMetadata, NftStats } from '../../CreateSingleNFT'
 import StatsInput from './Stats/StatsInput'
 import StatsList from './Stats/StatsList'
+import { CloseIcon } from '../../../../components/Svg'
+import ImpactContainer from '../ImpactContainer'
 
 interface StatsProps {
   nftMetadata: NftMetadata
   setNftMetadata: Dispatch<SetStateAction<NftMetadata>>
   setIsStats: Dispatch<SetStateAction<boolean>>
+  onClose: () => void
 }
 
 const defaultStats: NftStats = {
@@ -20,7 +23,7 @@ const defaultStats: NftStats = {
   display_type: "number",
 }
 
-const Stats = ({ setIsStats, nftMetadata, setNftMetadata }: StatsProps) => {
+const Stats = ({ setIsStats, nftMetadata, setNftMetadata, onClose }: StatsProps) => {
   const [currentlyStats, setCurrentlyStats] = useState<NftStats>(defaultStats)
 
   const addStats = () => {
@@ -51,48 +54,53 @@ const Stats = ({ setIsStats, nftMetadata, setNftMetadata }: StatsProps) => {
 
   return (
     <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={1000} justifyContent='center'>
-      <Container maxWidth='90%'>
-        <Flex flexDirection='column' paddingTop='32px' alignItems="center">
-          <Text weight={600} size='21px'>
-            Add Stats
-          </Text>
-
-          <Hr />
-
-          <Section>
-
-            {nftMetadata.stats.length > 0 &&
-              nftMetadata.stats.map(({ trait_type, value, max_value }, index) => (
-                <StatsList
-                  key={`${index}-${trait_type}-${value}-${max_value}`}
-                  index={index}
-                  trait_type={trait_type}
-                  value={value}
-                  max_value={Number(max_value)}
-                  editStats={editStats}
-                  removeStats={removeStats}
-                  currentlyStats={currentlyStats}
-                  setCurrentlyStats={setCurrentlyStats}
-                />
-              ))}
-            <StatsInput setCurrentlyStats={setCurrentlyStats} currentlyStats={currentlyStats} />
-          </Section>
-
-          <Flex margin='2rem 0' justifyContent='center'>
-            <Button variant={`${allowAddMore() ? 'primary' : 'secondary'}`} onClick={() => addStats()}>
-              ADD MORE
-            </Button>
+      <Box overflowY='scroll' paddingBottom='3rem'>
+        <ImpactContainer>
+          <Flex justifyContent="end" paddingTop="1rem">
+            <CloseIcon width={15} onClick={onClose} cursor="pointer" />
           </Flex>
+          <Flex flexDirection='column' paddingTop='32px' alignItems="center" marginTop="-1rem">
+            <Text weight={600} size='21px'>
+              Add Stats
+            </Text>
 
-          <Hr />
+            <Hr />
 
-          <Flex justifyContent='center' marginBottom='1rem'>
-            <Button variant='cta' onClick={() => setIsStats(false)}>
-              Save
-            </Button>
+            <Section>
+
+              {nftMetadata.stats.length > 0 &&
+                nftMetadata.stats.map(({ trait_type, value, max_value }, index) => (
+                  <StatsList
+                    key={`${index}-${trait_type}-${value}-${max_value}`}
+                    index={index}
+                    trait_type={trait_type}
+                    value={value}
+                    max_value={Number(max_value)}
+                    editStats={editStats}
+                    removeStats={removeStats}
+                    currentlyStats={currentlyStats}
+                    setCurrentlyStats={setCurrentlyStats}
+                  />
+                ))}
+              <StatsInput setCurrentlyStats={setCurrentlyStats} currentlyStats={currentlyStats} />
+            </Section>
+
+            <Flex margin='2rem 0' justifyContent='center'>
+              <Button variant={`${allowAddMore() ? 'primary' : 'secondary'}`} onClick={() => addStats()}>
+                ADD MORE
+              </Button>
+            </Flex>
+
+            <Hr />
+
+            <Flex justifyContent='center' marginBottom='1rem'>
+              <Button variant='cta' onClick={() => setIsStats(false)}>
+                Save
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
-      </Container>
+        </ImpactContainer>
+      </Box>
     </Flex>
   )
 }

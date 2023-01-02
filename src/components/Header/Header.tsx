@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { cloneElement, createElement, useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Container } from '../Layout'
 import { HeaderWrapper } from './styles'
-import { DiscordMediaIcon, IAMMTextIcon, TwitterMediaIcon } from '../Svg'
+import { DiscordMediaIcon, IAMMTextIcon, MetaMaskIcon, TwitterMediaIcon } from '../Svg'
 import { Box, Flex } from '../Box'
 import Hamburger from 'hamburger-react'
+import { Context } from '../../contexts/UserProfile'
+import { Button } from '../Button'
 
 const socialMedia = () => (
   <Flex>
@@ -30,21 +32,74 @@ const hamburguerMenu = (color: string, toggled: boolean, toggle: React.Dispatch<
 const Header: React.FC = () => {
   const { pathname } = useLocation()
   const [isOpen, setIsOpen] = useState(false)
+  const{ isConnected, setIsConnected, networkId } = useContext(Context)
 
   const getRender = (): boolean => {
-    if (pathname === '/collection/iamm') return false
+    if (pathname === '/testnet/collection/iamm') return false
 
     return pathname !== '/'
   }
 
-  if (pathname !== '/profile-dashboard')
+  const REQUIRED_NETWORK_ID = 71401
+
+  const NetworkConfig = {
+    chainId: `0x${REQUIRED_NETWORK_ID.toString(16)}`,
+    chainName: 'Godwoken Testnet',
+    nativeCurrency: {
+      name: 'pCKB',
+      symbol: 'pCKB',
+      decimals: 18,
+    },
+    rpcUrls: ['https://v1.testnet.godwoken.io/rpc'],
+    blockExplorerUrls: ['https://v1.testnet.gwscan.com', 'https://gw-testnet-explorer.nervosdao.community'],
+    iconUrls: ['https://raw.githubusercontent.com/nervosnetwork/ckb-explorer-frontend/master/public/favicon.ico'],
+  }
+
+  const getAccounts = async () => {
+    const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    if (accounts.length > 0) setIsConnected(true)
+    return accounts
+  }
+
+  async function addGodwokenNetwork() {
+    if (typeof window.ethereum !== 'undefined') {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [NetworkConfig],
+      })
+    }
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const MetaMaskInitialization = async () => {
+    try {
+      await getAccounts()
+      if (networkId !== REQUIRED_NETWORK_ID) {
+        await addGodwokenNetwork()
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  if (pathname !== '/testnet/profile-dashboard')
     return (
-      <HeaderWrapper main={getRender()}>
+      <HeaderWrapper main={getRender() && isConnected}>
         <Container maxWidth='90%'>
           <Flex alignItems='center' justifyContent='space-between' width='100%'>
-            <IAMMTextIcon width='100px' fill='white' />
+            <IAMMTextIcon onClick={() => window.location.reload()} width='100px' fill='white' />
             <Flex>
-              {getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : socialMedia()}
+              {
+                getRender() 
+                ? 
+                  isConnected ? hamburguerMenu('white', isOpen, setIsOpen) : createElement(Button, {
+                    children: 'Connect Wallet',
+                    variant:'cta',
+                    startIcon:<MetaMaskIcon />,
+                    onClick: MetaMaskInitialization,
+                  })
+                : 
+                socialMedia()}
             </Flex>
           </Flex>
         </Container>

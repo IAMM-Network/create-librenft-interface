@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Flex, Box } from '../../../../components/Box'
-import { CloseIcon, IAMMIcon, OpenEyeIcon, PutOnSaleIcon, TelegramMediaIcon, TransferableIcon, TransferNowIcon, TwitterMediaIcon } from '../../../../components/Svg'
+import { CloseIcon, IAMMIcon, OpenEyeIcon, PutOnSaleIcon, TelegramMediaIcon, TransferNowIcon, TwitterMediaIcon } from '../../../../components/Svg'
 import { CongratulationsTitle, CongratulationsWrapper, Hr } from '../styles'
 
 const Congratulations = ({ name, contract, imageCid }: { name:string, contract: string; imageCid: string }) => {

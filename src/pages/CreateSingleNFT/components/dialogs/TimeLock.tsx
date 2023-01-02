@@ -2,7 +2,7 @@ import { Box, Flex, Grid } from '../../../../components/Box'
 import { Calendar, DayRange } from 'react-modern-calendar-datepicker'
 import { Container } from '../../../../components/Layout'
 import { Text, Hr, Section, A } from '../../styles'
-import { DeadlineIcon, LockIcon, TimeframeIcon, TimelineIcon } from '../../../../components/Svg'
+import { CloseIcon, DeadlineIcon, LockIcon, TimeframeIcon, TimelineIcon } from '../../../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
 import { Dispatch, SetStateAction } from 'react'
@@ -17,6 +17,7 @@ interface TimeLockProps {
   setIsUnlockableContent: Dispatch<SetStateAction<boolean>>
   setIsTimeLock: Dispatch<SetStateAction<boolean>>
   setSelectedTimeframe: Dispatch<SetStateAction<DayRange>>
+  onClose: () => void
 }
 
 const TimeLock = ({
@@ -27,6 +28,7 @@ const TimeLock = ({
   setIsUnlockableContent,
   setIsTimeLock,
   setSelectedTimeframe,
+  onClose
 }: TimeLockProps) => {
   // TODO date string upper Calendar
 
@@ -34,7 +36,10 @@ const TimeLock = ({
     <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000} justifyContent='center'>
       <Box overflowY='scroll' paddingBottom='3rem'>
         <Container maxWidth='90%'>
-          <Flex flexDirection='column' paddingTop='32px'>
+          <Flex justifyContent="end" paddingTop="1rem">
+            <CloseIcon width={15} onClick={onClose} cursor="pointer" />
+          </Flex>
+          <Flex flexDirection='column' paddingTop='32px' marginTop="-1rem">
             <Text weight={600} size='21px'>
               Add Timelock
             </Text>
