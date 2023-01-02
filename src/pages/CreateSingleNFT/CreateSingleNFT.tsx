@@ -13,7 +13,6 @@ import {
   TimelockIcon,
   VerticalBarsIcon,
   FreezeMetadata,
-  MetaMaskIcon,
 } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
 import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, A } from './styles'

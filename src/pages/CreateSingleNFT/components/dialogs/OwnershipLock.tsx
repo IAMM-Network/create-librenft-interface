@@ -1,6 +1,6 @@
 import { Box, Flex, Grid } from '../../../../components/Box'
 import { Container } from '../../../../components/Layout'
-import { AlertIcon, CircleCheckIcon, TransferableIcon } from '../../../../components/Svg'
+import { AlertIcon, CircleCheckIcon, FractionalIcon, RentableIcon, TransferableIcon } from '../../../../components/Svg'
 import { Section, Hr, Text, Input } from '../../styles'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
@@ -43,7 +43,7 @@ const OwnershipLock = ({
             <Section>
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
                 <Grid alignSelf='start' justifySelf='start'>
-                  <AlertIcon width={15} fill='#8B40F4' />
+                  <RentableIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text margin='0px' weight={600}>
@@ -82,7 +82,7 @@ const OwnershipLock = ({
 
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
                 <Grid alignSelf='start' justifySelf='start'>
-                  <AlertIcon width={15} fill='#8B40F4' />
+                  <FractionalIcon width={15} fill='#8B40F4' />
                 </Grid>
                 <Grid flexDirection='column' width='100%'>
                   <Text margin='0px' weight={600}>
