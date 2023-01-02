@@ -11,18 +11,18 @@ export const RoutesData = [
   },
   {
     view: <CreateSingleNFT />,
-    path: 'create-single-nft',
+    path: 'testnet/create-single-nft',
   },
   {
     view: <CreateCollection />,
-    path: 'create-collection',
+    path: 'testnet/create-collection',
   },
   {
     view: <Profile />,
-    path: 'profile-dashboard',
+    path: 'testnet/profile-dashboard',
   },
   {
     view: <Collection />,
-    path: 'collection/:collection_name'
+    path: 'testnet/collection/:collection_name'
   }
 ]
