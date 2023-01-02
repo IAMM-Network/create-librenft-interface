@@ -620,11 +620,14 @@ const CreateSingleNFT = () => {
                 </Text>
                 <Input
                   type='number'
+                  min="0"
+                  max="100"
                   placeholder='e.g. 2.5'
                   value={parseFloat(nftConfig.creatorEarnings)}
                   onChange={e => {
+                    e.preventDefault()
                     if (parseFloat(e.target.value) >= 0 && parseFloat(e.target.value) <= 100.0) {
-                      setNftConfig({ ...nftConfig, creatorEarnings: String(e.target.value) })
+                      setNftConfig({ ...nftConfig, creatorEarnings: parseFloat(e.target.value).toFixed(1) })
                     } else {
                       setNftConfig({ ...nftConfig, creatorEarnings: '' })
                     }
