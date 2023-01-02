@@ -4,11 +4,14 @@ import { Section, Hr, Text, Input } from '../../styles'
 import { Button } from '../../../../components/Button'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { NftMetadata, NftProperties } from '../../CreateSingleNFT'
+import { CloseIcon } from '../../../../components/Svg'
+import ImpactContainer from '../ImpactContainer'
 
 interface OwnershipLockProps {
   nftMetadata: NftMetadata
   setIsOwnershipLock: Dispatch<SetStateAction<boolean>>
   setNftMetadata: Dispatch<SetStateAction<NftMetadata>>
+  onClose: () => void
 }
 
 const defaultProperty: NftProperties = {
@@ -16,7 +19,7 @@ const defaultProperty: NftProperties = {
   value: '',
 }
 
-const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: OwnershipLockProps) => {
+const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata, onClose }: OwnershipLockProps) => {
   const [currentProperty, setCurrentProperty] = useState<NftProperties>(defaultProperty)
 
   const addProperty = () => {
@@ -46,95 +49,100 @@ const Properties = ({ setIsOwnershipLock, nftMetadata, setNftMetadata }: Ownersh
 
   return (
     <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000} justifyContent='center'>
-      <Container maxWidth='90%'>
-        <Flex flexDirection='column' paddingTop='32px' alignItems="center">
-          <Text weight={600} size='21px'>
-            Add Properties
-          </Text>
+      <Box overflowY='scroll' paddingBottom='3rem'>
+        <ImpactContainer>
+          <Flex justifyContent="end" paddingTop="1rem">
+            <CloseIcon width={15} onClick={onClose} cursor="pointer" />
+          </Flex>
+          <Flex flexDirection='column' paddingTop='32px' alignItems="center" marginTop="-1rem">
+            <Text weight={600} size='21px'>
+              Add Properties
+            </Text>
 
-          <Hr />
+            <Hr />
 
-          <Section>
-            {nftMetadata.properties.length > 0 &&
-              nftMetadata.properties.map(({ trait_type, value }, index) => (
-                <Flex key={`${index}-${trait_type}-${value}`} position='relative' flexDirection='row' marginTop='1rem'>
-                  <button
-                    onClick={() => removeProperty(index)}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      right: 0,
-                      background: 'none',
-                      border: 'none',
-                      color: 'white',
-                      fontSize: '1rem',
-                      fontWeight: 'lighter',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    x
-                  </button>
-                  <Box marginRight='.3rem'>
-                    <Text>Type</Text>
-                    <Flex flexDirection='row'>
-                      <Input
-                        value={trait_type}
-                        type='text'
-                        placeholder='Character'
-                        onChange={e => editProperty(index, 'trait_type', e.target.value)}
-                      />
-                    </Flex>
-                  </Box>
-                  <Box>
-                    <Text>Name</Text>
-                    <Flex flexDirection='column'>
-                      <Input value={value} type='text' placeholder='Male' onChange={e => editProperty(index, 'value', e.target.value)} />
-                    </Flex>
-                  </Box>
-                </Flex>
-              ))}
+            <Section>
+              {nftMetadata.properties.length > 0 &&
+                nftMetadata.properties.map(({ trait_type, value }, index) => (
+                  <Flex key={`${index}-${trait_type}-${value}`} position='relative' flexDirection='row' marginTop='1rem'>
+                    <button
+                      onClick={() => removeProperty(index)}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        background: 'none',
+                        border: 'none',
+                        color: 'white',
+                        fontSize: '1rem',
+                        fontWeight: 'lighter',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      x
+                    </button>
+                    <Box marginRight='.3rem'>
+                      <Text>Type</Text>
+                      <Flex flexDirection='row'>
+                        <Input
+                          value={trait_type}
+                          type='text'
+                          placeholder='Character'
+                          onChange={e => editProperty(index, 'trait_type', e.target.value)}
+                        />
+                      </Flex>
+                    </Box>
+                    <Box>
+                      <Text>Name</Text>
+                      <Flex flexDirection='column'>
+                        <Input value={value} type='text' placeholder='Male' onChange={e => editProperty(index, 'value', e.target.value)} />
+                      </Flex>
+                    </Box>
+                  </Flex>
+                ))}
 
-            <Flex position='relative' flexDirection='row' marginTop='1rem'>
-              <Box marginRight='.3rem'>
-                <Text>Type</Text>
-                <Flex flexDirection='row'>
-                  <Input
-                    value={currentProperty.trait_type}
-                    type='text'
-                    placeholder='Character'
-                    onChange={e => setCurrentProperty({ ...currentProperty, trait_type: e.target.value })}
-                  />
-                </Flex>
-              </Box>
-              <Box>
-                <Text>Name</Text>
-                <Flex flexDirection='column'>
-                  <Input
-                    value={currentProperty.value}
-                    type='text'
-                    placeholder='Male'
-                    onChange={e => setCurrentProperty({ ...currentProperty, value: e.target.value })}
-                  />
-                </Flex>
-              </Box>
+              <Flex position='relative' flexDirection='row' marginTop='1rem'>
+                <Box marginRight='.3rem'>
+                  <Text>Type</Text>
+                  <Flex flexDirection='row'>
+                    <Input
+                      value={currentProperty.trait_type}
+                      type='text'
+                      placeholder='Character'
+                      onChange={e => setCurrentProperty({ ...currentProperty, trait_type: e.target.value })}
+                    />
+                  </Flex>
+                </Box>
+                <Box>
+                  <Text>Name</Text>
+                  <Flex flexDirection='column'>
+                    <Input
+                      value={currentProperty.value}
+                      type='text'
+                      placeholder='Male'
+                      onChange={e => setCurrentProperty({ ...currentProperty, value: e.target.value })}
+                    />
+                  </Flex>
+                </Box>
+              </Flex>
+            </Section>
+
+            <Flex margin='2rem 0' justifyContent='center'>
+              <Button variant={`${allowAddMore() ? 'primary' : 'secondary'}`} onClick={() => addProperty()}>
+                ADD MORE
+              </Button>
             </Flex>
-          </Section>
 
-          <Flex margin='2rem 0' justifyContent='center'>
-            <Button variant={`${allowAddMore() ? 'primary' : 'secondary'}`} onClick={() => addProperty()}>
-              ADD MORE
-            </Button>
+            <Hr />
+
+            <Flex justifyContent='center' marginBottom='1rem'>
+              <Button variant='cta' onClick={() => setIsOwnershipLock(false)}>
+                Save
+              </Button>
+            </Flex>
           </Flex>
-
-          <Hr />
-
-          <Flex justifyContent='center' marginBottom='1rem'>
-            <Button variant='cta' onClick={() => setIsOwnershipLock(false)}>
-              Save
-            </Button>
-          </Flex>
-        </Flex>
-      </Container>
+        </ImpactContainer>
+      </Box>
     </Flex>
   )
 }

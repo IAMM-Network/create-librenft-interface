@@ -1,6 +1,6 @@
 import { Box, Flex, Grid } from '../../../../components/Box'
 import { Container } from '../../../../components/Layout'
-import { AlertIcon, CircleCheckIcon, FractionalIcon, RentableIcon, TransferableIcon } from '../../../../components/Svg'
+import { CircleCheckIcon, CloseIcon, FractionalIcon, RentableIcon, TransferableIcon } from '../../../../components/Svg'
 import { Section, Hr, Text, Input } from '../../styles'
 import { Toggle } from 'react-toggle-component'
 import { Button } from '../../../../components/Button'
@@ -18,6 +18,7 @@ interface OwnershipLockProps {
   setIsOwnershipLock: Dispatch<SetStateAction<boolean>>
   setIsFractional: Dispatch<SetStateAction<boolean>>
   setNftConfig: Dispatch<SetStateAction<NFTConfig>>
+  onClose: () => void
 }
 
 const OwnershipLock = ({
@@ -28,12 +29,16 @@ const OwnershipLock = ({
   setIsOwnershipLock,
   selectedRentableTimeFrame,
   setSelectedRentableTimeframe,
+  onClose
 }: OwnershipLockProps) => {
   return (
     <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000} justifyContent='center'>
       <Box overflowY='scroll' paddingBottom='3rem'>
         <Container maxWidth='90%'>
-          <Flex flexDirection='column' paddingTop='32px'>
+          <Flex justifyContent="end" paddingTop="1rem">
+            <CloseIcon width={15} onClick={onClose} cursor="pointer" />
+          </Flex>
+          <Flex flexDirection='column' paddingTop='32px' marginTop="-1rem">
             <Text weight={600} size='21px'>
               Add OwnershipLock
             </Text>

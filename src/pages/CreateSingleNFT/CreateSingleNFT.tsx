@@ -330,6 +330,7 @@ const CreateSingleNFT = () => {
               setIsFractional={setIsFractional}
               setNftConfig={setNftConfig}
               setIsOwnershipLock={setIsOwnershipLock}
+              onClose={() => setIsOwnershipLock(false)}
             />
           )}
 
@@ -342,14 +343,15 @@ const CreateSingleNFT = () => {
               setIsUnlockableContent={setIsUnlockableContent}
               setIsTimeLock={setIsTimeLock}
               setSelectedTimeframe={setSelectedTimeframe}
+              onClose={() => setIsTimeLock(false)}
             />
           )}
 
-          {isProperties && <Properties nftMetadata={nftMetadata} setIsOwnershipLock={setIsProperties} setNftMetadata={setNftMetadata} />}
+          {isProperties && <Properties onClose={() => setIsProperties(false)} nftMetadata={nftMetadata} setIsOwnershipLock={setIsProperties} setNftMetadata={setNftMetadata} />}
 
-          {isLevels && <Levels nftMetadata={nftMetadata} setIsLevels={setIsLevels} setNftMetadata={setNftMetadata} />}
+          {isLevels && <Levels onClose={() => setIsLevels(false)} nftMetadata={nftMetadata} setIsLevels={setIsLevels} setNftMetadata={setNftMetadata} />}
 
-          {isStats && <Stats nftMetadata={nftMetadata} setIsStats={setIsStats} setNftMetadata={setNftMetadata} />}
+          {isStats && <Stats onClose={() => setIsStats(false)} nftMetadata={nftMetadata} setIsStats={setIsStats} setNftMetadata={setNftMetadata} />}
 
           <Flex flexDirection='column' paddingTop='104px'>
             <TitleSection>
