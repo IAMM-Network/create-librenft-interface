@@ -23,6 +23,7 @@
     "hamburger-react": "^2.5.0",
     "https-browserify": "^1.0.0",
     "lodash": "^4.17.21",
+    "merkletreejs": "^0.3.9",
     "moralis": "^2.6.5",
     "next-auth": "^4.13.0",
     "os-browserify": "^0.3.0",
