@@ -137,7 +137,10 @@ const CreateSingleNFT = () => {
 
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
+
+  // whitelist options
   const [whitelist, setWhitelist] = useState<string[]>([])
+  const [whitelistRoot, setWhitelistRoot] = useState<string | undefined>(undefined)
 
   //dialogs
   const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
@@ -650,7 +653,7 @@ const CreateSingleNFT = () => {
              </Section>
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
-                <Whitelist  whitelist={whitelist} setWhitelist={setWhitelist}/>
+                <Whitelist  whitelist={whitelist} setWhitelist={setWhitelist} whitelistRoot={whitelistRoot} setWhitelistRoot={setWhitelistRoot}/>
               )}
 
               {/* <Flex flexDirection='column' mt='1rem'>

@@ -3,10 +3,14 @@ import { Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, A } from '..
 import  FileUploader  from './input/FileUploader'
 import { Flex } from '../../../components/Box'
 import { Dispatch, SetStateAction, useState } from 'react';
+import MerkleTree from 'merkletreejs';
+import { keccak256 } from 'ethers/lib/utils';
 
 export interface WhitelistProps {
-    whitelist: string[] | null
+    whitelist: string[]
     setWhitelist: Dispatch<SetStateAction<string[]>>
+    whitelistRoot: string | undefined
+    setWhitelistRoot: Dispatch<SetStateAction<string | undefined>>
 }
 
 // Create a string array from a CSV file
@@ -18,21 +22,29 @@ const parseWhitelistFromCSV = (file: File): string[] => {
         const lines = csv.split('\n')
         const whitelist = lines.map(line => line.split(',')[0])
         const filteredWhitelist = whitelist.filter(address => address != "");
-        console.log(filteredWhitelist)
         return filteredWhitelist
     }
     return []
 }
 
-const Whitelist = ({whitelist, setWhitelist}: WhitelistProps) => {
+const createMerkleTree = (whitelist: string[]) => {
+    const leaves = whitelist.map(address => keccak256(address))
+    const merkleTree = new MerkleTree(leaves, keccak256, { sortPairs: true })
+    return merkleTree
+}
+
+
+const Whitelist = ({whitelist, setWhitelist, whitelistRoot, setWhitelistRoot}: WhitelistProps) => {
 
     const onSelectWhitelist = (e: any) => {
         if (!e.target.files || e.target.files.length === 0) {
           setWhitelist([])
+          setWhitelistRoot(undefined)
           return
         }
-    
-        setWhitelist(parseWhitelistFromCSV(e.target.files[0]))
+        const whitelist = parseWhitelistFromCSV(e.target.files[0])
+        setWhitelist(whitelist)
+        setWhitelistRoot(createMerkleTree(whitelist).getHexRoot())
       }
 
     return (
