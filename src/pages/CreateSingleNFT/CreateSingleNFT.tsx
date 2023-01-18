@@ -32,6 +32,7 @@ import Selector from '../../components/Selector/Selector'
 import { Tokens } from '../../components/Selector/types'
 import { Context as UserProfile } from '../../contexts/UserProfile'
 import NoWalletConnected from './components/NoWalletConnected'
+import Whitelist from './components/Whitelist'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -135,7 +136,7 @@ const CreateSingleNFT = () => {
 
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
-  const [whitelist, setWhitelist] = useState<any>()
+  const [whitelist, setWhitelist] = useState<string[]>([])
 
   //dialogs
   const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
@@ -249,15 +250,6 @@ const CreateSingleNFT = () => {
     }
 
     setSelectedFile(e.target.files[0])
-  }
-
-  const onSelectWhitelist = (e: any) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setWhitelist(undefined)
-      return
-    }
-
-    setWhitelist(e.target.files[0])
   }
 
   const getTextStatus = {
@@ -655,15 +647,7 @@ const CreateSingleNFT = () => {
              </Section>
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
-                <Section>
-                  <Flex flexDirection='column' mt='1rem'>
-                    <Text weight={600} size='14px'>
-                      Whitelist
-                    </Text>
-                    <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
-                    <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder={whitelist ? "Uploaded file" : "Upload file..."}></FileUploader>
-                 </Flex>
-                </Section>
+                <Whitelist  whitelist={whitelist} setWhitelist={setWhitelist}/>
               )}
 
               {/* <Flex flexDirection='column' mt='1rem'>
