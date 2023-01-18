@@ -33,6 +33,7 @@ import { Tokens } from '../../components/Selector/types'
 import { Context as UserProfile } from '../../contexts/UserProfile'
 import NoWalletConnected from './components/NoWalletConnected'
 import Whitelist from './components/Whitelist'
+import InputPrice from '../../components/InputPrice/InputPrice'
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -641,8 +642,10 @@ const CreateSingleNFT = () => {
                     <Selector token={Tokens.usdc} disabled />
                     <Selector token={Tokens.dai} disabled />
                   </Grid>
-
-                  <Input disabled placeholder='Add token' />
+                  <InputPrice 
+                    topDisabled={false}
+                    bottomDisabled={true}
+                  />
                 </Flex>
              </Section>
 
