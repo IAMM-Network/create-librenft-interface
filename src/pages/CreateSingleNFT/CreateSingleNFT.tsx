@@ -655,7 +655,7 @@ const CreateSingleNFT = () => {
               </Section>
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
-                <Whitelist whitelist={whitelist} setWhitelist={setWhitelist} whitelistRoot={whitelistRoot} setWhitelistRoot={setWhitelistRoot} />
+                <Whitelist nftConfig={nftConfig} setNftConfig={setNftConfig} />
               )}
 
               {/* <Flex flexDirection='column' mt='1rem'>
