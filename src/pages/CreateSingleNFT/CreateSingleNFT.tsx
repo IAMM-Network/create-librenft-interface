@@ -82,6 +82,7 @@ export interface NFTConfig {
   freeze_metadata: boolean
   payment_token: Tokens
   payer_fee: PayerFee
+  whitelist: string[]
 }
 
 export const defaultNftMetadata = {
@@ -106,6 +107,7 @@ const nftDefaultConfig = {
   freeze_metadata: true,
   payment_token: Tokens.pckb,
   payer_fee: PayerFee.Buyer,
+  whitelist: []
 }
 
 export enum CreateSingleNftTypes {
@@ -312,7 +314,7 @@ const CreateSingleNFT = () => {
   return (
     <>
       {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-       <NoWalletConnected />
+        <NoWalletConnected />
       ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
@@ -633,8 +635,8 @@ const CreateSingleNFT = () => {
                 </Flex>
               </Section>
 
-             <Section>
-              <Flex flexDirection='column'>
+              <Section>
+                <Flex flexDirection='column'>
                   <Text weight={600} size='14px'>
                     Payment tokens *
                   </Text>
@@ -645,15 +647,15 @@ const CreateSingleNFT = () => {
                     <Selector token={Tokens.usdc} disabled />
                     <Selector token={Tokens.dai} disabled />
                   </Grid>
-                  <InputPrice 
+                  <InputPrice
                     topDisabled={false}
                     bottomDisabled={true}
                   />
                 </Flex>
-             </Section>
+              </Section>
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
-                <Whitelist  whitelist={whitelist} setWhitelist={setWhitelist} whitelistRoot={whitelistRoot} setWhitelistRoot={setWhitelistRoot}/>
+                <Whitelist whitelist={whitelist} setWhitelist={setWhitelist} whitelistRoot={whitelistRoot} setWhitelistRoot={setWhitelistRoot} />
               )}
 
               {/* <Flex flexDirection='column' mt='1rem'>
@@ -681,32 +683,32 @@ const CreateSingleNFT = () => {
             </Section>
             <Section>
               <Grid width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
-                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                    <FreezeMetadata width={15} height={15} fill='#8B40F4' />
-                  </Grid>
-                  <Grid width='100%'>
-                    <Text weight={600}>Freeze metadata</Text>
-                    <Text margin='0'>
-                      Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
-                      storage.
-                    </Text>
-                  </Grid>
-                  <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
-                    <Toggle
-                      height='20px'
-                      disabled
-                      backgroundColorDisabled='#1A1A1A'
-                      checked={nftConfig.freeze_metadata}
-                      leftBackgroundColor='#696969'
-                      rightBackgroundColor='#8B40F4'
-                      leftBorderColor='#696969'
-                      rightBorderColor='#8B40F4'
-                      knobColor='#1A1A1A'
-                      name='toggle-freeze-metadata'
-                      onToggle={e => () => null}
-                    />
-                  </Grid>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <FreezeMetadata width={15} height={15} fill='#8B40F4' />
                 </Grid>
+                <Grid width='100%'>
+                  <Text weight={600}>Freeze metadata</Text>
+                  <Text margin='0'>
+                    Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                    storage.
+                  </Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
+                  <Toggle
+                    height='20px'
+                    disabled
+                    backgroundColorDisabled='#1A1A1A'
+                    checked={nftConfig.freeze_metadata}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-freeze-metadata'
+                    onToggle={e => () => null}
+                  />
+                </Grid>
+              </Grid>
             </Section>
             <Hr />
             <Flex justifyContent='center' marginBottom='0.5rem'>
