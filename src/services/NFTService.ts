@@ -5,6 +5,8 @@ import { DayRange } from 'react-modern-calendar-datepicker'
 import NFTABI from '../data/LibreNFT721.json'
 import { getDate, getUnixTime } from '../util/date'
 
+const { v4: uuidv4 } = require('uuid');
+
 class NFTService {
   static async mintNFT(cid: string, config: any, name: string, rentable: DayRange, timeframe: DayRange) {
     let deployProps: DeployProps = {
@@ -17,11 +19,16 @@ class NFTService {
 
     const contract = await deployNFT(deployProps);
 
-    const postDeployProps = await setupPostDeployProps(contract, config.whitelist, 'random-uuid');
+    const contractAbiUuid = uuidv4();
+    const postDeployProps = await setupPostDeployProps(contract, config.whitelist, contractAbiUuid);
 
     console.log(postDeployProps);
 
-    await saveDeployData(postDeployProps);
+    let response = await saveDeployData(postDeployProps);
+
+    console.log(response);
+
+    return contract
   }
 }
 
@@ -44,31 +51,37 @@ async function deployNFT(props: DeployProps): Promise<Contract> {
   const rentableFrom = getUnixTime(getDate(Number(props.rentable.from && props.rentable.from.month), Number(props.rentable.from && props.rentable.from.day), Number(props.rentable.from && props.rentable.from.year))) || 0
   const rentableTo = getUnixTime(getDate(Number(props.rentable.to && props.rentable.to.month), Number(props.rentable.to && props.rentable.to.day), Number(props.rentable.to && props.rentable.to.year))) || 0
 
-  const whitelistMerkleTree = createMerkleTree(props.config.whitelist);
-  const whitelistMerkleRoot = whitelistMerkleTree.getHexRoot();
 
   const contract = await factory.deploy(
     props.name,
     "IAMM",
     "ipfs://",
     props.cid,
-    "1",
-    props.config.transferable,
-    rentableFrom,
-    rentableTo,
-    props.config.fractional,
-    timeframeFrom,
-    timeframeTo,
-    whitelistMerkleRoot
+    {
+      _unlockable: props.config.unlockable,
+      _transferable: props.config.transferable,
+      _tokenPrice: 1,
+      _rentableFrom: rentableFrom,
+      _rentableTo: rentableTo,
+      _fractions: props.config.fractional,
+      _timeframeFrom: timeframeFrom,
+      _timeframeTo: timeframeTo,
+      _paymentTokens: props.config.payment_token,
+      _whitelist: generateMerkleRoot(props.config.whitelist),
+    }
   )
 
   return contract
 };
 
-const createMerkleTree = (whitelist: string[]) => {
-  const leaves = whitelist.map(address => keccak256(address))
-  const merkleTree = new MerkleTree(leaves, keccak256, { sortPairs: true })
-  return merkleTree
+const generateMerkleRoot = (whitelist: string[]) => {
+  if (whitelist.length == 0) {
+    return ethers.constants.HashZero;
+  } else {
+    const leaves = whitelist.map(address => keccak256(address));
+    const merkleTree = new MerkleTree(leaves, keccak256, { sortPairs: true });
+    return merkleTree;
+  }
 }
 
 
@@ -90,8 +103,6 @@ interface PostDeployProps {
 
 async function setupPostDeployProps(contract: Contract, whitelist: string[], abiUuid: string): Promise<PostDeployProps> {
 
-  const { v4: uuidv4 } = require('uuid');
-
   return {
     // Randomly generated uuid for the NFT contract
     uuid: uuidv4(),
@@ -104,12 +115,19 @@ async function setupPostDeployProps(contract: Contract, whitelist: string[], abi
   }
 }
 
-// Post the deploy props as json body to a backend API
+// Post the deploy props as json body to a backend API using fetch
 async function saveDeployData(props: PostDeployProps) {
-  const axios = require('axios').default;
-  const response = await axios.post('http://localhost:3000/contracts', props);
-  console.log(response);
+  const response = await fetch('https://librenft-profiles.vercel.app/api/contracts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(props)
+  })
+
+  return response.json()
 }
+
 
 
 export default NFTService

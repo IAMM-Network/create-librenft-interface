@@ -80,8 +80,7 @@ export interface NFTConfig {
   supply: number
   creatorEarnings: string
   freeze_metadata: boolean
-  payment_token: Tokens
-  payer_fee: PayerFee
+  payment_token: Tokens[]
   whitelist: string[]
 }
 
@@ -105,8 +104,8 @@ const nftDefaultConfig = {
   supply: 1,
   creatorEarnings: '',
   freeze_metadata: true,
-  payment_token: Tokens.pckb,
-  payer_fee: PayerFee.Buyer,
+  payment_token: [Tokens.pckb],
+  // payer_fee: PayerFee.Buyer,
   whitelist: []
 }
 
