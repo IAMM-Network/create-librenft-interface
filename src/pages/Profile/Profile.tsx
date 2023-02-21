@@ -18,14 +18,6 @@ const options = [
     description: 'Creator',
   },
   {
-    image: BuilderImage,
-    description: 'Builder',
-  },
-  {
-    image: CuratorImage,
-    description: 'Curator',
-  },
-  {
     image: CollectorImage,
     description: 'Collector',
   },
@@ -40,14 +32,14 @@ const Profile: React.FC = () => {
   return !!isFirstTime ? (
     <>
       <Header title='Welcome' />
-      <Container maxWidth='90%'>
-        <Flex flexDirection='column' paddingTop='2rem'>
+      <Container maxWidth='90%' height='100%'>
+        <Flex flexDirection='column' paddingTop='2rem' height='100%'>
           <TitleSection>
             <Title>Role selection</Title>
             <Description>What are you up to do on IAMM?</Description>
           </TitleSection>
 
-          <Grid gridTemplateColumns='repeat(2, 1fr)' gridTemplateRows='repeat(2, 1fr)' gridColumnGap='1rem' gridRowGap='1rem'>
+          <Grid gridTemplateColumns='1fr 1fr' gridTemplateRows='1fr' gridColumnGap='1rem' gridRowGap='1rem' height='100%'>
             {options.map(({ description, image }, index) => (
               <BoxOption key={description} active={index === activeBox} onClick={() => setActiveBox(index)}>
                 {<img src={image} alt={description} height='auto' width='auto' />}
@@ -57,7 +49,7 @@ const Profile: React.FC = () => {
           </Grid>
 
           <Flex justifyContent='center' marginTop='3rem' marginBottom='6rem'>
-            <Button variant='cta'>CHOOSE</Button>
+            <Button variant='cta'>CONFIRM</Button>
           </Flex>
         </Flex>
       </Container>
