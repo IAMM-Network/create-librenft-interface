@@ -6,6 +6,7 @@ export const variants = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
   CTA: 'cta',
+  UNI: 'uni',
 } as const
 
 export type Variant = typeof variants[keyof typeof variants]

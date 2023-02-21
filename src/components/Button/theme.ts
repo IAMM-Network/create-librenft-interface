@@ -19,4 +19,11 @@ export const styleVariants = {
     borderColor: '#8B40F4',
     fontWeight: 900,
   },
+  [variants.UNI]: {
+    backgroundColor: '#F46040',
+    color: 'white',
+    borderColor: '#F46040',
+    fontWeight: 800,
+    margingTop: 10,
+  },
 }

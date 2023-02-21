@@ -7,6 +7,7 @@ import { Box, Flex } from '../Box'
 import Hamburger from 'hamburger-react'
 import { Context } from '../../contexts/UserProfile'
 import { Button } from '../Button'
+import MainMenu from '../MainMenu/MainMenu'
 
 const socialMedia = () => (
   <Flex>
@@ -84,6 +85,7 @@ const Header: React.FC = () => {
 
   if (pathname !== '/testnet/profile-dashboard')
     return (
+      <>
       <HeaderWrapper main={getRender() && isConnected}>
         <Container maxWidth='90%'>
           <Flex alignItems='center' justifyContent='space-between' width='100%'>
@@ -99,11 +101,17 @@ const Header: React.FC = () => {
                     onClick: MetaMaskInitialization,
                   })
                 : 
-                socialMedia()}
+                socialMedia()                                
+                }                
             </Flex>
-          </Flex>
-        </Container>
+          </Flex>          
+        </Container>        
       </HeaderWrapper>
+            {
+              isOpen ? <MainMenu/> : <div></div>
+            }
+
+    </>
     )
   return <div></div>
 }
