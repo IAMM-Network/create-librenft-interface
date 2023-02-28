@@ -34,6 +34,9 @@ import { Context as UserProfile } from '../../contexts/UserProfile'
 import NoWalletConnected from './components/NoWalletConnected'
 import Whitelist from './components/Whitelist'
 import InputPrice from '../../components/InputPrice/InputPrice'
+import PaymentTokens from './components/PaymentToken'
+
+const ethers = require('ethers');
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -80,7 +83,8 @@ export interface NFTConfig {
   supply: number
   creatorEarnings: string
   freeze_metadata: boolean
-  payment_token: Tokens[]
+  payment_token: string
+  price: string
   whitelist: string[]
 }
 
@@ -104,7 +108,8 @@ const nftDefaultConfig = {
   supply: 1,
   creatorEarnings: '',
   freeze_metadata: true,
-  payment_token: [Tokens.pckb],
+  payment_token: ethers.constants.AddressZero,
+  price: "0",
   // payer_fee: PayerFee.Buyer,
   whitelist: []
 }
@@ -634,7 +639,7 @@ const CreateSingleNFT = () => {
                 </Flex>
               </Section>
 
-              <Section>
+              {/* <Section>
                 <Flex flexDirection='column'>
                   <Text weight={600} size='14px'>
                     Payment tokens *
@@ -651,7 +656,9 @@ const CreateSingleNFT = () => {
                     bottomDisabled={true}
                   />
                 </Flex>
-              </Section>
+              </Section> */}
+
+              <PaymentTokens nftConfig={nftConfig} setNftConfig={setNftConfig} />
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
                 <Whitelist nftConfig={nftConfig} setNftConfig={setNftConfig} />

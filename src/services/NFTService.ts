@@ -24,9 +24,9 @@ class NFTService {
 
     console.log(postDeployProps);
 
-    let response = await saveDeployData(postDeployProps);
+    // let response = await saveDeployData(postDeployProps);
 
-    console.log(response);
+    // console.log(response);
 
     return contract
   }
@@ -60,13 +60,13 @@ async function deployNFT(props: DeployProps): Promise<Contract> {
     {
       _unlockable: props.config.unlockable,
       _transferable: props.config.transferable,
-      _tokenPrice: 1,
+      _tokenPrice: props.config.price,
       _rentableFrom: rentableFrom,
       _rentableTo: rentableTo,
       _fractions: props.config.fractional,
       _timeframeFrom: timeframeFrom,
       _timeframeTo: timeframeTo,
-      _paymentTokens: props.config.payment_token,
+      _paymentToken: props.config.payment_token,
       _whitelist: generateMerkleRoot(props.config.whitelist),
     }
   )

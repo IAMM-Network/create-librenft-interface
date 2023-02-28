@@ -5,19 +5,19 @@ import axios from 'axios'
 
 const { pinataApiKey, pinataApiSecret } = config
 
-const JWT = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJhMjZkODdmZC1jZDFmLTRkZWUtODAxZC05MmU1NzhiN2VjNzUiLCJlbWFpbCI6InRyaWN1YmVhcnRAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6Ijk3NWZhN2VmMmJhMzg2ZjhmMjlhIiwic2NvcGVkS2V5U2VjcmV0IjoiOTg1YzI3ZGY4MDhiYjM2NzE4NWMzZjA3MGJmMWI0NmE4ZGRlNmI4NWJmODBlOTI3YmM1NjMyMTI1Nzk3NjIzZiIsImlhdCI6MTY2OTczODk1MX0.T97R0igNr1aka4mb5Z0S5Uaj6q--EnkLD6HPhmSgbk0"
+const JWT = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJlODkyZDI0ZC0xODljLTRjZWItOWZhNy1kYmEzZjNiNGYzODciLCJlbWFpbCI6InBhYmxpdG9sYWJhcnRhQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJkNDgzMDUyNWMzYmNjNGMyMzFlMSIsInNjb3BlZEtleVNlY3JldCI6IjVjY2NmYTJlYWJiYzlmNmRiZWMzY2E0N2U2MmMzY2I2M2M3Y2M4NGYxNTg4ZWU4MjM3MmU5YTcxYWJkZGUyMDkiLCJpYXQiOjE2Nzc1ODc2MDV9.JvAnw9x9GMTM6Ar-Un0O76Klxcyn9jJ0TeKxxuQWWKA"
 
 class PinataService {
   static async PinImageToIPFS(selectedFile: any) {
     try {
-      const formData:any = new FormData();
+      const formData: any = new FormData();
       formData.append('file', selectedFile)
 
       const metadata = JSON.stringify({
         name: 'IAMM_IMAGE',
       });
       formData.append('pinataMetadata', metadata);
-      
+
       const options = JSON.stringify({
         cidVersion: 0,
       })
@@ -42,13 +42,13 @@ class PinataService {
     try {
       const { authenticated } = await pinata.testAuthentication()
       if (!authenticated) throw Error('Pinata authentication failed')
-      
+
       const options: PinataPinOptions = {
         pinataMetadata: {
-            name: 'IAMM_JSON',
+          name: 'IAMM_JSON',
         },
         pinataOptions: {
-            cidVersion: 0,
+          cidVersion: 0,
         }
       }
 
