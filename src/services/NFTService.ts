@@ -24,9 +24,9 @@ class NFTService {
 
     console.log(postDeployProps);
 
-    let response = await saveDeployData(postDeployProps);
+    // let response = await saveDeployData(postDeployProps);
 
-    console.log(response);
+    // console.log(response);
 
     return contract
   }
