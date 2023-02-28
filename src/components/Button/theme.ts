@@ -24,6 +24,6 @@ export const styleVariants = {
     color: 'white',
     borderColor: '#F46040',
     fontWeight: 800,
-    margingTop: 10,
+    marginTop: 10,
   },
 }
