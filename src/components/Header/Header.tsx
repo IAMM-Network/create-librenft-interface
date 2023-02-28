@@ -93,13 +93,7 @@ const Header: React.FC = () => {
             <Flex>
               {
                 getRender() 
-                ? 
-                  isConnected ? hamburguerMenu('white', isOpen, setIsOpen) : createElement(Button, {
-                    children: 'Connect Wallet',
-                    variant:'cta',
-                    startIcon:<MetaMaskIcon />,
-                    onClick: MetaMaskInitialization,
-                  })
+                ? hamburguerMenu('white', isOpen, setIsOpen)                  
                 : 
                 socialMedia()                                
                 }                
