@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Grid } from '../../../components/Box'
-import { space, SpaceProps, typography, TypographyProps} from 'styled-system'
+import { space, SpaceProps, typography, TypographyProps } from 'styled-system'
 
 interface TextProps {
   color?: string
@@ -20,6 +20,7 @@ export const Text = styled.h3<TextProps>`
   font-size: ${({ size }) => (size ? size : '12px')};
   font-weight: ${({ weight }) => (weight ? weight : 400)};
   margin: ${({ margin }) => (margin ? margin : '0.5rem 0')};
+  line-height: 15px;
 `
 
 export const Section = styled(Flex)`
@@ -28,7 +29,7 @@ export const Section = styled(Flex)`
   margin-bottom: 1rem;
 `
 
-export const Input = styled.input<{disabled?: boolean}>`
+export const Input = styled.input<{ disabled?: boolean }>`
   background: transparent;
   border: 1px solid #8b40f4;
   border-color: ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')};
@@ -101,10 +102,14 @@ export const Hr = styled.hr`
   margin-top: 1rem;
   border-color: #8b40f4;
 `
-export const A = styled.a<TypographyProps & SpaceProps & {disabled?:boolean}>`
+export const A = styled.a<TypographyProps & SpaceProps & { disabled?: boolean }>`
   color: ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')}};
   font-weight: 600;
   text-decoration: underline;
   ${typography}
   ${space}
+`
+
+export const GridContainer = styled.div`
+  margin-top: 1rem;
 `
