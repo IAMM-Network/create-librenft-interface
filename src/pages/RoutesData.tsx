@@ -3,6 +3,7 @@ import { CreateSingleNFT } from './CreateSingleNFT'
 import { Collection } from './Collection'
 import { Home } from './Home'
 import Profile from './Profile/Profile'
+import Handle from './Profile/Handle'
 
 export const RoutesData = [
   {
@@ -24,5 +25,10 @@ export const RoutesData = [
   {
     view: <Collection />,
     path: 'testnet/collection/:collection_name'
+  },
+  {
+    view: <Handle />,
+    path: 'testnet/profile-handle',
   }
+
 ]

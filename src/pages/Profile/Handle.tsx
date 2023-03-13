@@ -6,7 +6,7 @@ import { TitleSection, Title, Description, BoxOption } from './styles'
 import Header from './components/Header'
 import Menu from './components/Menu'
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const CreatorImage = require('../../assets/images/profile/profile-creator.png')
 const BuilderImage = require('../../assets/images/profile/profile-builder.png')
@@ -24,36 +24,39 @@ const options = [
   },
 ]
 
-const Profile: React.FC = () => {
-  const navigate = useNavigate();
+const Handle: React.FC = () => {
+
   // Check if is the first time a user opens dashboard
   const [isFirstTime, setIsFirstTime] = useState(true)
-  const [activeBox, setActiveBox] = useState(0)
+  const [activeBox, setActiveBox] = useState(0);
+
+  const navigate = useNavigate();
 
   const handleClick = () => {
-      navigate("/testnet/profile-handle");
-  }
 
+
+      navigate("/testnet/collection/garvaz");
+  }
   // If first time is true return that
-  return !!isFirstTime ? (
+  return (
     <>
-      <Header title='Welcome' />
+      <Header title='Handle' />
       <Container maxWidth='90%' height='100%'>
         <Flex flexDirection='column' paddingTop='2rem' height='100%'>
           <TitleSection>
-            <Title>Role selection</Title>
-            <Description>What are you up to do on IAMM?</Description>
+            <Title>Type Your @Handle</Title>
           </TitleSection>
+          <Description>Choose wisely, creator.</Description>
+          <Description>After choose your @handle,</Description>
+          <Description>you won’t be able to change it again.</Description>
 
-          <Grid gridTemplateColumns='1fr 1fr' gridTemplateRows='1fr' gridColumnGap='1rem' gridRowGap='1rem' height='100%'>
-            {options.map(({ description, image }, index) => (
-              <BoxOption key={description} active={index === activeBox} onClick={() => setActiveBox(index)}>
-                {<img src={image} alt={description} height='auto' width='auto' />}
-                {description}
-              </BoxOption>
-            ))}
-          </Grid>
-
+          <form>
+            <Grid gridTemplateColumns='1fr' gridTemplateRows='1fr 1fr' gridColumnGap='1rem' gridRowGap='1rem' height='50%'>
+              <div style={{color:'white', paddingTop:20}}><label>Create One, creator!</label></div> 
+              <input type="text" className='handleInput' id="handleInput" name="handleInput" style={{height:32}}></input>
+            </Grid>
+          </form>
+          
           <Flex justifyContent='center' marginTop='3rem' marginBottom='6rem'>
             <Button variant='cta' onClick={handleClick}>CONFIRM</Button>
           </Flex>
@@ -61,9 +64,7 @@ const Profile: React.FC = () => {
       </Container>
       <Menu />
     </>
-  ) : (
-    <div>Next steps</div>
   )
 }
 
-export default Profile
+export default Handle
