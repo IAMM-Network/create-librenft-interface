@@ -317,9 +317,6 @@ const CreateSingleNFT = () => {
 
   return (
     <>
-      {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-        <NoWalletConnected />
-      ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
 
@@ -595,23 +592,6 @@ const CreateSingleNFT = () => {
               </Grid>
             </Section>
             <Section>
-              {/* <Flex flexDirection='column'>
-      <Text weight={600} size='14px'>
-        Supply*
-      </Text>
-      <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
-      <Input
-        type='number'
-        placeholder='#'
-        value={nftConfig.supply}
-        onChange={e => {
-          if (parseInt(e.target.value) >= 1) {
-            setNftConfig({ ...nftConfig, supply: parseInt(e.target.value, 10) })
-          }
-        }}
-      />
-    </Flex> */}
-
               <Section>
                 <Flex flexDirection='column'>
                   <Text weight={600} size='14px'>
@@ -639,53 +619,12 @@ const CreateSingleNFT = () => {
                 </Flex>
               </Section>
 
-              {/* <Section>
-                <Flex flexDirection='column'>
-                  <Text weight={600} size='14px'>
-                    Payment tokens *
-                  </Text>
-                  <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
-                  <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
-                    <Selector />
-                    <Selector token={Tokens.eth} disabled />
-                    <Selector token={Tokens.usdc} disabled />
-                    <Selector token={Tokens.dai} disabled />
-                  </Grid>
-                  <InputPrice
-                    topDisabled={false}
-                    bottomDisabled={true}
-                  />
-                </Flex>
-              </Section> */}
-
               <PaymentTokens nftConfig={nftConfig} setNftConfig={setNftConfig} />
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
                 <Whitelist nftConfig={nftConfig} setNftConfig={setNftConfig} />
               )}
 
-              {/* <Flex flexDirection='column' mt='1rem'>
-      <Flex>
-        <Text weight={600} size='14px'>
-          Collection
-        </Text>
-
-        <Grid width='100%' alignItems='center' justifyContent='right'>
-          <Toggle
-            checked={isCollectionSelected}
-            leftBackgroundColor='#696969'
-            rightBackgroundColor='#8B40F4'
-            leftBorderColor='#696969'
-            rightBorderColor='#8B40F4'
-            knobColor='#1A1A1A'
-            name='toggle-collection'
-            onToggle={e => setIsCollectionSelected((e.target as HTMLInputElement).checked)}
-          />
-        </Grid>
-      </Flex>
-      <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
-      {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
-    </Flex> */}
             </Section>
             <Section>
               <Grid width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
@@ -731,7 +670,6 @@ const CreateSingleNFT = () => {
             </Box>
           </Flex>
         </Container>
-      )}
     </>
   )
 }
