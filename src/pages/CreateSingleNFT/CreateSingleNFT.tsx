@@ -32,7 +32,11 @@ import Selector from '../../components/Selector/Selector'
 import { Tokens } from '../../components/Selector/types'
 import { Context as UserProfile } from '../../contexts/UserProfile'
 import NoWalletConnected from './components/NoWalletConnected'
+import Whitelist from './components/Whitelist'
 import InputPrice from '../../components/InputPrice/InputPrice'
+import PaymentTokens from './components/PaymentToken'
+
+const ethers = require('ethers');
 
 const HeadPurple = require('../../assets/images/head-purple.png')
 
@@ -79,8 +83,9 @@ export interface NFTConfig {
   supply: number
   creatorEarnings: string
   freeze_metadata: boolean
-  payment_token: Tokens
-  payer_fee: PayerFee
+  payment_token: string
+  price: string
+  whitelist: string[]
 }
 
 export const defaultNftMetadata = {
@@ -103,8 +108,10 @@ const nftDefaultConfig = {
   supply: 1,
   creatorEarnings: '',
   freeze_metadata: true,
-  payment_token: Tokens.pckb,
-  payer_fee: PayerFee.Buyer,
+  payment_token: ethers.constants.AddressZero,
+  price: "0",
+  // payer_fee: PayerFee.Buyer,
+  whitelist: []
 }
 
 export enum CreateSingleNftTypes {
@@ -136,7 +143,10 @@ const CreateSingleNFT = () => {
 
   //file type options
   const [allowedFormats, setAllowedFormat] = useState<string[]>(mediaOptions[mediaSelected].formats)
-  const [whitelist, setWhitelist] = useState<any>()
+
+  // whitelist options
+  const [whitelist, setWhitelist] = useState<string[]>([])
+  const [whitelistRoot, setWhitelistRoot] = useState<string | undefined>(undefined)
 
   //dialogs
   const [isOwnershipLock, setIsOwnershipLock] = useState<boolean>(false)
@@ -252,15 +262,6 @@ const CreateSingleNFT = () => {
     setSelectedFile(e.target.files[0])
   }
 
-  const onSelectWhitelist = (e: any) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      setWhitelist(undefined)
-      return
-    }
-
-    setWhitelist(e.target.files[0])
-  }
-
   const getTextStatus = {
     [CreateSingleNftTypes.None]: 'Create',
     [CreateSingleNftTypes.UploadingImageToIPFS]: 'Uploading image to IPFS...',
@@ -317,7 +318,7 @@ const CreateSingleNFT = () => {
   return (
     <>
       {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-       <NoWalletConnected />
+        <NoWalletConnected />
       ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
@@ -638,8 +639,8 @@ const CreateSingleNFT = () => {
                 </Flex>
               </Section>
 
-             <Section>
-              <Flex flexDirection='column'>
+              {/* <Section>
+                <Flex flexDirection='column'>
                   <Text weight={600} size='14px'>
                     Payment tokens *
                   </Text>
@@ -650,23 +651,17 @@ const CreateSingleNFT = () => {
                     <Selector token={Tokens.usdc} disabled />
                     <Selector token={Tokens.dai} disabled />
                   </Grid>
-                  <InputPrice 
+                  <InputPrice
                     topDisabled={false}
                     bottomDisabled={true}
                   />
                 </Flex>
-             </Section>
+              </Section> */}
+
+              <PaymentTokens nftConfig={nftConfig} setNftConfig={setNftConfig} />
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
-                <Section>
-                  <Flex flexDirection='column' mt='1rem'>
-                    <Text weight={600} size='14px'>
-                      Whitelist
-                    </Text>
-                    <Text margin='0.5rem 0 0 0'>If your project has a list of OG addresses you can upload it in here.</Text>
-                    <FileUploader handleFile={onSelectWhitelist} accept='.SCV' placeholder={whitelist ? "Uploaded file" : "Upload file..."}></FileUploader>
-                 </Flex>
-                </Section>
+                <Whitelist nftConfig={nftConfig} setNftConfig={setNftConfig} />
               )}
 
               {/* <Flex flexDirection='column' mt='1rem'>
@@ -694,32 +689,32 @@ const CreateSingleNFT = () => {
             </Section>
             <Section>
               <Grid width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
-                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                    <FreezeMetadata width={15} height={15} fill='#8B40F4' />
-                  </Grid>
-                  <Grid width='100%'>
-                    <Text weight={600}>Freeze metadata</Text>
-                    <Text margin='0'>
-                      Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
-                      storage.
-                    </Text>
-                  </Grid>
-                  <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
-                    <Toggle
-                      height='20px'
-                      disabled
-                      backgroundColorDisabled='#1A1A1A'
-                      checked={nftConfig.freeze_metadata}
-                      leftBackgroundColor='#696969'
-                      rightBackgroundColor='#8B40F4'
-                      leftBorderColor='#696969'
-                      rightBorderColor='#8B40F4'
-                      knobColor='#1A1A1A'
-                      name='toggle-freeze-metadata'
-                      onToggle={e => () => null}
-                    />
-                  </Grid>
+                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                  <FreezeMetadata width={15} height={15} fill='#8B40F4' />
                 </Grid>
+                <Grid width='100%'>
+                  <Text weight={600}>Freeze metadata</Text>
+                  <Text margin='0'>
+                    Freezing your metadata will allow you to permanently lock and store all of this item's content in decentralized file
+                    storage.
+                  </Text>
+                </Grid>
+                <Grid width='100%' alignItems='center' justifyContent='right' marginTop='8px'>
+                  <Toggle
+                    height='20px'
+                    disabled
+                    backgroundColorDisabled='#1A1A1A'
+                    checked={nftConfig.freeze_metadata}
+                    leftBackgroundColor='#696969'
+                    rightBackgroundColor='#8B40F4'
+                    leftBorderColor='#696969'
+                    rightBorderColor='#8B40F4'
+                    knobColor='#1A1A1A'
+                    name='toggle-freeze-metadata'
+                    onToggle={e => () => null}
+                  />
+                </Grid>
+              </Grid>
             </Section>
             <Hr />
             <Flex justifyContent='center' marginBottom='0.5rem'>
