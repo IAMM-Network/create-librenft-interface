@@ -46,6 +46,9 @@ export { default as NervosIcon } from './Icons/NervosIcon'
 export { default as DolarIcon } from './Icons/DolarIcon'
 
 export { default as LoadingIcon } from './LoadingIcon'
+export { default as BuilderIcon } from './Icons/BuilderIcon'
+export { default as SpeechBubbleIcon } from './Icons/SpeechBubbleIcon'
+export { default as HeartIcon } from './Icons/HeartIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'

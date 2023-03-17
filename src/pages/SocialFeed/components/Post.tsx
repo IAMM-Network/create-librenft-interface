@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { PostProps } from '../data/types'
 import TimeAgo from 'timeago-react'
-import { HomeIcon, MessageIcon, NervosIcon } from '../../../components/Svg'
+import { HeartIcon, HomeIcon, MessageIcon, NervosIcon, SpeechBubbleIcon } from '../../../components/Svg'
 
 const Container = styled.div`
   margin-top: 30px;
@@ -180,7 +180,7 @@ export default function Post({ item }: { item: PostProps }) {
           <Footer>
             <Icons>
               <FooterItem>
-                <MessageIcon width='16px' height='16px' />
+                <SpeechBubbleIcon width='16px' height='16px' />
                 <FooterText>{item.commentCount}</FooterText>
               </FooterItem>
               <FooterItem>
@@ -188,8 +188,8 @@ export default function Post({ item }: { item: PostProps }) {
                 <FooterText>{item.shareCount}</FooterText>
               </FooterItem>
               <FooterItem>
-                <MessageIcon width='16px' height='16px' />
-                <FooterText>{item.shareCount}</FooterText>
+                <HeartIcon width='16px' height='16px' />
+                <FooterText>{item.likeCount}</FooterText>
               </FooterItem>
               <FooterItem>
                 <HomeIcon width='16px' height='16px' />
