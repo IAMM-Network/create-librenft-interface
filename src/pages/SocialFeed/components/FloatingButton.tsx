@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
-import { BuilderIcon } from '../../../components/Svg'
+import { BuilderIcon, CollectionIcon, CommunityIcon, DiscoverIcon, ImpactIcon } from '../../../components/Svg'
 
 interface ButtonProps {
   open: boolean
@@ -34,7 +34,7 @@ const FlotingButton = styled.button<ButtonProps>`
 
 const Menus = styled.div`
   margin-bottom: 20px;
-  margin-right: 6px;
+  margin-right: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,25 +76,25 @@ export default function FloatingButton({ open, setOpen }: ButtonProps) {
           <Menu>
             <ButtonText>Impact</ButtonText>
             <Button>
-              <BuilderIcon width={16} height={16} />
+              <ImpactIcon width={16} height={16} />
             </Button>
           </Menu>
           <Menu>
             <ButtonText>Discover</ButtonText>
             <Button>
-              <BuilderIcon width={16} height={16} />
+              <DiscoverIcon width={16} height={16} />
             </Button>
           </Menu>
           <Menu>
             <ButtonText>Create Collection</ButtonText>
             <Button>
-              <BuilderIcon width={16} height={16} />
+              <CollectionIcon width={20} height={20} />
             </Button>
           </Menu>
           <Menu>
             <ButtonText>Create Community</ButtonText>
             <Button>
-              <BuilderIcon width={16} height={16} />
+              <CommunityIcon width={20} height={20} />
             </Button>
           </Menu>
         </Menus>
