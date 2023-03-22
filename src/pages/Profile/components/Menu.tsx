@@ -15,11 +15,11 @@ const MenuWrapper = styled.div`
 
 const option = [HomeIcon, SearchIcon, NotificationIcon, MessageIcon]
 
-const Menu: React.FC = () => {
+const Menu: React.FC = ({ style }: any) => {
   const [indexActived, setIndexActived] = useState(0)
 
   return (
-    <MenuWrapper>
+    <MenuWrapper style={style}>
       <Container maxWidth='90%'>
         <Flex width='100%' justifyContent='space-between'>
           {option.map((item, index) =>

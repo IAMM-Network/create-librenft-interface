@@ -46,6 +46,16 @@ export { default as NervosIcon } from './Icons/NervosIcon'
 export { default as DolarIcon } from './Icons/DolarIcon'
 
 export { default as LoadingIcon } from './LoadingIcon'
+export { default as BuilderIcon } from './Icons/BuilderIcon'
+export { default as SpeechBubbleIcon } from './Icons/SpeechBubbleIcon'
+export { default as HeartIcon } from './Icons/HeartIcon'
+
+export { default as ShareIcon } from './Icons/ShareIcon'
+export { default as RetweetIcon } from './Icons/RetweetIcon'
+
+export { default as CollectionIcon } from './Icons/CollectionIcon'
+export { default as DiscoverIcon } from './Icons/DiscoverIcon'
+export { default as ImpactIcon } from './Icons/ImpactIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'
