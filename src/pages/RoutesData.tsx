@@ -4,6 +4,7 @@ import { Collection } from './Collection'
 import { Home } from './Home'
 import Profile from './Profile/Profile'
 import Handle from './Profile/Handle'
+import { SocialFeed } from './SocialFeed'
 
 export const RoutesData = [
   {
@@ -24,11 +25,14 @@ export const RoutesData = [
   },
   {
     view: <Collection />,
-    path: 'testnet/collection/:collection_name'
+    path: 'testnet/collection/:collection_name',
+  },
+  {
+    view: <SocialFeed />,
+    path: 'feed',
   },
   {
     view: <Handle />,
     path: 'testnet/profile-handle',
-  }
-
+  },
 ]

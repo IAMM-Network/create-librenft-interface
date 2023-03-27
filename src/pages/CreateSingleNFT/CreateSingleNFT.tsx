@@ -15,7 +15,7 @@ import {
   FreezeMetadata,
 } from '../../components/Svg'
 import { Toggle } from 'react-toggle-component'
-import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, A } from './styles'
+import { TitleSection, Text, Section, Input, MediaWrapper, Preview, TextArea, Hr, A, GridContainer } from './styles'
 import { mediaOptions } from './Data'
 import CircleButton from './components/CircleButton'
 import OwnershipLock from './components/dialogs/OwnershipLock'
@@ -317,9 +317,6 @@ const CreateSingleNFT = () => {
 
   return (
     <>
-      {!isConnected || networkId !== REQUIRED_NETWORK_ID ? (
-        <NoWalletConnected />
-      ) : (
         <Container>
           {isNFTMinted && <Congratulations name={nftMetadata.name} contract={mintedContract} imageCid={imageCid} />}
 
@@ -526,92 +523,76 @@ const CreateSingleNFT = () => {
               <Text weight={600} size='14px'>
                 Impact
               </Text>
-              <Text margin='0.5rem 0 0 0'>
+              <Text margin='0.4rem 0 0 0'>
                 Make use of this features to bring more value flow to your smartNFT and create an impact on the network
               </Text>
+              <GridContainer>
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                    <TextBaseIcon width={15} height={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text weight={600}>Properties</Text>
+                    <Text margin='0'>Text traits that show up as rectangles</Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right'>
+                    <CircleButton active={isPropertiesActive()} onClick={() => setIsProperties(true)} />
+                  </Grid>
+                </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                  <TextBaseIcon width={15} height={15} fill='#8B40F4' />
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                    <StarIcon width={15} height={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text weight={600}>Levels</Text>
+                    <Text margin='0'>Numerical trait that show up as a progress bar</Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right'>
+                    <CircleButton active={isLevelsActive()} onClick={() => setIsLevels(true)} />
+                  </Grid>
                 </Grid>
-                <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Properties</Text>
-                  <Text margin='0'>Text traits that show up as rectangles</Text>
-                </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right'>
-                  <CircleButton active={isPropertiesActive()} onClick={() => setIsProperties(true)} />
-                </Grid>
-              </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                  <StarIcon width={15} height={15} fill='#8B40F4' />
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
+                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                    <VerticalBarsIcon width={15} height={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text weight={600}>Stats</Text>
+                    <Text margin='0'>Numerical trait that show as numbers</Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right'>
+                    <CircleButton active={isStatsActive()} onClick={() => setIsStats(true)} />
+                  </Grid>
                 </Grid>
-                <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Levels</Text>
-                  <Text margin='0'>Numerical trait that show up as a progress bar</Text>
-                </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right'>
-                  <CircleButton active={isLevelsActive()} onClick={() => setIsLevels(true)} />
-                </Grid>
-              </Grid>
 
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='center'>
-                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                  <VerticalBarsIcon width={15} height={15} fill='#8B40F4' />
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
+                  <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
+                    <AlertIcon width={15} height={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text weight={600}>NSFW Content</Text>
+                    <Text margin='0'>Set this item as explicit and sensitive content (as Not Safe For Work)</Text>
+                  </Grid>
+                  <Grid width='100%' justifyContent='center' alignItems='start' marginTop='8px' marginLeft='12px'>
+                    <Toggle
+                      height='20px'
+                      checked={nftConfig.nsfw}
+                      leftBackgroundColor='#696969'
+                      rightBackgroundColor='#8B40F4'
+                      leftBorderColor='#696969'
+                      rightBorderColor='#8B40F4'
+                      knobColor='#1A1A1A'
+                      name='toggle-nsfw'
+                      onToggle={e => {
+                        setNftConfig({ ...nftConfig, nsfw: (e.target as HTMLInputElement).checked })
+                      }}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>Stats</Text>
-                  <Text margin='0'>Numerical trait that show as numbers</Text>
-                </Grid>
-                <Grid width='100%' alignItems='center' justifyContent='right'>
-                  <CircleButton active={isStatsActive()} onClick={() => setIsStats(true)} />
-                </Grid>
-              </Grid>
-
-              <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
-                <Grid alignSelf='start' justifySelf='start' marginTop='8px'>
-                  <AlertIcon width={15} height={15} fill='#8B40F4' />
-                </Grid>
-                <Grid flexDirection='column' width='100%'>
-                  <Text weight={600}>NSFW Content</Text>
-                  <Text margin='0'>Set this item as explicit and sensitive content (as Not Safe For Work)</Text>
-                </Grid>
-                <Grid width='100%' justifyContent='center' alignItems='start' marginTop='8px' marginLeft='12px'>
-                  <Toggle
-                    height='20px'
-                    checked={nftConfig.nsfw}
-                    leftBackgroundColor='#696969'
-                    rightBackgroundColor='#8B40F4'
-                    leftBorderColor='#696969'
-                    rightBorderColor='#8B40F4'
-                    knobColor='#1A1A1A'
-                    name='toggle-nsfw'
-                    onToggle={e => {
-                      setNftConfig({ ...nftConfig, nsfw: (e.target as HTMLInputElement).checked })
-                    }}
-                  />
-                </Grid>
-              </Grid>
+              </GridContainer>
             </Section>
             <Section>
-              {/* <Flex flexDirection='column'>
-      <Text weight={600} size='14px'>
-        Supply*
-      </Text>
-      <Text margin='0.5rem 0 0 0'>The number of items that can be minted.</Text>
-      <Input
-        type='number'
-        placeholder='#'
-        value={nftConfig.supply}
-        onChange={e => {
-          if (parseInt(e.target.value) >= 1) {
-            setNftConfig({ ...nftConfig, supply: parseInt(e.target.value, 10) })
-          }
-        }}
-      />
-    </Flex> */}
-
               <Section>
                 <Flex flexDirection='column'>
                   <Text weight={600} size='14px'>
@@ -639,53 +620,12 @@ const CreateSingleNFT = () => {
                 </Flex>
               </Section>
 
-              {/* <Section>
-                <Flex flexDirection='column'>
-                  <Text weight={600} size='14px'>
-                    Payment tokens *
-                  </Text>
-                  <Text margin='0.5rem 0 0 0'>These tokens can be used to buy and sell your items.</Text>
-                  <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='6fr 6fr' alignItems='center' gridGap='1rem'>
-                    <Selector />
-                    <Selector token={Tokens.eth} disabled />
-                    <Selector token={Tokens.usdc} disabled />
-                    <Selector token={Tokens.dai} disabled />
-                  </Grid>
-                  <InputPrice
-                    topDisabled={false}
-                    bottomDisabled={true}
-                  />
-                </Flex>
-              </Section> */}
-
               <PaymentTokens nftConfig={nftConfig} setNftConfig={setNftConfig} />
 
               {nftConfig.fractional && nftConfig.fractional >= 2 && (
                 <Whitelist nftConfig={nftConfig} setNftConfig={setNftConfig} />
               )}
 
-              {/* <Flex flexDirection='column' mt='1rem'>
-      <Flex>
-        <Text weight={600} size='14px'>
-          Collection
-        </Text>
-
-        <Grid width='100%' alignItems='center' justifyContent='right'>
-          <Toggle
-            checked={isCollectionSelected}
-            leftBackgroundColor='#696969'
-            rightBackgroundColor='#8B40F4'
-            leftBorderColor='#696969'
-            rightBorderColor='#8B40F4'
-            knobColor='#1A1A1A'
-            name='toggle-collection'
-            onToggle={e => setIsCollectionSelected((e.target as HTMLInputElement).checked)}
-          />
-        </Grid>
-      </Flex>
-      <Text margin='0.5rem 0 0 0'>Add your NFT to an existing collection, or create a new one (ERC1155).</Text>
-      {isCollectionSelected && <SelectCollection isOpen={isSelectCollectionOpen} setIsOpen={setIsSelectCollectionOpen} collections={collections} />}
-    </Flex> */}
             </Section>
             <Section>
               <Grid width='100%' gridTemplateColumns='1fr 8fr 1fr' alignItems='start'>
@@ -731,7 +671,6 @@ const CreateSingleNFT = () => {
             </Box>
           </Flex>
         </Container>
-      )}
     </>
   )
 }

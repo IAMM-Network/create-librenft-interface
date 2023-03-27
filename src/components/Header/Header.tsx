@@ -1,7 +1,7 @@
 import React, { cloneElement, createElement, useContext, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Container } from '../Layout'
-import { HeaderWrapper } from './styles'
+import { FeedLeft, HeaderWrapper, ProfileImage, SocialFeedText } from './styles'
 import { DiscordMediaIcon, IAMMTextIcon, MetaMaskIcon, TwitterMediaIcon } from '../Svg'
 import { Box, Flex } from '../Box'
 import Hamburger from 'hamburger-react'
@@ -33,7 +33,9 @@ const hamburguerMenu = (color: string, toggled: boolean, toggle: React.Dispatch<
 const Header: React.FC = () => {
   const { pathname } = useLocation()
   const [isOpen, setIsOpen] = useState(false)
-  const{ isConnected, setIsConnected, networkId } = useContext(Context)
+  const { isConnected, setIsConnected, networkId } = useContext(Context)
+
+  const isFeed = pathname === '/feed'
 
   const getRender = (): boolean => {
     if (pathname === '/testnet/collection/iamm') return false
@@ -86,26 +88,25 @@ const Header: React.FC = () => {
   if (pathname !== '/testnet/profile-dashboard')
     return (
       <>
-      <HeaderWrapper main={getRender() && isConnected}>
-        <Container maxWidth='90%'>
-          <Flex alignItems='center' justifyContent='space-between' width='100%'>
-            <IAMMTextIcon onClick={() => window.location.reload()} width='100px' fill='white' />
-            <Flex>
-              {
-                getRender() 
-                ? hamburguerMenu('white', isOpen, setIsOpen)                  
-                : 
-                socialMedia()                                
-                }                
+        <HeaderWrapper isFeed={isFeed} main={getRender() && isConnected}>
+          <Container maxWidth='90%'>
+            <Flex alignItems='center' justifyContent='space-between' width='100%'>
+              {isFeed ? (
+                <FeedLeft>
+                  <ProfileImage src='/profile-1.png' alt='profile-image' />
+                  <SocialFeedText>Social Feed</SocialFeedText>
+                </FeedLeft>
+              ) : (
+                <>
+                  <IAMMTextIcon onClick={() => window.location.reload()} width='100px' fill='white' />
+                  <Flex>{getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : socialMedia()}</Flex>
+                </>
+              )}
             </Flex>
-          </Flex>          
-        </Container>        
-      </HeaderWrapper>
-            {
-              isOpen ? <MainMenu/> : <div></div>
-            }
-
-    </>
+          </Container>
+        </HeaderWrapper>
+        {isOpen ? <MainMenu /> : <div></div>}
+      </>
     )
   return <div></div>
 }
