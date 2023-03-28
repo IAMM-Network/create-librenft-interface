@@ -56,6 +56,13 @@ export { default as RetweetIcon } from './Icons/RetweetIcon'
 export { default as CollectionIcon } from './Icons/CollectionIcon'
 export { default as DiscoverIcon } from './Icons/DiscoverIcon'
 export { default as ImpactIcon } from './Icons/ImpactIcon'
+export { default as ImpactCreatorIcon } from './Icons/ImpactCreatorIcon'
+
+export { default as LightBulbOnIcon } from './Icons/LightBulbOnIcon'
+export { default as LightBulbOffIcon } from './Icons/LightBulbOffIcon'
+export { default as MultipleIcon } from './Icons/MultipleIcon'
+export { default as LNFTIcon } from './Icons/LNFTIcon'
+export { default as PlaskIcon } from './Icons/PlaskIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'

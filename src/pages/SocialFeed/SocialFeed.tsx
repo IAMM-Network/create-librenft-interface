@@ -24,7 +24,7 @@ const MenuWrapper = styled.div`
 const SocialFeed = () => {
   const POST_LIMIT = 10
   const [offset, setOffset] = useState<number>(POST_LIMIT)
-  const { isConnected, networkId, setIsConnected } = useContext(UserProfile)
+  const { isConnected, isCollector } = useContext(UserProfile)
   const mockData = getPostMockData(POST_LIMIT)
   const [count, setCount] = useState<number>(100) // total post count
   const [items, setItems] = useState<any>(mockData) // post count in the current feed
@@ -68,7 +68,7 @@ const SocialFeed = () => {
         </InfiniteScroll>
       </Container>
       <Menu />
-      <FloatingButton open={openFloatingButton} setOpen={setOpenFloatingButton} />
+      <FloatingButton open={openFloatingButton} setOpen={setOpenFloatingButton} isConnected={isConnected} isCollector={isCollector} />
     </>
   )
 }
