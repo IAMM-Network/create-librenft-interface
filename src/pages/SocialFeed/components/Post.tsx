@@ -6,6 +6,8 @@ import { HeartIcon, MessageIcon, NervosIcon, SpeechBubbleIcon, RetweetIcon, Shar
 const Container = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #696969;
 `
 
 const Wrapper = styled.div`
@@ -132,10 +134,11 @@ const ThreadText = styled.div`
   display: flex;
   align-items: center;
   height: 27px;
-  margin-top: 30px;
+  margin-top: 20px;
   color: #008be8;
   font-size: 12px;
   text-align: left;
+  width: fit-content;
   cursor: pointer;
 `
 
