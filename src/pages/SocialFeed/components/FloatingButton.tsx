@@ -1,10 +1,24 @@
 import { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
-import { BuilderIcon, CollectionIcon, CommunityIcon, DiscoverIcon, ImpactIcon } from '../../../components/Svg'
+import {
+  BuilderIcon,
+  CollectionIcon,
+  CommunityIcon,
+  DiscoverIcon,
+  ImpactCreatorIcon,
+  ImpactIcon,
+  LightBulbOffIcon,
+  LightBulbOnIcon,
+  LNFTIcon,
+  MultipleIcon,
+  PlaskIcon,
+} from '../../../components/Svg'
 
 interface ButtonProps {
   open: boolean
-  setOpen?: any
+  setOpen: Dispatch<SetStateAction<boolean>>
+  isConnected: boolean
+  isCollector: boolean
 }
 
 const Container = styled.div`
@@ -17,7 +31,7 @@ const Container = styled.div`
   align-items: flex-end;
 `
 
-const FlotingButton = styled.button<ButtonProps>`
+const TriggerButton = styled.button<{ open: boolean; setOpen?: Dispatch<SetStateAction<boolean>> }>`
   background-color: #8b40f4;
   width: ${({ open }) => (!open ? '40px' : '50px')};
   height: ${({ open }) => (!open ? '40px' : '50px')};
@@ -68,10 +82,11 @@ const ButtonText = styled.div`
   margin-right: 10px;
 `
 
-export default function FloatingButton({ open, setOpen }: ButtonProps) {
+export default function FloatingButton({ open, setOpen, isConnected, isCollector }: ButtonProps) {
+  // isCollector === true => builder
   return (
     <Container>
-      {open && (
+      {open && isCollector ? (
         <Menus>
           <Menu>
             <ButtonText>Impact</ButtonText>
@@ -98,10 +113,49 @@ export default function FloatingButton({ open, setOpen }: ButtonProps) {
             </Button>
           </Menu>
         </Menus>
-      )}
-      <FlotingButton open={open} onClick={() => setOpen((prev: boolean) => !prev)}>
-        <BuilderIcon width={open ? '24px' : '16px'} height={open ? '24px' : '16px'} />
-      </FlotingButton>
+      ) : open && !isCollector ? (
+        <Menus>
+          <Menu>
+            <ButtonText>Impact</ButtonText>
+            <Button>
+              <ImpactCreatorIcon width={16} height={16} />
+            </Button>
+          </Menu>
+          <Menu>
+            <ButtonText>Create LNFT</ButtonText>
+            <Button>
+              <LNFTIcon width={16} height={16} />
+            </Button>
+          </Menu>
+          <Menu>
+            <ButtonText>Create Multiple</ButtonText>
+            <Button>
+              <MultipleIcon width={20} height={20} />
+            </Button>
+          </Menu>
+          <Menu>
+            <ButtonText>Create Collection</ButtonText>
+            <Button>
+              <CollectionIcon width={20} height={20} />
+            </Button>
+          </Menu>
+          <Menu>
+            <ButtonText>Mix & Pimp</ButtonText>
+            <Button style={{ background: '#696969' }}>
+              <PlaskIcon width={20} height={20} />
+            </Button>
+          </Menu>
+        </Menus>
+      ) : null}
+      <TriggerButton open={open} onClick={() => setOpen((prev: boolean) => !prev)}>
+        {isCollector ? (
+          <BuilderIcon width={open ? '24px' : '16px'} height={open ? '24px' : '16px'} />
+        ) : !isCollector && !open ? (
+          <LightBulbOffIcon width={'16px'} height={'16px'} />
+        ) : (
+          <LightBulbOnIcon width={'24px'} height={'24px'} />
+        )}
+      </TriggerButton>
     </Container>
   )
 }
