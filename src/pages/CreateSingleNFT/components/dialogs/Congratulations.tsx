@@ -1,9 +1,35 @@
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { Flex, Box } from '../../../../components/Box'
-import { CloseIcon, IAMMIcon, OpenEyeIcon, PutOnSaleIcon, TelegramMediaIcon, TransferNowIcon, TwitterMediaIcon } from '../../../../components/Svg'
+import {
+  CloseIcon,
+  SettingsIcon,
+  ImpactCreatorIcon,
+  OpenEyeIcon,
+  PutOnSaleIcon,
+  TelegramMediaIcon,
+  TransferNowIcon,
+  TwitterMediaIcon,
+} from '../../../../components/Svg'
 import { CongratulationsTitle, CongratulationsWrapper, Hr } from '../styles'
 
-const Congratulations = ({ name, contract, imageCid }: { name:string, contract: string; imageCid: string }) => {
+const Impact = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+`
+
+const ImpactText = styled.i`
+  font-size: 10px;
+  color: white;
+`
+
+const CongratsImage = require('../../../../assets/images/congrats-img.png')
+
+const Congratulations = ({ name, contract, imageCid }: { name: string; contract: string; imageCid: string }) => {
   const navigate = useNavigate()
   return (
     <CongratulationsWrapper justifyContent='center'>
@@ -12,50 +38,55 @@ const Congratulations = ({ name, contract, imageCid }: { name:string, contract: 
           <CloseIcon onClick={() => navigate('/profile-dashboard')} style={{ cursor: 'pointer' }} fill='white' width='15px' height='15px' />
         </Flex>
         <Box padding='1rem'>
+          <CongratulationsTitle>Congratulations!</CongratulationsTitle>
+          <CongratulationsTitle>You’ve created </CongratulationsTitle>
           <CongratulationsTitle>
-            Congratulations! You’ve created{' '}
             <a href={`https://v1.testnet.gwscan.com/account/${contract}`} target='_blank' rel='noreferrer'>
-              {name} #1
+              libreNFT{name} #1
             </a>
           </CongratulationsTitle>
         </Box>
 
-        <Box width='90%' margin='0 auto'>
+        <Box width='320px' margin='0 auto'>
           <Hr />
         </Box>
 
         <Box marginY='1rem'>
-          <img width={250} height={250} src={`https://gateway.pinata.cloud/ipfs/${imageCid}`} alt='nft-asset' />
+          <img width={250} height={250} src={CongratsImage} alt='nft-asset' />
         </Box>
 
-        <Box>
+        <Box style={{ marginTop: '20px' }}>
           <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '12px' }}>Share to...</h3>
         </Box>
 
         <Flex justifyContent='space-between' width='60%' margin='2rem auto'>
-          <IAMMIcon style={{ cursor: 'not-allowed' }} fill="#696969" width='20px' height='20px' />
-          <TwitterMediaIcon style={{ cursor: 'not-allowed' }} fill="#696969" width='20px' height='20px' />
-          <TelegramMediaIcon style={{ cursor: 'not-allowed' }} fill="#696969" width='20px' height='20px' />
+          <Impact>
+            <ImpactCreatorIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
+            <ImpactText>(Impact)</ImpactText>
+          </Impact>
+
+          <TwitterMediaIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
+          <TelegramMediaIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
         </Flex>
 
-        <Box>
+        <Box style={{ marginTop: '10px' }}>
           <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '12px' }}>Things you can do</h3>
         </Box>
 
         <Flex justifyContent='space-between' width='70%' margin='2rem auto'>
-          <Flex flexDirection="column">
-            <OpenEyeIcon style={{ cursor: 'not-allowed' }} fill="#696969" width='20px' height='20px' />
-            <span style={{ color: '#696969', marginTop: '1rem', fontSize:'10px' }}>View NFT</span>
+          <Flex flexDirection='column'>
+            <OpenEyeIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
+            <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>View NFT</span>
           </Flex>
 
-          <Flex flexDirection="column">
-            <PutOnSaleIcon style={{ cursor: 'not-allowed' }} fill="#696969" width='20px' height='20px' />
-            <span style={{ color: '#696969', marginTop: '1rem', fontSize:'10px' }}>Put on Sale</span>
+          <Flex flexDirection='column'>
+            <SettingsIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
+            <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>Settings</span>
           </Flex>
 
-          <Flex flexDirection="column">
-            <TransferNowIcon style={{ cursor: 'not-allowed' }} fill="#696969" width='20px' height='20px' />
-            <span style={{ color: '#696969', marginTop: '1rem', fontSize:'10px' }}>Transfer Now</span>
+          <Flex flexDirection='column'>
+            <PutOnSaleIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
+            <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>Put on Sale</span>
           </Flex>
         </Flex>
       </Flex>
