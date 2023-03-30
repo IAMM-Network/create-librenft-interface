@@ -63,6 +63,7 @@ export { default as LightBulbOffIcon } from './Icons/LightBulbOffIcon'
 export { default as MultipleIcon } from './Icons/MultipleIcon'
 export { default as LNFTIcon } from './Icons/LNFTIcon'
 export { default as PlaskIcon } from './Icons/PlaskIcon'
+export { default as SettingsIcon } from './Icons/SettingsIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'
