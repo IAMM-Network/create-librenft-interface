@@ -169,7 +169,7 @@ export default function Post({ item }: { item: PostProps }) {
             <HeaderInfo>
               <FullName>{item.fullName}</FullName>
               <div>-</div>
-              <div>@{item.fullName}</div>
+              <div>@{item.username}</div>
               <div>•</div>
               <TimeAgoContainer>
                 <TimeAgo datetime={item.createdAt} />

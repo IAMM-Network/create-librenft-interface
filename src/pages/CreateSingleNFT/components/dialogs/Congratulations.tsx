@@ -8,7 +8,6 @@ import {
   OpenEyeIcon,
   PutOnSaleIcon,
   TelegramMediaIcon,
-  TransferNowIcon,
   TwitterMediaIcon,
 } from '../../../../components/Svg'
 import { CongratulationsTitle, CongratulationsWrapper, Hr } from '../styles'

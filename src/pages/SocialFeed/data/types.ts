@@ -13,12 +13,12 @@ export interface PostProps {
   canTip: boolean
 }
 
-function randomDate(start: Date, end: Date) {
+export function randomDate(start: Date, end: Date) {
   const randDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
   return randDate.toISOString()
 }
 
-function randomIntFromInterval(min: number, max: number) {
+export function randomIntFromInterval(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 

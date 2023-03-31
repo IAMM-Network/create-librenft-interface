@@ -1,26 +1,51 @@
-import { useState } from 'react'
 import styled from 'styled-components'
+import TimeAgo from 'timeago-react'
 import { HeartIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon, ClickIcon } from '../../../components/Svg'
 import { PostProps, randomIntFromInterval } from '../../SocialFeed/data/types'
-import ReplyCollapsed from './ReplyCollapsed'
-import ReplyExpanded from './ReplyExpanded'
 
 const Container = styled.div`
-  margin-top: 80px;
+  margin-bottom: 30px;
+  padding: 20px;
+  border-top: 1px solid #696969;
+  border-bottom: 1px solid #696969;
 `
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  margin-top: 10px;
-  flex-direction: column;
+  max-width: 540px;
+  margin: auto;
 `
+
+const Left = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  align-items: center;
+  gap: 15px;
+`
+
 const Right = styled.div`
   display: flex;
   flex-direction: column;
 `
 
 const Header = styled.div``
+
+const Message = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: 15px;
+`
+const ReplyingTo = styled.div`
+  color: #696969;
+  font-size: 10px;
+  margin-right: 5px;
+`
+
+const NickName = styled.div`
+  color: white;
+  font-size: 10px;
+`
 
 const HeaderInfo = styled.div`
   display: flex;
@@ -34,7 +59,12 @@ const FullName = styled.div`
   font-size: 12px;
   color: white;
   font-weight: 700;
-  margin-bottom: 3px;
+`
+
+const TimeAgoContainer = styled.div`
+  font-size: 12px;
+  color: white;
+  font-weight: 400;
 `
 
 const Body = styled.div`
@@ -51,10 +81,6 @@ const Text = styled.div`
   margin-bottom: 20px;
 `
 
-const MediaContent = styled.img`
-  width: 100%;
-`
-
 const ProfileImage = styled.img`
   width: 45px;
   height: 45px;
@@ -64,10 +90,6 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 12px;
-  border-bottom: 1px solid #696969;
-  border-top: 1px solid #696969;
-  padding-inline: 5px;
 `
 
 const Icons = styled.div`
@@ -88,35 +110,36 @@ const FooterText = styled.div`
   margin-left: 10px;
 `
 
-const Bottom = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-`
-
-export default function Post({ item }: { item: PostProps }) {
-  const [reply, setReply] = useState<boolean>(false)
+export default function Thread({ item }: { item: PostProps }) {
+  // TODO: should receive real data
   return (
     <Container>
       <Wrapper>
+        <Left>
+          <ProfileImage src={item.profile} alt='profile' />
+        </Left>
         <Right>
           <Header>
             <HeaderInfo>
-              <ProfileImage src={item.profile} alt='profile' />
-              <div>
-                <FullName>{item.fullName}</FullName>
-                <div>@{item.fullName}</div>
-              </div>
+              <FullName>{item.fullName}</FullName>
+              <div>-</div>
+              <div>@{item.fullName}</div>
+              <div>•</div>
+              <TimeAgoContainer>
+                <TimeAgo datetime={item.createdAt} />
+              </TimeAgoContainer>
             </HeaderInfo>
+            <Message>
+              <ReplyingTo>Replying to</ReplyingTo>
+              <NickName>@{item.fullName}</NickName>
+            </Message>
           </Header>
           <Body>
-            <Text>{item.text}</Text>
-            <MediaContent src={item.mediaUrl} alt='media' />
-            <Bottom>
-              <Text>{new Date(item.createdAt).toLocaleString()}</Text>
-              <Text style={{ marginInline: '10px' }}>•</Text>
-              <Text>8999 views</Text>
-            </Bottom>
+            <Text>{`Lorem ipsum dolor sit amet, consectetur
+adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna
+aliqua.
+`}</Text>
           </Body>
           <Footer>
             <Icons>
@@ -142,7 +165,6 @@ export default function Post({ item }: { item: PostProps }) {
             </Icons>
           </Footer>
         </Right>
-        {reply ? <ReplyExpanded setReply={setReply} /> : <ReplyCollapsed setReply={setReply} />}
       </Wrapper>
     </Container>
   )
