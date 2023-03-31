@@ -29,21 +29,25 @@ const OwnershipLock = ({
   setIsOwnershipLock,
   selectedRentableTimeFrame,
   setSelectedRentableTimeframe,
-  onClose
+  onClose,
 }: OwnershipLockProps) => {
   return (
     <Flex width='100vw' height='100vh' background='#1A1A1A' top='0px' left='0px' position='fixed' zIndex={10000} justifyContent='center'>
       <Box overflowY='scroll' paddingBottom='3rem'>
         <Container maxWidth='90%'>
-          <Flex justifyContent="end" paddingTop="1rem">
-            <CloseIcon width={15} onClick={onClose} cursor="pointer" />
+          <Flex justifyContent='end' paddingTop='1rem'>
+            <CloseIcon width={15} onClick={onClose} cursor='pointer' />
           </Flex>
-          <Flex flexDirection='column' paddingTop='32px' marginTop="-1rem">
+          <Flex flexDirection='column' paddingTop='32px' marginTop='-1rem'>
             <Text weight={600} size='21px'>
               Add OwnershipLock
             </Text>
 
-            <Hr />
+            <Hr style={{ marginBottom: '1rem' }} />
+
+            <Text style={{ width: '270px' }} margin='5px auto 25px auto'>
+              Once active, these utilities options can be manage in the NFT Settings on your profile.
+            </Text>
 
             <Section>
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
@@ -75,16 +79,6 @@ const OwnershipLock = ({
                 </Grid>
               </Grid>
 
-              <Box marginBottom='1rem'>
-                <Calendar
-                  value={selectedRentableTimeFrame}
-                  onChange={setSelectedRentableTimeframe}
-                  colorPrimary={nftConfig.rentable ? '#8B40F4' : '#696969'}
-                  calendarClassName={nftConfig.rentable ? 'custom-calendar' : 'custom-calendar-disabled'}
-                  colorPrimaryLight={nftConfig.rentable ? '#8B40F4' : '#696969'}
-                />
-              </Box>
-
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
                 <Grid alignSelf='start' justifySelf='start'>
                   <FractionalIcon width={15} fill='#8B40F4' />
@@ -112,17 +106,6 @@ const OwnershipLock = ({
                   />
                 </Grid>
               </Grid>
-
-              <Input
-                disabled={!isFractional}
-                style={{ marginBottom: '1rem' }}
-                type='number'
-                value={isFractional ? nftConfig.fractional : ''}
-                min={1}
-                max={100}
-                placeholder='how many fractions?'
-                onChange={e => setNftConfig({ ...nftConfig, fractional: parseInt(e.target.value, 10) })}
-              />
 
               <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
                 <Grid alignSelf='start' justifySelf='start'>
@@ -172,7 +155,7 @@ const OwnershipLock = ({
             <Hr />
 
             <Flex justifyContent='center'>
-              <Button variant='cta' onClick={() => setIsOwnershipLock(false)}>
+              <Button style={{ width: '120px', justifyContent: 'center' }} variant='cta' onClick={() => setIsOwnershipLock(false)}>
                 Save
               </Button>
             </Flex>
