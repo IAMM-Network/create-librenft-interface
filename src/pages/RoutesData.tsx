@@ -4,6 +4,7 @@ import { Collection } from './Collection'
 import { Home } from './Home'
 import Profile from './Profile/Profile'
 import { SocialFeed } from './SocialFeed'
+import ShowThisThread from './ShowThisThread/ShowThisThread'
 
 export const RoutesData = [
   {
@@ -29,5 +30,9 @@ export const RoutesData = [
   {
     view: <SocialFeed />,
     path: 'feed',
+  },
+  {
+    view: <ShowThisThread />,
+    path: 'feed/show-this-thread/:thread_id',
   },
 ]

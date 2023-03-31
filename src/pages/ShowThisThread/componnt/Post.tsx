@@ -1,47 +1,26 @@
+import { useState } from 'react'
 import styled from 'styled-components'
-import { PostProps } from '../data/types'
-import TimeAgo from 'timeago-react'
-import { HeartIcon, MessageIcon, NervosIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon } from '../../../components/Svg'
+import { HeartIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon, ClickIcon } from '../../../components/Svg'
+import { PostProps, randomIntFromInterval } from '../../SocialFeed/data/types'
+import ReplyCollapsed from './ReplyCollapsed'
+import ReplyExpanded from './ReplyExpanded'
 
 const Container = styled.div`
-  margin-top: 30px;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #696969;
+  margin-top: 80px;
 `
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
   margin-top: 10px;
-`
-
-const Left = styled.div`
-  display: flex;
   flex-direction: column;
-  margin-right: 10px;
-  align-items: center;
-  gap: 15px;
 `
-
 const Right = styled.div`
   display: flex;
   flex-direction: column;
 `
 
 const Header = styled.div``
-
-const Message = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-left: 35px;
-`
-
-const SharedMessageText = styled.div`
-  font-size: 10px;
-  margin-left: 10px;
-  color: white;
-`
 
 const HeaderInfo = styled.div`
   display: flex;
@@ -55,19 +34,7 @@ const FullName = styled.div`
   font-size: 12px;
   color: white;
   font-weight: 700;
-`
-
-const Username = styled.div`
-  font-size: 12px;
-  color: white;
-  font-weight: 400;
-  margin-right: 10px;
-`
-
-const TimeAgoContainer = styled.div`
-  font-size: 12px;
-  color: white;
-  font-weight: 400;
+  margin-bottom: 3px;
 `
 
 const Body = styled.div`
@@ -97,6 +64,10 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-block: 12px;
+  border-bottom: 1px solid #696969;
+  border-top: 1px solid #696969;
+  padding-inline: 5px;
 `
 
 const Icons = styled.div`
@@ -117,68 +88,35 @@ const FooterText = styled.div`
   margin-left: 10px;
 `
 
-const TipItem = styled(FooterItem)`
-  margin-right: 0;
-`
-
-const TipText = styled(FooterText)`
-  font-weight: 700;
-`
-
-const VerticalLine = styled.div`
-  border-left: 1px solid #6d6d6d;
-  height: calc(100% - 60px);
-`
-
-const ThreadText = styled.div`
+const Bottom = styled.div`
   display: flex;
   align-items: center;
-  height: 27px;
   margin-top: 20px;
-  color: #008be8;
-  font-size: 12px;
-  text-align: left;
-  width: fit-content;
-  cursor: pointer;
-`
-
-const ThreadProfile = styled.img`
-  width: 27px;
-  height: 27px;
 `
 
 export default function Post({ item }: { item: PostProps }) {
+  const [reply, setReply] = useState<boolean>(false)
   return (
     <Container>
-      <Message>
-        <MessageIcon width='12px' height='12px' />
-        <SharedMessageText>Lorem Ipsum Retiammed -</SharedMessageText>
-      </Message>
       <Wrapper>
-        <Left>
-          <ProfileImage src={item.profile} alt='profile' />
-          {item.threads.length > 0 && (
-            <>
-              <VerticalLine />
-              <ThreadProfile src={item.profile} alt='thread-profile' />
-            </>
-          )}
-        </Left>
         <Right>
           <Header>
             <HeaderInfo>
-              <FullName>{item.fullName}</FullName>
-              <div>-</div>
-              <div>@{item.username}</div>
-              <div>•</div>
-              <TimeAgoContainer>
-                <TimeAgo datetime={item.createdAt} />
-              </TimeAgoContainer>
+              <ProfileImage src={item.profile} alt='profile' />
+              <div>
+                <FullName>{item.fullName}</FullName>
+                <div>@{item.fullName}</div>
+              </div>
             </HeaderInfo>
           </Header>
           <Body>
             <Text>{item.text}</Text>
             <MediaContent src={item.mediaUrl} alt='media' />
+            <Bottom>
+              <Text>{new Date(item.createdAt).toLocaleString()}</Text>
+              <Text style={{ marginInline: '10px' }}>•</Text>
+              <Text>8999 views</Text>
+            </Bottom>
           </Body>
           <Footer>
             <Icons>
@@ -195,18 +133,16 @@ export default function Post({ item }: { item: PostProps }) {
                 <FooterText>{item.likeCount}</FooterText>
               </FooterItem>
               <FooterItem>
+                <ClickIcon width='16px' height='16px' />
+                <FooterText>{randomIntFromInterval(5, 50)}</FooterText>
+              </FooterItem>
+              <FooterItem>
                 <ShareIcon width='16px' height='16px' />
               </FooterItem>
             </Icons>
-            {item.canTip && (
-              <TipItem>
-                <NervosIcon width='16px' height='16px' />
-                <TipText>TIP!</TipText>
-              </TipItem>
-            )}
           </Footer>
-          {item.threads.length > 0 && <ThreadText>Show this thread</ThreadText>}
         </Right>
+        {reply ? <ReplyExpanded setReply={setReply} /> : <ReplyCollapsed setReply={setReply} />}
       </Wrapper>
     </Container>
   )

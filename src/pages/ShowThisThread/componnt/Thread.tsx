@@ -1,18 +1,19 @@
 import styled from 'styled-components'
-import { PostProps } from '../data/types'
 import TimeAgo from 'timeago-react'
-import { HeartIcon, MessageIcon, NervosIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon } from '../../../components/Svg'
+import { HeartIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon, ClickIcon } from '../../../components/Svg'
+import { PostProps, randomIntFromInterval } from '../../SocialFeed/data/types'
 
 const Container = styled.div`
-  margin-top: 30px;
   margin-bottom: 30px;
-  padding-bottom: 20px;
+  padding: 20px;
+  border-top: 1px solid #696969;
   border-bottom: 1px solid #696969;
 `
 
 const Wrapper = styled.div`
   display: flex;
-  margin-top: 10px;
+  max-width: 540px;
+  margin: auto;
 `
 
 const Left = styled.div`
@@ -33,14 +34,17 @@ const Header = styled.div``
 const Message = styled.div`
   display: flex;
   align-items: center;
-  position: relative;
-  margin-left: 35px;
+  padding-top: 15px;
+`
+const ReplyingTo = styled.div`
+  color: #696969;
+  font-size: 10px;
+  margin-right: 5px;
 `
 
-const SharedMessageText = styled.div`
-  font-size: 10px;
-  margin-left: 10px;
+const NickName = styled.div`
   color: white;
+  font-size: 10px;
 `
 
 const HeaderInfo = styled.div`
@@ -55,13 +59,6 @@ const FullName = styled.div`
   font-size: 12px;
   color: white;
   font-weight: 700;
-`
-
-const Username = styled.div`
-  font-size: 12px;
-  color: white;
-  font-weight: 400;
-  margin-right: 10px;
 `
 
 const TimeAgoContainer = styled.div`
@@ -82,10 +79,6 @@ const Text = styled.div`
   color: white;
   text-align: left;
   margin-bottom: 20px;
-`
-
-const MediaContent = styled.img`
-  width: 100%;
 `
 
 const ProfileImage = styled.img`
@@ -117,68 +110,36 @@ const FooterText = styled.div`
   margin-left: 10px;
 `
 
-const TipItem = styled(FooterItem)`
-  margin-right: 0;
-`
-
-const TipText = styled(FooterText)`
-  font-weight: 700;
-`
-
-const VerticalLine = styled.div`
-  border-left: 1px solid #6d6d6d;
-  height: calc(100% - 60px);
-`
-
-const ThreadText = styled.div`
-  display: flex;
-  align-items: center;
-  height: 27px;
-  margin-top: 20px;
-  color: #008be8;
-  font-size: 12px;
-  text-align: left;
-  width: fit-content;
-  cursor: pointer;
-`
-
-const ThreadProfile = styled.img`
-  width: 27px;
-  height: 27px;
-`
-
-export default function Post({ item }: { item: PostProps }) {
+export default function Thread({ item }: { item: PostProps }) {
+  // TODO: should receive real data
   return (
     <Container>
-      <Message>
-        <MessageIcon width='12px' height='12px' />
-        <SharedMessageText>Lorem Ipsum Retiammed -</SharedMessageText>
-      </Message>
       <Wrapper>
         <Left>
           <ProfileImage src={item.profile} alt='profile' />
-          {item.threads.length > 0 && (
-            <>
-              <VerticalLine />
-              <ThreadProfile src={item.profile} alt='thread-profile' />
-            </>
-          )}
         </Left>
         <Right>
           <Header>
             <HeaderInfo>
               <FullName>{item.fullName}</FullName>
               <div>-</div>
-              <div>@{item.username}</div>
+              <div>@{item.fullName}</div>
               <div>•</div>
               <TimeAgoContainer>
                 <TimeAgo datetime={item.createdAt} />
               </TimeAgoContainer>
             </HeaderInfo>
+            <Message>
+              <ReplyingTo>Replying to</ReplyingTo>
+              <NickName>@{item.fullName}</NickName>
+            </Message>
           </Header>
           <Body>
-            <Text>{item.text}</Text>
-            <MediaContent src={item.mediaUrl} alt='media' />
+            <Text>{`Lorem ipsum dolor sit amet, consectetur
+adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna
+aliqua.
+`}</Text>
           </Body>
           <Footer>
             <Icons>
@@ -195,17 +156,14 @@ export default function Post({ item }: { item: PostProps }) {
                 <FooterText>{item.likeCount}</FooterText>
               </FooterItem>
               <FooterItem>
+                <ClickIcon width='16px' height='16px' />
+                <FooterText>{randomIntFromInterval(5, 50)}</FooterText>
+              </FooterItem>
+              <FooterItem>
                 <ShareIcon width='16px' height='16px' />
               </FooterItem>
             </Icons>
-            {item.canTip && (
-              <TipItem>
-                <NervosIcon width='16px' height='16px' />
-                <TipText>TIP!</TipText>
-              </TipItem>
-            )}
           </Footer>
-          {item.threads.length > 0 && <ThreadText>Show this thread</ThreadText>}
         </Right>
       </Wrapper>
     </Container>
