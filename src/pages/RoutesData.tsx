@@ -29,10 +29,10 @@ export const RoutesData = [
   },
   {
     view: <SocialFeed />,
-    path: 'feed',
+    path: 'testnet/feed',
   },
   {
     view: <ShowThisThread />,
-    path: 'feed/show-this-thread/:thread_id',
+    path: 'testnet/feed/show-this-thread/:thread_id',
   },
 ]
