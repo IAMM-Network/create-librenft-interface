@@ -18,6 +18,7 @@ export const Title = styled.h2`
 export const Description = styled.p`
   font-size: 12px;
   font-weight: 400;
+  color: white;
 `
 
 export const BoxOption = styled.div<{ active?: boolean }>`

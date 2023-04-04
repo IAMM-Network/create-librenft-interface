@@ -68,6 +68,8 @@ async function deployNFT(props: DeployProps): Promise<Contract> {
       _timeframeTo: timeframeTo,
       _paymentToken: props.config.payment_token,
       _whitelist: generateMerkleRoot(props.config.whitelist),
+      _isOnSale: false,
+      _isTFUnlockable: false
     }
   )
 

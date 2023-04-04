@@ -3,6 +3,7 @@ import { CreateSingleNFT } from './CreateSingleNFT'
 import { Collection } from './Collection'
 import { Home } from './Home'
 import Profile from './Profile/Profile'
+import Handle from './Profile/Handle'
 import { SocialFeed } from './SocialFeed'
 import ShowThisThread from './ShowThisThread/ShowThisThread'
 
@@ -34,5 +35,9 @@ export const RoutesData = [
   {
     view: <ShowThisThread />,
     path: 'testnet/feed/show-this-thread/:thread_id',
+  },
+  {
+    view: <Handle />,
+    path: 'testnet/profile-handle',
   },
 ]
