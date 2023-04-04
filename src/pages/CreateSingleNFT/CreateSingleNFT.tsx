@@ -267,7 +267,7 @@ const CreateSingleNFT = () => {
     [CreateSingleNftTypes.UploadingImageToIPFS]: 'Uploading image to IPFS...',
     [CreateSingleNftTypes.CreatingMetadata]: 'Creating metadata...',
     [CreateSingleNftTypes.FreezingMetadata]: 'Freezing metadata...',
-    [CreateSingleNftTypes.Minting]: 'Minting...',
+    [CreateSingleNftTypes.Minting]: 'Deploying...',
   }
 
   const createNFT = async () => {
