@@ -68,6 +68,7 @@ const PopupContext: React.FC = ({ children }) => {
           <Overlay onClick={handleOverlayDismiss}>
             {React.isValidElement(modalNode) &&
               React.cloneElement(modalNode, {
+                //@ts-ignore
                 onDismiss: handleDismiss,
               })}
           </Overlay>

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { Flex, Box } from '../../../../components/Box'
 import {
@@ -73,10 +73,12 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Flex justifyContent='space-between' width='70%' margin='2rem auto'>
-          <Flex flexDirection='column'>
-            <OpenEyeIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
-            <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>View NFT</span>
-          </Flex>
+          <Link to="/testnet/viewer-owner-LNFT">
+            <Flex flexDirection='column'>
+              <OpenEyeIcon width='20px' height='20px' />
+              <span style={{ color: 'white', marginTop: '1rem', fontSize: '10px'}}>View NFT</span>
+            </Flex>
+          </Link>
 
           <Flex flexDirection='column'>
             <SettingsIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
