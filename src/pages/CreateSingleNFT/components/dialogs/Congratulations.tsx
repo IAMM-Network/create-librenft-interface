@@ -72,7 +72,7 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
           <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '12px' }}>Things you can do</h3>
         </Box>
 
-        <Flex justifyContent='space-between' width='70%' margin='2rem auto'>
+        <Flex justifyContent='space-between' width='70%' margin='2rem auto' padding="0 0 50px 0">
           <Flex flexDirection='column'>
             <OpenEyeIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
             <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>View NFT</span>
