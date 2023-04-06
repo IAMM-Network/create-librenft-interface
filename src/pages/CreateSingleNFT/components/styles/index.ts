@@ -28,7 +28,7 @@ export const Select = styled(Flex)<SelectCollectionProps>`
   background: transparent;
   border-radius: 8px;
   padding: 1rem;
-  border: 1px solid ${({ disabled }) => disabled ? '#696969' : '#8b40f4'};
+  border: 1px solid ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')};
   justify-content: space-between;
   align-items: center;
 
@@ -39,12 +39,12 @@ export const Select = styled(Flex)<SelectCollectionProps>`
   }
 
   svg {
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    transform: ${({ isOpen }) => isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
 `
 
-/** 
+/**
  * Minted Congratulations
  */
 
@@ -56,10 +56,11 @@ export const CongratulationsWrapper = styled(Flex)`
   top: 0;
   left: 0;
   z-index: 1000;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 `
 
-export const CongratulationsTitle =  styled.h1`
+export const CongratulationsTitle = styled.h1`
   font-size: 21px;
   color: white;
   font-weight: 300;
