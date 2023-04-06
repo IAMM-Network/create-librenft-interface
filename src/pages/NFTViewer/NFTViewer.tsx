@@ -20,6 +20,11 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
   const [openMenu,  setOpenMenu] = useState(false)
   const [modalMode, setModalMode] = useState<modalMode>(mode)
 
+  const handleOverlay = () => {
+    setOpenMenu(false)
+    setModalMode(mode)
+  }
+
   return (
     <>
       <Container>
@@ -101,7 +106,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
       </Container>
       <Menu />
       {openMenu && <BottomMenu mode={modalMode} setModalMode={setModalMode}/>}
-      {openMenu && (modalMode === 'transfer' || modalMode === 'putOnSale') && <Overlay onClick={() => setOpenMenu(false)}/>}
+      {openMenu && (modalMode === 'transfer' || modalMode === 'putOnSale') && <Overlay onClick={handleOverlay}/>}
     </>
   )
 }
