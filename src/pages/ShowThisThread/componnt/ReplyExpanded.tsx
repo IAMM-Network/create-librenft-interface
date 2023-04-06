@@ -139,7 +139,6 @@ export default function ReplyExpanded({ setReply }: { setReply: Dispatch<SetStat
                   value={(text.length / MAX_CHARACTERS) * 100}
                   text={''}
                 />
-                ;
               </FooterItem>
             </Icons>
             <ReplyImpactButton onClick={() => setReply((prev: boolean) => !prev)} active={true}>

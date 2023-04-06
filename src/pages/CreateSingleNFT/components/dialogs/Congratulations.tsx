@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { Flex, Box } from '../../../../components/Box'
 import {
@@ -59,10 +59,12 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Flex justifyContent='space-between' width='60%' margin='2rem auto'>
-          <Impact>
-            <ImpactCreatorIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
-            <ImpactText>(Impact)</ImpactText>
-          </Impact>
+          <Link to="/testnet/impact-shareLNFT">
+            <Impact>
+              <ImpactCreatorIcon fill='white' width='20px' height='20px' />
+              <ImpactText>(Impact)</ImpactText>
+            </Impact>
+          </Link>
 
           <TwitterMediaIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
           <TelegramMediaIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
@@ -72,11 +74,13 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
           <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '12px' }}>Things you can do</h3>
         </Box>
 
-        <Flex justifyContent='space-between' width='70%' margin='2rem auto' padding="0 0 50px 0">
-          <Flex flexDirection='column'>
-            <OpenEyeIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
-            <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>View NFT</span>
-          </Flex>
+        <Flex justifyContent='space-between' width='70%' margin='2rem auto'>
+          <Link to="/testnet/viewer-owner-LNFT">
+            <Flex flexDirection='column'>
+              <OpenEyeIcon width='20px' height='20px' />
+              <span style={{ color: 'white', marginTop: '1rem', fontSize: '10px'}}>View NFT</span>
+            </Flex>
+          </Link>
 
           <Flex flexDirection='column'>
             <SettingsIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
