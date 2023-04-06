@@ -60,6 +60,7 @@ export interface NftStats extends NftLevels {
 
 export interface NftMetadata {
   name: string
+  symbol: string
   image_url: string
   description: string
   external_url: string
@@ -90,6 +91,7 @@ export interface NFTConfig {
 
 export const defaultNftMetadata = {
   name: '',
+  symbol: '',
   image_url: '',
   description: '',
   external_url: '',
@@ -380,6 +382,18 @@ const CreateSingleNFT = () => {
               placeholder='Item name'
               value={nftMetadata.name}
               onChange={e => setNftMetadata({ ...nftMetadata, name: e.target.value })}
+            />
+          </Section>
+          <Section justifyContent='left'>
+            <Text weight={600} size='14px'>
+              Token symbol*
+            </Text>
+            <Input
+              type='text'
+              maxLength={10}
+              placeholder='Max 10 characters'
+              value={nftMetadata.symbol}
+              onChange={e => setNftMetadata({ ...nftMetadata, symbol: e.target.value })}
             />
           </Section>
           <Section>
