@@ -71,6 +71,8 @@ export { default as EmojiIcon } from './Icons/EmojiIcon'
 export { default as MusicIcon } from './Icons/MusicIcon'
 
 export { default as ThreeDotsVerticalIcon } from './Icons/ThreeDotsVerticalIcon'
+export { default as AddAnotherIcon } from './Icons/AddAnotherIcon'
+export { default as EarthIcon } from './Icons/EarthIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'

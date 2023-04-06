@@ -59,10 +59,12 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Flex justifyContent='space-between' width='60%' margin='2rem auto'>
-          <Impact>
-            <ImpactCreatorIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
-            <ImpactText>(Impact)</ImpactText>
-          </Impact>
+          <Link to="/testnet/impact-shareLNFT">
+            <Impact>
+              <ImpactCreatorIcon fill='white' width='20px' height='20px' />
+              <ImpactText>(Impact)</ImpactText>
+            </Impact>
+          </Link>
 
           <TwitterMediaIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
           <TelegramMediaIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />

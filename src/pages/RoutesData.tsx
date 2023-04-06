@@ -7,6 +7,7 @@ import Handle from './Profile/Handle'
 import { SocialFeed } from './SocialFeed'
 import ShowThisThread from './ShowThisThread/ShowThisThread'
 import NFTViewer from './NFTViewer/NFTViewer'
+import SharePost from './Share/SharePost'
 
 export const RoutesData = [
   {
@@ -48,5 +49,9 @@ export const RoutesData = [
   {
     view: <NFTViewer mode="buyer"/>,
     path: 'testnet/viewer-buyer-LNFT',
+  },
+  {
+    view: <SharePost/>,
+    path: 'testnet/impact-shareLNFT',
   },
 ]
