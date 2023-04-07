@@ -8,6 +8,18 @@ import { SocialFeed } from './SocialFeed'
 import ShowThisThread from './ShowThisThread/ShowThisThread'
 import NFTViewer from './NFTViewer/NFTViewer'
 import SharePost from './Share/SharePost'
+import TransferSuccess from './TranferSuccess/TransferSuccess'
+
+export const ROUTES = {
+  HOME: '/',
+  FEED: '/testnet/feed',
+  THREAD: '/testnet/feed/show-this-thread/:thread_id',
+  CREATE_SINGLE_NFT: '/testnet/create-single-nft',
+  NFT_VIEWER_OWNER: '/testnet/viewer-owner-LNFT',
+  NFT_VIEWER_BUYER: '/testnet/viewer-buyer-LNFT',
+  SHARE_POST: '/testnet/impact-shareLNFT',
+  TRANSFER_SUCCESS: '/testnet/viewer-owner-transferLNFT',
+}
 
 export const RoutesData = [
   {
@@ -32,11 +44,11 @@ export const RoutesData = [
   },
   {
     view: <SocialFeed />,
-    path: 'testnet/feed',
+    path: ROUTES.FEED,
   },
   {
     view: <ShowThisThread />,
-    path: 'testnet/feed/show-this-thread/:thread_id',
+    path: ROUTES.THREAD,
   },
   {
     view: <Handle />,
@@ -44,14 +56,18 @@ export const RoutesData = [
   },
   {
     view: <NFTViewer mode="owner" />,
-    path: 'testnet/viewer-owner-LNFT',
+    path: ROUTES.NFT_VIEWER_OWNER,
   },
   {
     view: <NFTViewer mode="buyer"/>,
-    path: 'testnet/viewer-buyer-LNFT',
+    path: ROUTES.NFT_VIEWER_BUYER,
   },
   {
     view: <SharePost/>,
-    path: 'testnet/impact-shareLNFT',
+    path: ROUTES.SHARE_POST,
+  },
+  {
+    view: <TransferSuccess/>,
+    path: ROUTES.TRANSFER_SUCCESS,
   },
 ]
