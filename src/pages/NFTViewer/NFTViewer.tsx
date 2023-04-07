@@ -17,11 +17,9 @@ const TempImage = require('../../assets/images/congrats-img.png')
 export type modalMode = 'buyer' | 'owner' | 'putOnSale' | 'acceptOffer' | 'transfer' | 'cancel'
 
 const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract: string; imageCid: string, mode: 'buyer' | 'owner' }) => {
-  const [openMenu,  setOpenMenu] = useState(false)
   const [modalMode, setModalMode] = useState<modalMode>(mode)
 
   const handleOverlay = () => {
-    setOpenMenu(false)
     setModalMode(mode)
   }
 
@@ -67,7 +65,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
                     </Flex>
                   </Flex>
               </Flex>
-              <AcceptOfferButton onClick={() => setOpenMenu(prev => !prev)}>{mode === 'buyer' ? 'MAKE OFFER' :  'ACCEPT OFFER'}</AcceptOfferButton>
+              <AcceptOfferButton onClick={() => setModalMode(mode === 'buyer' ? 'buyer' : 'acceptOffer')}>{mode === 'buyer' ? 'MAKE OFFER' :  'ACCEPT OFFER'}</AcceptOfferButton>
             </Offer>
             <Accordion title="Description">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
@@ -105,8 +103,8 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
         </Flex>
       </Container>
       <Menu />
-      {openMenu && <BottomMenu mode={modalMode} setModalMode={setModalMode}/>}
-      {openMenu && (modalMode === 'transfer' || modalMode === 'putOnSale') && <Overlay onClick={handleOverlay}/>}
+      <BottomMenu mode={modalMode} setModalMode={setModalMode}/>
+      {(modalMode === 'transfer' || modalMode === 'putOnSale') && <Overlay onClick={handleOverlay}/>}
     </>
   )
 }

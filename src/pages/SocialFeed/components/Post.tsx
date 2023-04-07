@@ -3,6 +3,7 @@ import { PostProps } from '../data/types'
 import TimeAgo from 'timeago-react'
 import { HeartIcon, MessageIcon, NervosIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon } from '../../../components/Svg'
 import { Link } from 'react-router-dom'
+import { ROUTES } from '../../RoutesData'
 
 const Container = styled.div`
   margin-top: 30px;
@@ -207,7 +208,7 @@ export default function Post({ item }: { item: PostProps }) {
               </TipItem>
             )}
           </Footer>
-          {item.threads.length > 0 && <ThreadText to='/testnet/feed/show-this-thread/1'>Show this thread</ThreadText>}
+          {item.threads.length > 0 && <ThreadText to={ROUTES.THREAD}>Show this thread</ThreadText>}
         </Right>
       </Wrapper>
     </Container>

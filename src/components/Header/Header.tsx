@@ -1,13 +1,13 @@
-import React, { cloneElement, createElement, useContext, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Container } from '../Layout'
-import { FeedLeft, HeaderWrapper, ProfileImage, SocialFeedText } from './styles'
-import { DiscordMediaIcon, IAMMTextIcon, MetaMaskIcon, TwitterMediaIcon } from '../Svg'
+import { FeedLeft, HeaderWrapper, ImpactButton, ProfileImage, SocialFeedText } from './styles'
+import { DiscordMediaIcon, IAMMTextIcon, LeftArrowIcon, TwitterMediaIcon } from '../Svg'
 import { Box, Flex } from '../Box'
 import Hamburger from 'hamburger-react'
 import { Context } from '../../contexts/UserProfile'
-import { Button } from '../Button'
 import MainMenu from '../MainMenu/MainMenu'
+import { ROUTES } from '../../pages/RoutesData'
 
 const socialMedia = () => (
   <Flex>
@@ -32,10 +32,13 @@ const hamburguerMenu = (color: string, toggled: boolean, toggle: React.Dispatch<
 
 const Header: React.FC = () => {
   const { pathname } = useLocation()
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false)
   const { isConnected, setIsConnected, networkId } = useContext(Context)
 
-  const isFeed = pathname === '/feed'
+  const isPurple = pathname === ROUTES.FEED || pathname === ROUTES.SHARE_POST
+  const isFeed = pathname === ROUTES.FEED
+  const isSharePost = pathname === ROUTES.SHARE_POST
 
   const getRender = (): boolean => {
     if (pathname === '/testnet/collection/iamm') return false
@@ -88,7 +91,7 @@ const Header: React.FC = () => {
   if (pathname !== '/testnet/profile-dashboard')
     return (
       <>
-        <HeaderWrapper isFeed={isFeed} main={getRender() && isConnected}>
+        <HeaderWrapper isPurple={isPurple} main={getRender() && isConnected}>
           <Container maxWidth='90%'>
             <Flex alignItems='center' justifyContent='space-between' width='100%'>
               {isFeed ? (
@@ -96,6 +99,15 @@ const Header: React.FC = () => {
                   <ProfileImage src='/profile-1.png' alt='profile-image' />
                   <SocialFeedText>Social Feed</SocialFeedText>
                 </FeedLeft>
+              ) : isSharePost ? (
+                <Flex alignItems={'center'} width={'100%'} justifyContent={'space-between'}>
+                  <FeedLeft>
+                    <div style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+                      <LeftArrowIcon width='15px' height='15px' />
+                    </div>
+                  </FeedLeft>
+                  <ImpactButton>Impact</ImpactButton>
+                </Flex>
               ) : (
                 <>
                   <IAMMTextIcon onClick={() => window.location.reload()} width='100px' fill='white' />

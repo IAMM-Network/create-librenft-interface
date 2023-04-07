@@ -14,6 +14,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   margin-top: 10px;
+  gap: 10px;
 `
 
 const Left = styled.div`
@@ -49,12 +50,11 @@ const TextArea = styled.textarea`
   background: transparent;
   border: none;
   resize: none;
-  padding-block: 15px;
   width: 100%;
   border: none;
   overflow: auto;
   outline: none;
-  min-height: 100px;
+  min-height: 140px;
   margin-bottom: 20px;
 
   -webkit-box-shadow: none;
@@ -107,12 +107,20 @@ const ArrowIcon = styled.div<{ isActive: boolean }>`
   margin-left: 5px;
 `;
 
-const MAX_CHARACTERS = 100
+const MAX_CHARACTERS = 150
 
 const TempImage = require('../../../assets/images/congrats-img.png')
 
+const DEFAULT_TEXT = `
+Hello everyone! 
+
+I’ve recently created libreNFT #0888 in the IAMM platform. 
+
+Check it out!
+`
+
 export default function Post({ item }: { item: PostProps }) {
-  const [text, setText] = useState('')
+  const [text, setText] = useState(DEFAULT_TEXT)
   const [openType, setOpenType] = useState(false)
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -128,20 +136,22 @@ export default function Post({ item }: { item: PostProps }) {
           <ProfileImage src={item.profile} alt='profile' />
         </Left>
         <Right>
-          <Type onClick={() => setOpenType(prev => !prev)}>
-            Everyone
-            <ArrowIcon isActive={openType}>
-              <svg
-                viewBox="0 0 20 20"
-                focusable="false"
-                aria-hidden="true"
-                preserveAspectRatio="none"
-              >
-                <path fill="#8B40F4" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
-              </svg>
-            </ArrowIcon>
-          </Type>
-          <TextArea value={text} onChange={handleInput} placeholder='What are your thoughts?' />
+          <Flex paddingBottom={10}>
+            <Type onClick={() => setOpenType(prev => !prev)}>
+              Everyone
+              <ArrowIcon isActive={openType}>
+                <svg
+                  viewBox="0 0 20 20"
+                  focusable="false"
+                  aria-hidden="true"
+                  preserveAspectRatio="none"
+                >
+                  <path fill="#8B40F4" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+                </svg>
+              </ArrowIcon>
+            </Type>
+          </Flex>
+          <TextArea value={text} onChange={handleInput} maxLength={MAX_CHARACTERS} placeholder='What are your thoughts?' />
           <img src={TempImage} alt='nft-asset' />
           <Permission>
             <EarthIcon  width='14px' height='14px' />
