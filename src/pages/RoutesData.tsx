@@ -9,6 +9,7 @@ import ShowThisThread from './ShowThisThread/ShowThisThread'
 import NFTViewer from './NFTViewer/NFTViewer'
 import SharePost from './Share/SharePost'
 import TransferSuccess from './TranferSuccess/TransferSuccess'
+import NFTSettings from './NFTSettings/NFTSettings'
 
 export const ROUTES = {
   HOME: '/',
@@ -19,28 +20,33 @@ export const ROUTES = {
   NFT_VIEWER_BUYER: '/testnet/viewer-buyer-LNFT',
   SHARE_POST: '/testnet/impact-shareLNFT',
   TRANSFER_SUCCESS: '/testnet/viewer-owner-transferLNFT',
+  PROFILE_HANDLE: '/testnet/profile-handle',
+  PROFILE_DASHBOARD: '/testnet/profile-dashboard',
+  CREATE_COLLECTION: '/testnet/create-collection',
+  COLLECTION_INFO: '/testnet/collection/:collection_name',
+  NFT_SETTINGS: '/testnet/settings-LNFT',
 }
 
 export const RoutesData = [
   {
     view: <Home />,
-    path: '/',
+    path: ROUTES.HOME,
   },
   {
     view: <CreateSingleNFT />,
-    path: 'testnet/create-single-nft',
+    path: ROUTES.CREATE_SINGLE_NFT,
   },
   {
     view: <CreateCollection />,
-    path: 'testnet/create-collection',
+    path: ROUTES.CREATE_COLLECTION,
   },
   {
     view: <Profile />,
-    path: 'testnet/profile-dashboard',
+    path: ROUTES.PROFILE_DASHBOARD,
   },
   {
     view: <Collection />,
-    path: 'testnet/collection/:collection_name',
+    path: ROUTES.COLLECTION_INFO,
   },
   {
     view: <SocialFeed />,
@@ -52,7 +58,7 @@ export const RoutesData = [
   },
   {
     view: <Handle />,
-    path: 'testnet/profile-handle',
+    path: ROUTES.PROFILE_HANDLE,
   },
   {
     view: <NFTViewer mode="owner" />,
@@ -69,5 +75,13 @@ export const RoutesData = [
   {
     view: <TransferSuccess/>,
     path: ROUTES.TRANSFER_SUCCESS,
+  },
+  {
+    view: <TransferSuccess/>,
+    path: ROUTES.TRANSFER_SUCCESS,
+  },
+  {
+    view: <NFTSettings/>,
+    path: ROUTES.NFT_SETTINGS,
   },
 ]
