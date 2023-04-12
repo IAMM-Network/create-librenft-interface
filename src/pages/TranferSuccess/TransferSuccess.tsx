@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Flex, Box } from '../../components/Box'
+import { SuccessGreenCheckIcon } from '../../components/Svg'
 import { ROUTES } from '../RoutesData'
 import { Title, Wrapper, Text, ContinueButton } from './style'
 
@@ -17,6 +18,8 @@ const TransferSuccess = () => {
         <Box marginY='1rem'>
           <img width={160} height={160} src={TempImage} alt='nft-asset' />
         </Box>
+        
+        <SuccessGreenCheckIcon width={30} height={30} />
 
         <Box style={{ marginTop: '20px', marginBottom: '20px' }}>
           <Text style={{ marginBottom: '20px', fontWeight: '600' }}>&quot;libreNFT #0888&quot;</Text>

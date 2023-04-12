@@ -14,7 +14,7 @@ import { AcceptOfferButton, Like, LikeCount, NFTTitle, NFTViewerTitle, NFTViewer
 
 const TempImage = require('../../assets/images/congrats-img.png')
 
-export type modalMode = 'buyer' | 'owner' | 'putOnSale' | 'acceptOffer' | 'transfer' | 'cancel'
+export type modalMode = 'buyer' | 'owner' | 'putOnSale' | 'acceptOffer' | 'transfer' | 'cancelSale'
 
 const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract: string; imageCid: string, mode: 'buyer' | 'owner' }) => {
   const [modalMode, setModalMode] = useState<modalMode>(mode)

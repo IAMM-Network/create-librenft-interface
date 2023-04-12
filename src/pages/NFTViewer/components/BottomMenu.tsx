@@ -16,9 +16,20 @@ const TempImage = require('../../../assets/images/congrats-img.png')
 
 export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<BottomMenuProps>) {
   const [price, setPrice] = useState(0)
+  const [onSale, setOnSale] = useState<boolean>(false)
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(e.target.value))
+  }
+
+  const handleSaleConfirm = () => {
+    setOnSale(true)
+    setModalMode('owner')
+  }
+
+  const handleCancelSales = () => {
+    setOnSale(false)
+    setModalMode('owner')
   }
 
   return mode === 'buyer' ? (
@@ -28,8 +39,24 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
     </Wrapper>
   ) : mode === 'owner' ? (
     <Wrapper>
-      <PrimaryButton onClick={() => setModalMode('putOnSale')}>PUT ON SALE</PrimaryButton>
-      <SecondaryButton onClick={() => setModalMode('transfer')}>TRANSFER NOW</SecondaryButton>
+      {!onSale ? (
+        <PrimaryButton onClick={() => setModalMode('putOnSale')}>
+          PUT
+          <br />
+          ON SALE
+        </PrimaryButton>
+      ) : (
+        <RedButton onClick={() => setModalMode('cancelSale')}>
+          CANCEL
+          <br />
+          SALE
+        </RedButton>
+      )}
+      <SecondaryButton onClick={() => setModalMode('transfer')}>
+        TRANSFER
+        <br />
+        NOW
+      </SecondaryButton>
     </Wrapper>
   ) : mode === 'putOnSale' ? (
     <Wrapper>
@@ -51,22 +78,15 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
         </Flex>
         <Flex>
           <RedButton onClick={() => setModalMode('owner')}>x</RedButton>
-          <GreenButton onClick={() => setModalMode('owner')}>✓</GreenButton>
+          <GreenButton onClick={handleSaleConfirm}>✓</GreenButton>
         </Flex>
       </Flex>
     </Wrapper>
-  ) : mode === 'cancel' ? (
-    <Wrapper>
-      <Flex>
-        <RedButton onClick={() => setModalMode('owner')}>Cancel</RedButton>
-        <SecondaryButton onClick={() => setModalMode('transfer')}>TRANSFER NOW</SecondaryButton>
-      </Flex>
-    </Wrapper>
-  ) : mode === 'acceptOffer' ? (
+  ) : mode === 'cancelSale' ? (
     <Wrapper>
       <Flex>
         <RedButton onClick={() => setModalMode('owner')}>MAYBE NOT</RedButton>
-        <GreenButton onClick={() => setModalMode('owner')}>I'M SURE</GreenButton>
+        <GreenButton onClick={handleCancelSales}>I'M SURE</GreenButton>
       </Flex>
     </Wrapper>
   ) : mode === 'transfer' ? (
@@ -85,11 +105,9 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
           </Flex>
         </Flex>
         <Flex>
-          <RedButton style={{ width: 'fit-content' }} onClick={() => setModalMode('owner')}>
-            NOT NOW
-          </RedButton>
+          <RedButton onClick={() => setModalMode('owner')}>NOT NOW</RedButton>
           <Link style={{ textDecoration: 'none' }} to={ROUTES.TRANSFER_SUCCESS}>
-            <GreenButton style={{ width: 'fit-content' }}>CONFIRM</GreenButton>
+            <GreenButton>CONFIRM</GreenButton>
           </Link>
         </Flex>
       </Flex>
@@ -113,15 +131,18 @@ const PrimaryButton = styled.button`
   width: 120px;
   height: 45px;
   color: white;
-  font-weight: 800;
   justify-content: center;
   align-items: center;
-  padding: 4px 26px;
   background: #8b40f4;
   border-radius: 11px;
   border: none;
   margin-inline: 15px;
   cursor: pointer;
+  font-family: 'Montserrat' !important;
+  font-weight: 800;
+  font-size: 16px;
+  text-decoration: none;
+  box-sizing: border-box;
 `
 
 const SecondaryButton = styled(PrimaryButton)`
@@ -132,15 +153,10 @@ const SecondaryButton = styled(PrimaryButton)`
 
 const RedButton = styled(PrimaryButton)`
   background: #f4404f;
-  font-weight: 600;
-  font-size: 18px;
 `
 
 const GreenButton = styled(PrimaryButton)`
   background: #40f48b;
-  font-weight: 600;
-  font-size: 18px;
-  text-decoration: none;
 `
 
 const PriceInputContainer = styled.div`
