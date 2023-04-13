@@ -6,6 +6,7 @@ import { TitleSection, Title, Description, BoxOption } from './styles'
 import Header from './components/Header'
 import Menu from './components/Menu'
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from '../RoutesData'
 
 
 const CreatorImage = require('../../assets/images/profile/profile-creator.png')
@@ -31,7 +32,7 @@ const Profile: React.FC = () => {
   const [activeBox, setActiveBox] = useState(0)
 
   const handleClick = () => {
-      navigate("/testnet/profile-handle");
+      navigate(ROUTES.PROFILE_HANDLE);
   }
 
   // If first time is true return that
