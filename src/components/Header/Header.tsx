@@ -117,7 +117,7 @@ const Header: React.FC = () => {
             </Flex>
           </Container>
         </HeaderWrapper>
-        {isOpen ? <MainMenu /> : <div></div>}
+        {isOpen ? <MainMenu toggle={setIsOpen} /> : <div></div>}
       </>
     )
   return <div></div>

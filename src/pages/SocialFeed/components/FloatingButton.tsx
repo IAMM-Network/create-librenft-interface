@@ -13,6 +13,9 @@ import {
   MultipleIcon,
   PlaskIcon,
 } from '../../../components/Svg'
+import { ROUTES } from '../../RoutesData'
+import { useNavigate } from "react-router-dom"
+import Actions from '../../../util/enums'
 
 interface ButtonProps {
   open: boolean
@@ -82,8 +85,30 @@ const ButtonText = styled.div`
   margin-right: 10px;
 `
 
+
 export default function FloatingButton({ open, setOpen, isConnected, isCollector }: ButtonProps) {
-  // isCollector === true => builder
+
+  const navigate = useNavigate();
+
+  const setAction = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const button: HTMLButtonElement = event.currentTarget;
+    const action = parseInt(button.value);
+    
+    switch(action) {
+      case Actions.Impact:
+        navigate(ROUTES.SHARE_POST)
+        break;
+      case Actions.CreateLNFT:
+        navigate(ROUTES.CREATE_SINGLE_NFT)
+        break;
+      case Actions.SharePost:
+        navigate(ROUTES.SHARE_POST)
+        break;
+    }
+
+  }
+
   return (
     <Container>
       {open && isCollector ? (
@@ -116,14 +141,14 @@ export default function FloatingButton({ open, setOpen, isConnected, isCollector
       ) : open && !isCollector ? (
         <Menus>
           <Menu>
-            <ButtonText>Impact</ButtonText>
-            <Button>
+            <ButtonText >Impact</ButtonText>
+            <Button value={Actions.SharePost} onClick={setAction}>
               <ImpactCreatorIcon width={16} height={16} />
             </Button>
           </Menu>
           <Menu>
             <ButtonText>Create LNFT</ButtonText>
-            <Button>
+            <Button value={Actions.CreateLNFT} onClick={setAction}>
               <LNFTIcon width={16} height={16} />
             </Button>
           </Menu>

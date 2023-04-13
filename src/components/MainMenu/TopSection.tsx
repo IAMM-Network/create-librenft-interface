@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { FilterTextbox } from '../SearchBar/search-bar'
 import LinkSection from './LinksSection'
+import {CommonLinkSectionProps} from './LinksSection'
 
 const SectionWrapper = styled.div`
   width: 100%;
@@ -13,11 +14,12 @@ const SectionWrapper = styled.div`
   align-items: center;
 `
 
-const TopSection: React.FC = () => {
+const TopSection = (props: CommonLinkSectionProps) => {
+
   return (
     <SectionWrapper>
-      <FilterTextbox />
-      <LinkSection />
+        <FilterTextbox/>
+        <LinkSection toggle={props.toggle}/>
     </SectionWrapper>
   )
 }

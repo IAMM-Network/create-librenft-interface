@@ -1,22 +1,47 @@
 import styled from 'styled-components'
 import LogoIcon from '../../Svg/Icons/LogoIcon'
 import PeopleIcon from '../../Svg/Icons/PeopleIcon'
+import {CommonLinkSectionProps} from '../LinksSection'
+import { ROUTES } from '../../../pages/RoutesData'
+import Actions from "../../../util/enums"
+import { useNavigate } from "react-router-dom"
 
-interface IAdditionalMenuProps {
-  accounts: string[]
+interface IAdditionalMenuProps extends CommonLinkSectionProps {
+  accounts: string[];
 }
 const AdditionalMenu = (props: IAdditionalMenuProps) => {
   const { accounts } = props
   const account = accounts.length > 0 ? [accounts[0].slice(0, -3), accounts[0].slice(-3)] : ['', '']
 
+  const navigate = useNavigate();
+
+  const setAction = (event: React.MouseEvent<HTMLLIElement>) => {
+
+      event.preventDefault();
+      const button: HTMLLIElement = event.currentTarget;
+      const action = button.value;
+      
+      switch(action) {
+        case Actions.Feed:      
+          props?.toggle?.(false);
+          navigate(ROUTES.FEED)
+          break;
+        case Actions.Profile:
+          props?.toggle?.(false);
+          navigate(ROUTES.COLLECTION_INFO)
+          break;
+      }
+
+  }
+
   return (
     <SectionWrapper>
       <LinkWrapper>
-        <MenuLink href='.'>
+        <MenuLink value={Actions.Feed} onClick={setAction}>
           <LogoIcon width={20} height={20} />
-          <span style={{ fontWeight: 'bold' }}>Dashboard</span>
+          <span style={{ fontWeight: 'bold' }}>Feed</span>
         </MenuLink>
-        <MenuLink href='.'>
+        <MenuLink value={Actions.Profile} onClick={setAction}>
           <PeopleIcon width={20} height={20} />
           <span>Profile</span>
         </MenuLink>
@@ -81,7 +106,7 @@ const AccountWrapper = styled.div`
   }
 `
 
-const MenuLink = styled.a`
+const MenuLink = styled.li`
   display: flex;
   align-items: center;
   color: white;

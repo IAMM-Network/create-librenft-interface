@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Flex } from '../../../components/Box'
 import { Container } from '../../../components/Layout'
 import { HomeIcon, MessageIcon, NotificationIcon, SearchIcon } from '../../../components/Svg'
+import { ROUTES } from '../../RoutesData'
+import { useNavigate } from "react-router-dom"
 
 const MenuWrapper = styled.div`
   background-color: #180a33;
@@ -18,6 +20,12 @@ const option = [HomeIcon, SearchIcon, NotificationIcon, MessageIcon]
 const Menu: React.FC = ({ style }: any) => {
   const [indexActived, setIndexActived] = useState(0)
 
+  const navigate = useNavigate();
+
+  const setAction = (index: number) => {
+    index === 0 ? navigate(ROUTES.HOME) : setIndexActived(index);
+  }
+
   return (
     <MenuWrapper style={style}>
       <Container maxWidth='90%'>
@@ -26,7 +34,7 @@ const Menu: React.FC = ({ style }: any) => {
             createElement(item, {
               style: { cursor: 'pointer' },
               fill: indexActived === index ? 'white' : '#6D6D6D',
-              onClick: () => setIndexActived(index),
+              onClick: () => setAction(index)
             }),
           )}
         </Flex>

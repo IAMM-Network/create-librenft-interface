@@ -1,7 +1,11 @@
+import { useState, createElement } from 'react'
+import React from "react"
 import styled from 'styled-components'
 import TopSection from './TopSection'
 import BottomSection from './BottomSection'
+import {CommonLinkSectionProps} from './LinksSection'
 import SnsSection from './SnsSection'
+
 
 const MenuWrapper = styled.div`
   position: fixed;
@@ -19,12 +23,12 @@ const MenuWrapper = styled.div`
   overscroll-behavior: contain;
 `
 
-const MainMenu: React.FC = () => {
+const MainMenu = (props: CommonLinkSectionProps) => {
   return (
     <>
       <MenuWrapper>
-        <TopSection />
-        <BottomSection />
+        <TopSection toggle={props.toggle}/>
+        <BottomSection toggle={props.toggle}/>
       </MenuWrapper>
       <SnsSection />
     </>

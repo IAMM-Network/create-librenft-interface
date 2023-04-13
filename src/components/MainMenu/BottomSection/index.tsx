@@ -4,6 +4,7 @@ import { Context } from '../../../contexts/UserProfile'
 import styled from 'styled-components'
 import AdditionalMenu from './AdditionalMenu'
 import WalletConnect from './WalletConnect'
+import {CommonLinkSectionProps} from '../LinksSection'
 
 const SectionWrapper = styled.div`
   width: 100%;
@@ -14,7 +15,7 @@ const SectionWrapper = styled.div`
   align-items: center;
 `
 
-const BottomSection: React.FC = () => {
+const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectionProps) => {
   const navigate = useNavigate()
 
   const { isConnected, setIsConnected, networkId } = useContext(Context)
@@ -26,12 +27,13 @@ const BottomSection: React.FC = () => {
     console.log('accounts')
     console.log(accounts)
     if (accounts.length > 0) {
-      setAccounts(accounts)
-      setIsConnected(true)
+      setAccounts(accounts);
+      setIsConnected(true);
+      props?.toggle?.(false);
       navigate('/testnet/profile-dashboard')
     }
     return accounts
-  }, [navigate, setIsConnected])
+  }, [navigate, setIsConnected, props])
 
   useEffect(() => {
     const getAccounts = async () => {
@@ -76,7 +78,7 @@ const BottomSection: React.FC = () => {
 
   return (
     <SectionWrapper>
-      {isConnected ? <AdditionalMenu accounts={accounts} /> : <WalletConnect MetaMaskInitialization={MetaMaskInitialization} />}
+      {isConnected ? <AdditionalMenu accounts={accounts} toggle={props.toggle} /> : <WalletConnect MetaMaskInitialization={MetaMaskInitialization} />}
     </SectionWrapper>
   )
 }
