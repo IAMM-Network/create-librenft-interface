@@ -11,6 +11,7 @@ import {
   TwitterMediaIcon,
 } from '../../../../components/Svg'
 import { CongratulationsTitle, CongratulationsWrapper, Hr } from '../styles'
+import { ROUTES } from '../../../RoutesData'
 
 const Impact = styled.div`
   display: flex;
@@ -59,7 +60,7 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Flex justifyContent='space-between' width='60%' margin='2rem auto'>
-          <Link to="/testnet/impact-shareLNFT">
+          <Link to={ROUTES.SHARE_POST}>
             <Impact>
               <ImpactCreatorIcon fill='white' width='20px' height='20px' />
               <ImpactText>(Impact)</ImpactText>
@@ -75,16 +76,20 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Flex justifyContent='space-between' width='70%' margin='2rem auto'>
-          <Link to="/testnet/viewer-owner-LNFT">
+          <Link to={ROUTES.NFT_VIEWER_OWNER}>
             <Flex flexDirection='column'>
               <OpenEyeIcon width='20px' height='20px' />
-              <span style={{ color: 'white', marginTop: '1rem', fontSize: '10px'}}>View NFT</span>
+              <span style={{ color: 'white', marginTop: '1rem', fontSize: '10px' }}>View NFT</span>
             </Flex>
           </Link>
 
           <Flex flexDirection='column'>
-            <SettingsIcon style={{ cursor: 'not-allowed' }} fill='#696969' width='20px' height='20px' />
-            <span style={{ color: '#696969', marginTop: '1rem', fontSize: '10px' }}>Settings</span>
+            <Link to={ROUTES.NFT_SETTINGS}>
+              <Flex flexDirection='column'>
+                <SettingsIcon style={{ cursor: 'not-allowed' }} fill='#ffffff' width='20px' height='20px' />
+                <span style={{ color: 'white', marginTop: '1rem', fontSize: '10px' }}>Settings</span>
+              </Flex>
+            </Link>
           </Flex>
 
           <Flex flexDirection='column'>
