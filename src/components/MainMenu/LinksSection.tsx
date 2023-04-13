@@ -1,32 +1,48 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Flex } from "../Box";
+import React from 'react'
+import styled from 'styled-components'
+import FireIcon from '../Svg/Icons/FireIcon'
+import HelpIcon from '../Svg/Icons/HelpIcon'
+import SpeakerIcon from '../Svg/Icons/SpeakerIcon'
 
 const SectionWrapper = styled.div`
-  background-color: #1A1A1A;
   width: 100%;
-  left: 0;
-  position: relative;
-  padding: 1rem 0;
-  display: inline-block;
-  justify-content: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
 `
 
 const MenuLink = styled.a`
-  display: block;
-  width: 100%;
-  text-align: left;
+  display: flex;
+  align-items: center;
   color: white;
+  text-decoration: none;
+  gap: 1rem;
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
 `
 
 const LinkSection: React.FC = () => {
   return (
     <SectionWrapper>
-        <MenuLink href='.'>[X] Most Impact</MenuLink>
-        <MenuLink href='.'>[X] Feature Drops</MenuLink>
-        <MenuLink href='.'>[X] Getting Started</MenuLink>
+      <MenuLink href='.'>
+        <FireIcon width={20} height={20} />
+        <span>Most Impact</span>
+      </MenuLink>
+      <MenuLink href='.'>
+        <SpeakerIcon width={20} height={20} />
+        <span>Feature Drops</span>
+      </MenuLink>
+      <MenuLink href='.'>
+        <HelpIcon width={20} height={20} />
+        <span>Getting Started</span>
+      </MenuLink>
     </SectionWrapper>
   )
 }
 
-export default LinkSection;
+export default LinkSection
