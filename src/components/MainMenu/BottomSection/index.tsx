@@ -1,43 +1,48 @@
-
-import React, { cloneElement, createElement, useContext, useState } from 'react'
-import { useNavigate } from "react-router-dom"
-import { Context } from '../../contexts/UserProfile'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Context } from '../../../contexts/UserProfile'
 import styled from 'styled-components'
-import { Flex } from '../Box'
-import { Container } from '../Layout'
-import Button from '../Button/Button'
+import AdditionalMenu from './AdditionalMenu'
+import WalletConnect from './WalletConnect'
 
 const SectionWrapper = styled.div`
-  background-color: #1A1A1A;
   width: 100%;
-  left: 0;
-  top: 80px;
   position: relative;
-  padding: 1rem 0;
-  display: block;  
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
-
 const BottomSection: React.FC = () => {
+  const navigate = useNavigate()
 
-  const navigate = useNavigate();
-
-  const{ isConnected, setIsConnected, networkId } = useContext(Context)
+  const { isConnected, setIsConnected, networkId } = useContext(Context)
+  const [accounts, setAccounts] = useState<string[]>([])
   const REQUIRED_NETWORK_ID = 71401
 
-  const getAccounts = async () => {
+  const getAccounts = useCallback(async () => {
     const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    console.log('accounts');
-    console.log(accounts);
+    console.log('accounts')
+    console.log(accounts)
     if (accounts.length > 0) {
-      setIsConnected(true);
-      navigate('/testnet/profile-dashboard');
+      setAccounts(accounts)
+      setIsConnected(true)
+      navigate('/testnet/profile-dashboard')
     }
     return accounts
-  }
+  }, [navigate, setIsConnected])
+
+  useEffect(() => {
+    const getAccounts = async () => {
+      const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      if (accounts.length > 0) setAccounts(accounts)
+    }
+    if (isConnected) getAccounts()
+  }, [isConnected])
 
   const MetaMaskInitialization = async () => {
-    try {      
+    try {
       await getAccounts()
       if (networkId !== REQUIRED_NETWORK_ID) {
         await addGodwokenNetwork()
@@ -46,8 +51,7 @@ const BottomSection: React.FC = () => {
       console.error(e)
     }
   }
-  
-  
+
   const NetworkConfig = {
     chainId: `0x${REQUIRED_NETWORK_ID.toString(16)}`,
     chainName: 'Godwoken Testnet',
@@ -60,8 +64,7 @@ const BottomSection: React.FC = () => {
     blockExplorerUrls: ['https://v1.testnet.gwscan.com', 'https://gw-testnet-explorer.nervosdao.community'],
     iconUrls: ['https://raw.githubusercontent.com/nervosnetwork/ckb-explorer-frontend/master/public/favicon.ico'],
   }
-  
-  
+
   async function addGodwokenNetwork() {
     if (typeof window.ethereum !== 'undefined') {
       await window.ethereum.request({
@@ -71,15 +74,9 @@ const BottomSection: React.FC = () => {
     }
   }
 
-
-
-
   return (
     <SectionWrapper>
-      <Container maxWidth='90%'>        
-        <Button variant='cta' onClick={MetaMaskInitialization}>CONNECT WALLET</Button>
-        <Button variant='uni'>LOGIN WITH UNIPASS</Button>
-      </Container>
+      {isConnected ? <AdditionalMenu accounts={accounts} /> : <WalletConnect MetaMaskInitialization={MetaMaskInitialization} />}
     </SectionWrapper>
   )
 }
