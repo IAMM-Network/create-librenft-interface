@@ -7,9 +7,10 @@ import Handle from './Profile/Handle'
 import { SocialFeed } from './SocialFeed'
 import ShowThisThread from './ShowThisThread/ShowThisThread'
 import NFTViewer from './NFTViewer/NFTViewer'
-import SharePost from './Share/SharePost'
+import ShareImact from './Share/ShareImact'
 import TransferSuccess from './TranferSuccess/TransferSuccess'
 import NFTSettings from './NFTSettings/NFTSettings'
+import ComposeImact from './Compose/ComposeImact'
 
 export const ROUTES = {
   HOME: '/',
@@ -18,7 +19,8 @@ export const ROUTES = {
   CREATE_SINGLE_NFT: '/testnet/create-single-nft',
   NFT_VIEWER_OWNER: '/testnet/viewer-owner-LNFT',
   NFT_VIEWER_BUYER: '/testnet/viewer-buyer-LNFT',
-  SHARE_POST: '/testnet/impact-shareLNFT',
+  SHARE_IMPACT: '/testnet/impact-shareLNFT',
+  COMPOSE_IMPACT: '/testnet/impact-composer',
   TRANSFER_SUCCESS: '/testnet/viewer-owner-transferLNFT',
   PROFILE_HANDLE: '/testnet/profile-handle',
   PROFILE_DASHBOARD: '/testnet/profile-dashboard',
@@ -69,8 +71,12 @@ export const RoutesData = [
     path: ROUTES.NFT_VIEWER_BUYER,
   },
   {
-    view: <SharePost/>,
-    path: ROUTES.SHARE_POST,
+    view: <ShareImact/>,
+    path: ROUTES.SHARE_IMPACT,
+  },
+  {
+    view: <ComposeImact/>,
+    path: ROUTES.COMPOSE_IMPACT,
   },
   {
     view: <TransferSuccess/>,

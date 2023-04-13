@@ -13,6 +13,8 @@ import {
   MultipleIcon,
   PlaskIcon,
 } from '../../../components/Svg'
+import { Link } from 'react-router-dom'
+import { ROUTES } from '../../RoutesData'
 
 interface ButtonProps {
   open: boolean
@@ -90,9 +92,11 @@ export default function FloatingButton({ open, setOpen, isConnected, isCollector
         <Menus>
           <Menu>
             <ButtonText>Impact</ButtonText>
-            <Button>
-              <ImpactIcon width={16} height={16} />
-            </Button>
+            <Link to={ROUTES.COMPOSE_IMPACT}>
+              <Button>
+                <ImpactIcon width={16} height={16} />
+              </Button>
+            </Link>
           </Menu>
           <Menu>
             <ButtonText>Discover</ButtonText>
@@ -117,9 +121,11 @@ export default function FloatingButton({ open, setOpen, isConnected, isCollector
         <Menus>
           <Menu>
             <ButtonText>Impact</ButtonText>
-            <Button>
-              <ImpactCreatorIcon width={16} height={16} />
-            </Button>
+            <Link to={ROUTES.COMPOSE_IMPACT}>
+              <Button>
+                <ImpactCreatorIcon width={16} height={16} />
+              </Button>
+            </Link>
           </Menu>
           <Menu>
             <ButtonText>Create LNFT</ButtonText>
