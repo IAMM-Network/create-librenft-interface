@@ -151,19 +151,19 @@ const NFTSettings = () => {
                     <InputBox placeholder='0x...' />
                   </Flex>
                   <Divider style={{ marginLeft: '-20px', width: 'calc(100% + 20px)' }} />
-                  <OptionRow>
+                  <OptionRow marginBottom={10}>
                     <OptionText>Set rental duration (Time is set to UTC time)</OptionText>
                   </OptionRow>
-                  <Grid gridTemplateColumns={'1fr 2fr 1fr'}>
-                    <OptionText style={{ fontWeight: 600, textAlign: 'center' }}>From</OptionText>
-                    <OptionText>{new Date().toDateString()}</OptionText>
+                  <Flex>
+                    <OptionText style={{ fontWeight: 600, textAlign: 'center', marginRight: 30 }}>From</OptionText>
+                    <OptionText style={{ marginRight: 30 }}>{new Date().toDateString()}</OptionText>
                     <OptionText>00:00</OptionText>
-                  </Grid>
-                  <Grid gridTemplateColumns={'1fr 2fr 1fr'}>
-                    <OptionText style={{ fontWeight: 600, textAlign: 'center' }}>To</OptionText>
-                    <OptionText>{new Date().toDateString()}</OptionText>
+                  </Flex>
+                  <Flex>
+                    <OptionText style={{ fontWeight: 600, textAlign: 'center', marginLeft: 5, marginRight: 44 }}>To</OptionText>
+                    <OptionText style={{ marginRight: 30 }}>{new Date().toDateString()}</OptionText>
                     <OptionText>00:00</OptionText>
-                  </Grid>
+                  </Flex>
                   <Divider style={{ marginLeft: '-20px', width: 'calc(100% + 20px)' }} />
                   <OptionRow>
                     <OptionText>Set rental price</OptionText>
@@ -217,9 +217,9 @@ const NFTSettings = () => {
                   {Array(fileCount)
                     .fill(null)
                     .map((_, i) => (
-                      <Flex key={i} marginTop={10}>
+                      <Flex key={i} marginTop={10} style={{ position: 'relative' }}>
                         <InputBox placeholder='Upload file...' style={{ caretColor: 'transparent', paddingLeft: '20px' }} />
-                        <InputBox type='file' style={{ opacity: 0, position: 'absolute' }} />
+                        <InputBox type='file' style={{ opacity: 0, position: 'absolute', width: '100%' }} />
                       </Flex>
                     ))}
 
@@ -306,9 +306,9 @@ const NFTSettings = () => {
                   </OptionRow>
                 </Flex>
                 <Flex flexDirection={'column'} style={{ width: 'calc(100% + 20px)', marginLeft: '-20px' }}>
-                  <Flex marginTop={10}>
+                  <Flex marginTop={10} style={{ position: 'relative' }}>
                     <InputBox placeholder='Upload file...' style={{ caretColor: 'transparent', paddingLeft: '20px' }} />
-                    <InputBox type='file' style={{ opacity: 0, position: 'absolute' }} />
+                    <InputBox type='file' style={{ opacity: 0, position: 'absolute', width: '100%' }} />
                   </Flex>
                 </Flex>
               </Flex>
@@ -317,6 +317,7 @@ const NFTSettings = () => {
               <PrimaryButton>Confirm</PrimaryButton>
             </Flex>
           </Flex>
+          
         </Flex>
       </Container>
       <Menu />
