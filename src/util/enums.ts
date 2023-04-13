@@ -3,7 +3,8 @@
     CreateLNFT,
     Feed,
     Home,
-    SharePost
+    SharePost,
+    Profile
   }
 
   export default Actions;

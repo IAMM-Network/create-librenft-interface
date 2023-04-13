@@ -54,7 +54,8 @@ const TextArea = styled.textarea`
   border: none;
   overflow: auto;
   outline: none;
-  min-height: 140px;
+  min-height: 145px;
+  margin-top: 10px;
   margin-bottom: 20px;
 
   -webkit-box-shadow: none;
@@ -111,8 +112,7 @@ const MAX_CHARACTERS = 150
 
 const TempImage = require('../../../assets/images/congrats-img.png')
 
-const DEFAULT_TEXT = `
-Hello everyone! 
+const DEFAULT_TEXT = `Hello everyone! 
 
 I’ve recently created libreNFT #0888 in the IAMM platform. 
 

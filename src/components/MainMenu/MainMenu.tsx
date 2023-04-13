@@ -1,33 +1,37 @@
 import { useState, createElement } from 'react'
 import React from "react"
 import styled from 'styled-components'
-import { Flex } from '../Box'
-import { Container } from '../Layout'
 import TopSection from './TopSection'
 import BottomSection from './BottomSection'
 import {CommonLinkSectionProps} from './LinksSection'
+import SnsSection from './SnsSection'
+
 
 const MenuWrapper = styled.div`
-  background-color: #1A1A1A;
-  width: 100%;
+  position: fixed;
+  background-color: #1a1a1a;
+  top: 0;
   left: 0;
-  bottom: 0;
-  position: relative;
-  padding: 1rem 0;
-  display: inline-block;
+  width: 100vw;
+  height: 100vh;
+  padding: 5rem 1rem 4.375rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 `
 
 const MainMenu = (props: CommonLinkSectionProps) => {
-
   return (
-    <MenuWrapper>
-      <Container maxWidth='90%'>
-
-          <TopSection toggle={props.toggle}/>
-          <BottomSection/>
-
-      </Container>
-    </MenuWrapper>
+    <>
+      <MenuWrapper>
+        <TopSection toggle={props.toggle}/>
+        <BottomSection toggle={props.toggle}/>
+      </MenuWrapper>
+      <SnsSection />
+    </>
   )
 }
 

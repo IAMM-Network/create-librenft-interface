@@ -73,6 +73,10 @@ export { default as MusicIcon } from './Icons/MusicIcon'
 export { default as ThreeDotsVerticalIcon } from './Icons/ThreeDotsVerticalIcon'
 export { default as AddAnotherIcon } from './Icons/AddAnotherIcon'
 export { default as EarthIcon } from './Icons/EarthIcon'
+export { default as SuccessGreenCheckIcon } from './Icons/SuccessGreenCheckIcon'
+
+export { default as TransferIcon } from './Icons/TransferIcon'
+export { default as CircleAddIcon } from './Icons/CircleAddIcon'
 
 export { default as MostIcon} from './Icons/MostIcon'
 export { default as AnnouncementIcon} from './Icons/AnnouncementIcon'
