@@ -191,7 +191,6 @@ const TransferInpput = styled.input`
   align-items: center;
   background: none;
   color: white;
-  border: none;
   height: 45px;
   text-align: left;
   border: 1px solid #8b40f4;
