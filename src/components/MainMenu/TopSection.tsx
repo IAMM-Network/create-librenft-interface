@@ -4,6 +4,7 @@ import { Flex } from '../Box'
 import { Container } from '../Layout'
 import { FilterTextbox } from '../SearchBar/search-bar'
 import LinkSection from './LinksSection'
+import {CommonLinkSectionProps} from './LinksSection'
 
 
 const SectionWrapper = styled.div`
@@ -17,13 +18,13 @@ const SectionWrapper = styled.div`
   border-bottom: solid 1px #fff;
 `
 
-const TopSection: React.FC = () => {
+const TopSection = (props: CommonLinkSectionProps) => {
 
   return (
     <SectionWrapper>
       <Container maxWidth='90%'>
             <FilterTextbox/>
-            <LinkSection/>
+            <LinkSection toggle={props.toggle}/>
       </Container>
     </SectionWrapper>
   )

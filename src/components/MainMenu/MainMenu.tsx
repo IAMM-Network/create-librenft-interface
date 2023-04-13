@@ -1,9 +1,11 @@
 import { useState, createElement } from 'react'
+import React from "react"
 import styled from 'styled-components'
 import { Flex } from '../Box'
 import { Container } from '../Layout'
 import TopSection from './TopSection'
 import BottomSection from './BottomSection'
+import {CommonLinkSectionProps} from './LinksSection'
 
 const MenuWrapper = styled.div`
   background-color: #1A1A1A;
@@ -15,13 +17,13 @@ const MenuWrapper = styled.div`
   display: inline-block;
 `
 
-const MainMenu: React.FC = () => {
+const MainMenu = (props: CommonLinkSectionProps) => {
 
   return (
     <MenuWrapper>
       <Container maxWidth='90%'>
 
-          <TopSection/>
+          <TopSection toggle={props.toggle}/>
           <BottomSection/>
 
       </Container>

@@ -2,6 +2,9 @@ import { FC } from 'react'
 import { Grid } from '../../components/Box'
 import { HomeWrapper, Title, HeadText, HeadImage } from './styles'
 import { Container } from '../../components/Layout'
+import { Button } from '../../components/Button'
+import { Launch } from '../../components/Launch'
+
 
 const IAMMGradientIcon = require('../../assets/images/iamm-home.png')
 
@@ -16,6 +19,9 @@ const Home: FC = () => (
       </Grid>
       <Grid alignItems='start' justifyContent='center'>
         <HeadText>Create, collect, mix and pimp – libreNFT</HeadText>
+      </Grid>
+      <Grid>
+        <Launch/>
       </Grid>
     </Container>
   </HomeWrapper>
