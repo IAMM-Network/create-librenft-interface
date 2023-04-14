@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 
 interface IAdditionalMenuProps extends CommonLinkSectionProps {
   accounts: string[];
+  userProfilePic: string;
 }
 const AdditionalMenu = (props: IAdditionalMenuProps) => {
   const { accounts } = props
@@ -47,7 +48,9 @@ const AdditionalMenu = (props: IAdditionalMenuProps) => {
         </MenuLink>
       </LinkWrapper>
       <ProfileWrapper>
-        <Profile />
+        <Profile>
+          <ImgProfile alt="" src={props.userProfilePic}></ImgProfile>
+        </Profile>
         <AccountWrapper>
           <span className='ellipsis'>{account[0]}</span>
           <span>{account[1]}</span>
@@ -118,6 +121,13 @@ const MenuLink = styled.li`
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
+`
+const ImgProfile = styled.img`
+  width: 3.75rem;
+  height: 3.75rem;
+  overflow: hidden;
+  border: 1px solid #8b40f4;
+  border-radius: 50%;
 `
 
 export default AdditionalMenu

@@ -1,10 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Context } from '../../../contexts/UserProfile'
 import styled from 'styled-components'
 import AdditionalMenu from './AdditionalMenu'
 import WalletConnect from './WalletConnect'
+import { ROUTES } from '../../../pages/RoutesData'
+import { useNavigate } from "react-router-dom"
 import {CommonLinkSectionProps} from '../LinksSection'
+import ProfileService from '../../../services/Profiles'
+import { UserProfile } from '../../../contexts'
 
 const SectionWrapper = styled.div`
   width: 100%;
@@ -18,7 +21,7 @@ const SectionWrapper = styled.div`
 const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectionProps) => {
   const navigate = useNavigate()
 
-  const { isConnected, setIsConnected, networkId } = useContext(Context)
+  const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic } = useContext(Context)
   const [accounts, setAccounts] = useState<string[]>([])
   const REQUIRED_NETWORK_ID = 71401
 
@@ -27,10 +30,18 @@ const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectio
     console.log('accounts')
     console.log(accounts)
     if (accounts.length > 0) {
+
       setAccounts(accounts);
       setIsConnected(true);
-      props?.toggle?.(false);
-      navigate('/testnet/profile-dashboard')
+      const usrProfile = await ProfileService.getProfile(accounts[0]);
+      if(usrProfile.status === 'ok'){
+        setUserProfilePic(usrProfile.data.imageURI);
+        props?.toggle?.(false);
+      } else {
+        props?.toggle?.(false);
+        navigate(ROUTES.PROFILE_DASHBOARD);
+      }
+      
     }
     return accounts
   }, [navigate, setIsConnected, props])
@@ -38,7 +49,9 @@ const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectio
   useEffect(() => {
     const getAccounts = async () => {
       const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      if (accounts.length > 0) setAccounts(accounts)
+      if (accounts.length > 0) {
+        setAccounts(accounts)
+      } 
     }
     if (isConnected) getAccounts()
   }, [isConnected])
@@ -78,7 +91,7 @@ const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectio
 
   return (
     <SectionWrapper>
-      {isConnected ? <AdditionalMenu accounts={accounts} toggle={props.toggle} /> : <WalletConnect MetaMaskInitialization={MetaMaskInitialization} />}
+      {isConnected ? <AdditionalMenu accounts={accounts} toggle={props.toggle} userProfilePic={userProfilePic} /> : <WalletConnect MetaMaskInitialization={MetaMaskInitialization} />}
     </SectionWrapper>
   )
 }

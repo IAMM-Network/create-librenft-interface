@@ -7,10 +7,12 @@ export const Context = createContext<UserProfileContextProps>({
   isConnected: false,
   isCollector: false,
   networkId: 0,
+  userProfilePic: "",
   setUserAddress: () =>  null,
   setIsCollector: () => null,
   setIsConnected: () => null,
-  setNetworkId: () => null
+  setNetworkId: () => null,
+  setUserProfilePic: () => null
 })
 
 const PopupContext: React.FC = ({ children }) => {
@@ -18,6 +20,7 @@ const PopupContext: React.FC = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false)
   const [isCollector, setIsCollector] = useState(false)
   const [networkId, setNetworkId] = useState<number>(0)
+  const [userProfilePic, setUserProfilePic] = useState<string>("")
 
   return (
     <Context.Provider
@@ -26,10 +29,12 @@ const PopupContext: React.FC = ({ children }) => {
         isConnected,
         isCollector,
         networkId,
+        userProfilePic,
         setIsCollector,
         setUserAddress,
         setIsConnected,
-        setNetworkId
+        setNetworkId,
+        setUserProfilePic
       }}
     >
       {children}
