@@ -3,9 +3,7 @@ import { PopupContext, UserProfile } from './contexts'
 const Providers: React.FC = ({ children }) => {
   return (
     <UserProfile>
-      <PopupContext>
-        {children}
-      </PopupContext>)
+      <PopupContext>{children}</PopupContext>
     </UserProfile>
   )
 }
