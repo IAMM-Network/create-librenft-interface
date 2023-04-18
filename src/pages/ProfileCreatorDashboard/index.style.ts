@@ -90,6 +90,7 @@ export const ProfileContainer = styled.div<IProfileImage>`
       .section_1 {
         font-weight: 600;
         font-size: 21px;
+        margin-bottom: 6px;
       }
 
       .section_2 {

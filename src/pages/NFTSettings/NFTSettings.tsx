@@ -41,6 +41,8 @@ const NFTSettings = () => {
   const [linkCount, setLinkCount] = useState(1);
   const [rentableTo, setRentableTo] = useState(false);
   const [rentableFrom, setRentableFrom] = useState(false);
+  const [rentableFromValue, setRentableFromValue] = useState(new Date());
+  const [rentableToValue, setRentableToValue] = useState(new Date());
 
   return (
     <>
@@ -233,23 +235,39 @@ const NFTSettings = () => {
                     </OptionText>
                     {rentableFrom ? (
                       <>
-                        <OptionInput type="date" />
+                        <OptionInput
+                          onChange={(e) =>
+                            setRentableFromValue(new Date(e.target.value))
+                          }
+                          type="datetime-local"
+                        />
                         <OptionText
-                          style={{ marginRight: 30 }}
+                          style={{
+                            marginRight: 30,
+                            marginLeft: 10,
+                            fontWeight: 600,
+                          }}
                           onClick={() => setRentableFrom(false)}
                         >
                           Confirm
                         </OptionText>
                       </>
                     ) : (
-                      <OptionText
-                        onClick={() => setRentableFrom(true)}
-                        style={{ marginRight: 30 }}
-                      >
-                        {new Date().toDateString()}
-                      </OptionText>
+                      <>
+                        <OptionText
+                          onClick={() => setRentableFrom(true)}
+                          style={{ marginRight: 30 }}
+                        >
+                          {rentableFromValue.toDateString()}
+                        </OptionText>
+                        <OptionText>
+                          {rentableFromValue.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </OptionText>
+                      </>
                     )}
-                    <OptionText>00:00</OptionText>
                   </Flex>
                   <Flex>
                     <OptionText
@@ -264,23 +282,39 @@ const NFTSettings = () => {
                     </OptionText>
                     {rentableTo ? (
                       <>
-                        <OptionInput type="date" />
+                        <OptionInput
+                          onChange={(e) =>
+                            setRentableToValue(new Date(e.target.value))
+                          }
+                          type="datetime-local"
+                        />
                         <OptionText
-                          style={{ marginRight: 30 }}
+                          style={{
+                            marginRight: 30,
+                            marginLeft: 10,
+                            fontWeight: 600,
+                          }}
                           onClick={() => setRentableTo(false)}
                         >
                           Confirm
                         </OptionText>
                       </>
                     ) : (
-                      <OptionText
-                        onClick={() => setRentableTo(true)}
-                        style={{ marginRight: 30 }}
-                      >
-                        {new Date().toDateString()}
-                      </OptionText>
+                      <>
+                        <OptionText
+                          onClick={() => setRentableTo(true)}
+                          style={{ marginRight: 30 }}
+                        >
+                          {rentableToValue.toDateString()}
+                        </OptionText>
+                        <OptionText>
+                          {rentableToValue.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </OptionText>
+                      </>
                     )}
-                    <OptionText>00:00</OptionText>
                   </Flex>
                   <Divider
                     style={{ marginLeft: "-20px", width: "calc(100% + 20px)" }}
