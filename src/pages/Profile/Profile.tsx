@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Flex, Grid } from '../../components/Box'
 import { Button } from '../../components/Button'
 import { Container } from '../../components/Layout'
 import { TitleSection, Title, Description, BoxOption } from './styles'
 import Header from './components/Header'
 import Menu from './components/Menu'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import { ROUTES } from '../RoutesData'
+import { Context } from '../../contexts/UserProfile'
 
 
 const CreatorImage = require('../../assets/images/profile/profile-creator.png')
@@ -26,12 +27,16 @@ const options = [
 ]
 
 const Profile: React.FC = () => {
+
   const navigate = useNavigate();
   // Check if is the first time a user opens dashboard
   const [isFirstTime, setIsFirstTime] = useState(true)
   const [activeBox, setActiveBox] = useState(0)
+  const { setIsCollector } = useContext(Context)
 
   const handleClick = () => {
+      //activebox==0 is creator
+      activeBox === 0 ? setIsCollector(false) : setIsCollector(true);
       navigate(ROUTES.PROFILE_HANDLE);
   }
 

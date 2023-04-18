@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import React from 'react'
 
 export type Handler = () => void
@@ -19,9 +20,11 @@ export interface UserProfileContextProps {
   isCollector: boolean;
   networkId: number;
   userProfilePic: string;
+  profileId: BigNumber;
   setUserAddress: React.Dispatch<React.SetStateAction<string>>;
   setIsConnected: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCollector: React.Dispatch<React.SetStateAction<boolean>>;
   setNetworkId: React.Dispatch<React.SetStateAction<number>>;
   setUserProfilePic: React.Dispatch<React.SetStateAction<string>>;
+  setProfileId: React.Dispatch<React.SetStateAction<BigNumber>>;
 }

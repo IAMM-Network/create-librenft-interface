@@ -8,7 +8,7 @@ export const HeaderWrapper = styled(Box)<{ main?: boolean; isPurple: boolean }>`
   height: ${({ isPurple }) => (isPurple ? '60px' : '80px')};
   position: fixed;
   width: 100vw;
-  z-index: 100;
+  z-index: 9999;
 
   .container {
     display: flex;

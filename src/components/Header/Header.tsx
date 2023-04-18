@@ -24,6 +24,14 @@ const socialMedia = () => (
   </Flex>
 )
 
+const loginButton = (color: string, toggled: boolean, toggle: React.Dispatch<React.SetStateAction<boolean>>) => (
+  <Flex>
+  <Box>
+    <Hamburger color={color} toggled={toggled} toggle={toggle} />
+  </Box>
+</Flex>
+)
+
 const hamburguerMenu = (color: string, toggled: boolean, toggle: React.Dispatch<React.SetStateAction<boolean>>) => (
   <Flex>
     <Hamburger color={color} toggled={toggled} toggle={toggle} />
@@ -31,6 +39,7 @@ const hamburguerMenu = (color: string, toggled: boolean, toggle: React.Dispatch<
 )
 
 const Header: React.FC = () => {
+
   const { pathname } = useLocation()
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false)
@@ -43,7 +52,7 @@ const Header: React.FC = () => {
   const getRender = (): boolean => {
     if (pathname === '/testnet/collection/iamm') return false
 
-    return pathname !== '/'
+    return true; //pathname !== '/'
   }
 
   const REQUIRED_NETWORK_ID = 71401
@@ -111,7 +120,7 @@ const Header: React.FC = () => {
               ) : (
                 <>
                   <IAMMTextIcon onClick={() => window.location.reload()} width='100px' fill='white' />
-                  <Flex>{getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : socialMedia()}</Flex>
+                  <Flex>{getRender() ? hamburguerMenu('white', isOpen, setIsOpen) : hamburguerMenu('white', isOpen, setIsOpen)}</Flex>
                 </>
               )}
             </Flex>
