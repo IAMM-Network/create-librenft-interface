@@ -31,6 +31,7 @@ const CongratsImage = require('../../../../assets/images/congrats-img.png')
 
 const Congratulations = ({ name, contract, imageCid }: { name: string; contract: string; imageCid: string }) => {
   const navigate = useNavigate()
+  const imgURL= 'https://gateway.pinata.cloud/ipfs/' + imageCid;
   return (
     <CongratulationsWrapper justifyContent='center'>
       <Flex flexDirection='column' alignContent='center'>

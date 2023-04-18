@@ -29,7 +29,7 @@ const AdditionalMenu = (props: IAdditionalMenuProps) => {
           break;
         case Actions.Profile:
           props?.toggle?.(false);
-          navigate(ROUTES.COLLECTION_INFO)
+          navigate(ROUTES.PROFILE_CREATOR_DASHBOARD)
           break;
       }
 

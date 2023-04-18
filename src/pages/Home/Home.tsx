@@ -20,9 +20,9 @@ const Home: FC = () => (
       <Grid alignItems='start' justifyContent='center'>
         <HeadText>Create, collect, mix and pimp – libreNFT</HeadText>
       </Grid>
-      <Grid>
+      {/* <Grid>
         <Launch/>
-      </Grid>
+      </Grid> */}
     </Container>
   </HomeWrapper>
 )

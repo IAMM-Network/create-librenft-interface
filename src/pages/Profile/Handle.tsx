@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Flex, Grid } from '../../components/Box'
+import { Flex, Grid, Box } from '../../components/Box'
 import { Button } from '../../components/Button'
 import { Container } from '../../components/Layout'
 import { TitleSection, Title, Description, ColumSection, FormLabel, Input } from './styles'
@@ -13,14 +13,28 @@ import ProfileService from '../../services/Profiles'
 import { defaultAbiCoder, keccak256, solidityPack, toUtf8Bytes, arrayify } from 'ethers/lib/utils'
 import sigUtil from '@metamask/eth-sig-util'
 import * as ethUtil from '@ethereumjs/util';
+import { ROUTES } from '../RoutesData'
+import { LoadingIcon } from '../../components/Svg'
 
 const Handle: React.FC = () => {
 
+  enum CreateHandleTypes {
+    None,
+    CreatingProfile,
+    GettingNonce,
+    SettingDispatcher
+  }
+
+  const getTextStatus = {
+    [CreateHandleTypes.None]: 'Confirm',
+    [CreateHandleTypes.CreatingProfile]: 'Creating IAMM & Lens profile...',
+    [CreateHandleTypes.GettingNonce]: 'Getting Nonce...',
+    [CreateHandleTypes.SettingDispatcher]: 'Setting Dispatcher...',
+  }
+
   // Check if is the first time a user opens dashboard
-  const [isFirstTime, setIsFirstTime] = useState(true)
-  const [activeBox, setActiveBox] = useState(0);
-  const [handle, setHandle] = useState("")
-  const { userAddress, isCollector, profileId, userProfilePic, setUserAddress, setIsCollector, setProfileId, setUserProfilePic, isConnected, setIsConnected, networkId  } = useContext(Context)
+  const [status, setStatus] = useState<CreateHandleTypes>(CreateHandleTypes.None)
+  const { userAddress, isCollector, profileId, userProfilePic, setUserAddress, setIsCollector, setProfileId, setUserProfilePic, setIsConnected, handle, setHandle } = useContext(Context)
 
   const navigate = useNavigate();
 
@@ -105,6 +119,13 @@ const getAccounts = async () => {
   const handleClick = async () => {
 
     console.log(handle);
+    setStatus(CreateHandleTypes.CreatingProfile);
+
+    if(handle === "") {
+      alert('Must specify a handle');
+      setStatus(CreateHandleTypes.None);
+      return
+    }
     
     const chkAddress = utils.getAddress(userAddress);
     const profType = isCollector ? profileType.collector : profileType.creator;
@@ -125,10 +146,13 @@ const getAccounts = async () => {
 
     if(usrProfile.status === 'ok'){
 
+
       console.log('User Profile Created');
+
 
       setUserProfilePic(usrProfile.data.imageURI);
       setProfileId(usrProfile.data.profileId);
+      setStatus(CreateHandleTypes.GettingNonce);
 
       const _profileId = usrProfile.data.profileId; //21
       const _dispatcher = '0x0AbEf1980B0B7F9Ef0dBC682D969cc96d76CD7eC';
@@ -143,6 +167,7 @@ const getAccounts = async () => {
       if(getNonceResponse) {           
 
         console.log('Configuring Dispatcher ');
+        setStatus(CreateHandleTypes.SettingDispatcher);
 
         _nonce = BigNumber.from(getNonceResponse.data); // BigNumber.from(0); 
         console.log(_nonce);
@@ -287,10 +312,9 @@ const getAccounts = async () => {
 
       }
 
-
     }
 
-    //navigate("/testnet/collection/garvaz");
+    navigate(ROUTES.PROFILE_CREATOR_DASHBOARD);
   }
 
   const validateHandle = (handle: string): boolean => {
@@ -311,6 +335,8 @@ const getAccounts = async () => {
     setHandle(event.target.value);
 
   }
+
+  
 
   // If first time is true return that
   return (
@@ -344,9 +370,22 @@ const getAccounts = async () => {
             
           </form>
           
-          <Flex justifyContent='center' marginTop='3rem' marginBottom='6rem'>
+          {/* <Flex justifyContent='center' marginTop='3rem' marginBottom='6rem'>
             <Button variant='cta' onClick={handleClick}>CONFIRM</Button>
+          </Flex> */}
+          <Flex justifyContent='center' marginBottom='0.5rem'>
+            <Button
+              style={{ width: '100px', height: '40px', justifyContent: 'center', alignItems: 'center' }}
+              onClick={status === 0 ? handleClick : () => null}
+              variant={status === 0 ? 'cta' : 'secondary'}
+            >
+              {status !== 0 ? <LoadingIcon width='300%' height='300%' /> : getTextStatus[0]}
+            </Button>
           </Flex>
+          <Box marginBottom='6rem'>
+            <p style={{ color: '#696969' }}>{status !== 0 && getTextStatus[status]}</p>
+          </Box>
+          
         </Flex>
       </Container>
       <Menu />

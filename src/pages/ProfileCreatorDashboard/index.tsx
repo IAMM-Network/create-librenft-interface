@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import LogoIcon from "../../components/Svg/Icons/LogoIcon";
 import {
   BackgroundImage,
@@ -11,6 +11,7 @@ import {
 import { SearchIcon } from "../../components/Svg";
 import MenuIcon from "../../components/Svg/Icons/MenuIcon";
 import { Container } from "../../components/Layout";
+import { Context } from '../../contexts/UserProfile'
 
 const profileData = {
   name: "God Woken",
@@ -57,6 +58,7 @@ const profileData = {
 const ProfileCreatorDashboard = () => {
   const taps = ["Created", "Collected", "Likes", "Impacts", "Activity"];
   const [activeTap, setActiveTap] = useState(taps[0]);
+  const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic, userAddress, setUserAddress, handle, setHandle } = useContext(Context)
 
   return (
     <Container style={{ width: "100%" }}>
@@ -68,8 +70,8 @@ const ProfileCreatorDashboard = () => {
             <button>Edit profile</button>
           </div>
           <div className="profileTextWrap">
-            <p className="section_1">{profileData.name}</p>
-            <p className="section_2">{profileData.tag}</p>
+            <p className="section_1">@{handle}</p>
+            <p className="section_2">{handle}</p>
             <div className="section_3">
               <p>
                 Com LV {profileData.level} | Job LV {profileData.jobLevel}

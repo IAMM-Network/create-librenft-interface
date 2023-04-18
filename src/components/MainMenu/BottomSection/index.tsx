@@ -20,7 +20,7 @@ const SectionWrapper = styled.div`
 const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectionProps) => {
   const navigate = useNavigate()
 
-  const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic, userAddress, setUserAddress } = useContext(Context)
+  const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic, userAddress, setUserAddress, handle, setHandle } = useContext(Context)
   const [accounts, setAccounts] = useState<string[]>([])
   const REQUIRED_NETWORK_ID = 71401
 

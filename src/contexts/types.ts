@@ -21,10 +21,12 @@ export interface UserProfileContextProps {
   networkId: number;
   userProfilePic: string;
   profileId: BigNumber;
+  handle: string;
   setUserAddress: React.Dispatch<React.SetStateAction<string>>;
   setIsConnected: React.Dispatch<React.SetStateAction<boolean>>;
   setIsCollector: React.Dispatch<React.SetStateAction<boolean>>;
   setNetworkId: React.Dispatch<React.SetStateAction<number>>;
   setUserProfilePic: React.Dispatch<React.SetStateAction<string>>;
   setProfileId: React.Dispatch<React.SetStateAction<BigNumber>>;
+  setHandle: React.Dispatch<React.SetStateAction<string>>;
 }
