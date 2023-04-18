@@ -503,6 +503,7 @@ const NFTSettings = () => {
                     <Flex flexDirection={"column"} alignItems={"center"}>
                       <OptionText>Days</OptionText>
                       <InputBox
+                        type="number"
                         placeholder="000"
                         style={{ textAlign: "center" }}
                       />
@@ -513,6 +514,7 @@ const NFTSettings = () => {
                     <Flex flexDirection={"column"} alignItems={"center"}>
                       <OptionText>Hours</OptionText>
                       <InputBox
+                        type="number"
                         placeholder="00"
                         style={{ textAlign: "center" }}
                       />
@@ -523,6 +525,7 @@ const NFTSettings = () => {
                     <Flex flexDirection={"column"} alignItems={"center"}>
                       <OptionText>Minutes</OptionText>
                       <InputBox
+                        type="number"
                         placeholder="00"
                         style={{ textAlign: "center" }}
                       />
@@ -533,6 +536,7 @@ const NFTSettings = () => {
                     <Flex flexDirection={"column"} alignItems={"center"}>
                       <OptionText>Seconds</OptionText>
                       <InputBox
+                        type="number"
                         placeholder="00"
                         style={{ textAlign: "center" }}
                       />
