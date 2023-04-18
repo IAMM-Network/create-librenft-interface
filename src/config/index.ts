@@ -2,5 +2,6 @@
 
 export default {
     pinataApiKey: process.env.REACT_APP_PINATA_API_KEY || '',
-    pinataApiSecret: process.env.REACT_APP_PINATA_API_SECRET || ''
+    pinataApiSecret: process.env.REACT_APP_PINATA_API_SECRET || '',
+    profilesServiceURL: process.env.PROFILES_SERVICE_URL || ''
 }

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@metamask/eth-sig-util": "^5.0.2",
     "@metamask/providers": "^9.1.0",
     "@pinata/sdk": "^2.1.0",
     "@testing-library/jest-dom": "^5.14.1",

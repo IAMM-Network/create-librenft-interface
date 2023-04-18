@@ -32,3 +32,36 @@ export const BoxOption = styled.div<{ active?: boolean }>`
   font-weight: 600;
   cursor: pointer;
 `
+export const FormLabel = styled.div `
+  color: white;
+  padding-top:20px;
+  padding-bottom:20px;
+  text-align: left;
+`
+export const Input = styled.input<{ disabled?: boolean }>`
+  background: transparent;
+  border: 1px solid #8b40f4;
+  border-color: ${({ disabled }) => (disabled ? '#8b40f4' : '#8b40f4')};
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: white;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  height: 44px;
+
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: ${({ disabled }) => (disabled ? '#696969' : 'white')};
+    opacity: 1; /* Firefox */
+  }
+`
+export const ColumSection = styled.div `
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top:2px;
+  height:100%;
+  width: 100%;
+  justify-items: center;
+  justify-content: center;
+  grid-column-gap: 20px;
+`
