@@ -86,6 +86,10 @@ export const OptionText = styled(OptionTitle)`
   margin-bottom: 3px;
 `
 
+export const OptionInput = styled.input`
+
+`
+
 export const Emphasis = styled.div`
   color: #f4404f;
   font-weight: 600;

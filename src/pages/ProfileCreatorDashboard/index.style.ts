@@ -118,6 +118,7 @@ export const ProfileContainer = styled.div<IProfileImage>`
         margin-bottom: 14px;
         font-size: 12px;
         white-space: pre-wrap;
+        font-family: 'Montserrat';
       }
 
       .section_5 {
