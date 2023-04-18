@@ -1,5 +1,10 @@
 import StringKeyPair from '../types/stringKeyPair'
 import FileType from '../types/fileType'
+import {
+  BigNumber,
+  BigNumberish,
+  BytesLike,
+} from "ethers";
 
 interface TNFT {
   name: string
@@ -25,4 +30,43 @@ interface Impact {
   levels: StringKeyPair[]
   stats: StringKeyPair[]
   nsfw: boolean
+}
+
+interface EIP712Signature {
+  v: number;
+  r: string;
+  s: string;
+  deadline: BigNumberish;
+}
+export interface Dispatcher {    
+  publicAddress: string;
+  profileId: BigNumber;
+  dispatcher: string;
+  chainId: number;
+  nonce: BigNumber;
+  contracName: string;
+  contractAddress: string;
+  signedMessage: EIP712Signature;
+};
+
+export enum profileType {
+  creator = 1,
+  collector,
+  builder,
+  critic
+}
+export interface UserProfileLens {
+  publicAddress: string;
+  handle: string;
+  imageURI: string;
+  followNFTURI: string;
+  profileType: profileType;
+  profileId?: number;
+}
+
+
+export interface SetDefaultProfileWithSigData {
+  profileId: BigNumberish;
+  dispatcher: string;
+  sig: EIP712Signature;
 }

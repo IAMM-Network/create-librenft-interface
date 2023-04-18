@@ -21,6 +21,7 @@ const MenuWrapper = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  z-index:9998;
 `
 
 const MainMenu = (props: CommonLinkSectionProps) => {
