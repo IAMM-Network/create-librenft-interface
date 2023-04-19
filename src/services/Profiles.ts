@@ -18,7 +18,7 @@ class ProfileService {
             const chkAddress = utils.getAddress(account)
             console.log(chkAddress);
             
-            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles/${chkAddress}` : `http://18.116.40.118:1337/api/profiles/${chkAddress}`;;
+            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles/${chkAddress}` : `https://services.iamm.network/api/profiles/${chkAddress}`;;
             console.log(serviceURL);
             const result = await axios.get(serviceURL);
 
@@ -40,7 +40,7 @@ class ProfileService {
             const chkAddress = utils.getAddress(account)
             console.log(chkAddress);
             
-            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles/signonces/${chkAddress}` : `http://18.116.40.118:1337/api/profiles/signonces/${chkAddress}`;;
+            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles/signonces/${chkAddress}` : `https://services.iamm.network/api/profiles/signonces/${chkAddress}`;;
             console.log(serviceURL);
             const result = await axios.get(serviceURL);
 
@@ -63,7 +63,7 @@ class ProfileService {
             let data = JSON.stringify(lensProfile);
             console.log(data);
 
-            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles` : `http://18.116.40.118:1337/api/profiles`;
+            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles` : `https://services.iamm.network/api/profiles`;
             console.log(serviceURL);
 
             const result = await axios.post(serviceURL, data, {
@@ -90,7 +90,7 @@ class ProfileService {
             let data = JSON.stringify(dispatcher);
             console.log(data);
 
-            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles/dispatcher` : `http://18.116.40.118:1337/api/profiles/dispatcher`;
+            const serviceURL = profilesServiceURL ? `${profilesServiceURL}/api/profiles/dispatcher` : `https://services.iamm.network/api/profiles/dispatcher`;
             console.log(serviceURL);
 
             const result = await axios.post(serviceURL, data, {

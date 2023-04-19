@@ -294,7 +294,7 @@ const getAccounts = async () => {
         console.log(chkAddress);
         let signature = "";
         
-        console.log('--Signing--');
+        console.log('--Signing--'); 
         signature = await window.ethereum.request({method: _method, params: _params});
         //signature = await signer._signTypedData(domainSeparatorData, value.types, dispatcherFuncData);
         //signature = await signer.provider.sendAsync?('eth_signTypedData_V4', [Buffer.from(digest.slice(2), 'hex')]);
