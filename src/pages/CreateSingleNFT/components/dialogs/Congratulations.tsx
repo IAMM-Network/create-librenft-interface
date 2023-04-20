@@ -53,7 +53,7 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Box marginY='1rem'>
-          <img width={250} height={250} src={CongratsImage} alt='nft-asset' />
+          <img width={250} height={250} src={imgURL} alt='nft-asset' />
         </Box>
 
         <Box style={{ marginTop: '20px' }}>
