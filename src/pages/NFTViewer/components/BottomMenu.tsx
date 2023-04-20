@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react'
+import { PropsWithChildren, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Flex } from '../../../components/Box'
@@ -6,6 +6,11 @@ import { ROUTES } from '../../RoutesData'
 import { randomIntFromInterval } from '../../SocialFeed/data/types'
 import { modalMode } from '../NFTViewer'
 import { Text } from '../styles'
+import NFTABI from '../../../data/LibreNFT721.json'
+import NFTService from '../../../services/NFTService'
+import { Context as UserProfile } from '../../../contexts/UserProfile'
+
+const ethers = require('ethers')
 
 interface BottomMenuProps {
   mode: modalMode
@@ -15,14 +20,18 @@ interface BottomMenuProps {
 const TempImage = require('../../../assets/images/congrats-img.png')
 
 export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<BottomMenuProps>) {
+  const { contractAddress } = useContext(UserProfile)
   const [price, setPrice] = useState(0)
   const [onSale, setOnSale] = useState<boolean>(false)
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(e.target.value))
   }
 
-  const handleSaleConfirm = () => {
+  const handleSaleConfirm = async () => {
+    console.log(contractAddress)
+    await NFTService.putOnSale(contractAddress, NFTABI.abi, provider, price, 0)
     setOnSale(true)
     setModalMode('owner')
   }

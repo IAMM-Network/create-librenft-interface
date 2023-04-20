@@ -13,20 +13,21 @@ export interface PopupContextProps {
   setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-
 export interface UserProfileContextProps {
-  userAddress: string;
-  isConnected: boolean;
-  isCollector: boolean;
-  networkId: number;
-  userProfilePic: string;
-  profileId: BigNumber;
-  handle: string;
-  setUserAddress: React.Dispatch<React.SetStateAction<string>>;
-  setIsConnected: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsCollector: React.Dispatch<React.SetStateAction<boolean>>;
-  setNetworkId: React.Dispatch<React.SetStateAction<number>>;
-  setUserProfilePic: React.Dispatch<React.SetStateAction<string>>;
-  setProfileId: React.Dispatch<React.SetStateAction<BigNumber>>;
-  setHandle: React.Dispatch<React.SetStateAction<string>>;
+  userAddress: string
+  isConnected: boolean
+  isCollector: boolean
+  networkId: number
+  userProfilePic: string
+  profileId: BigNumber
+  handle: string
+  contractAddress: string
+  setUserAddress: React.Dispatch<React.SetStateAction<string>>
+  setIsConnected: React.Dispatch<React.SetStateAction<boolean>>
+  setIsCollector: React.Dispatch<React.SetStateAction<boolean>>
+  setNetworkId: React.Dispatch<React.SetStateAction<number>>
+  setUserProfilePic: React.Dispatch<React.SetStateAction<string>>
+  setProfileId: React.Dispatch<React.SetStateAction<BigNumber>>
+  setHandle: React.Dispatch<React.SetStateAction<string>>
+  setContractAddress: React.Dispatch<React.SetStateAction<string>>
 }

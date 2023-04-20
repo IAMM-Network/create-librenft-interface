@@ -126,7 +126,7 @@ export enum CreateSingleNftTypes {
 
 const CreateSingleNFT = () => {
   // Context
-  const { isConnected, networkId, setIsConnected } = useContext(UserProfile)
+  const { isConnected, networkId, setIsConnected, setContractAddress } = useContext(UserProfile)
 
   //media preview
   const [mediaSelected, setMediaSelected] = useState<number>(0)
@@ -298,9 +298,10 @@ const CreateSingleNFT = () => {
       selectedRentableTimeFrame,
     )
     if (typeof mintedNFT !== 'undefined') {
-      console.log(mintedNFT.address)
+      console.log(mintedNFT)
       setMintedContract(mintedNFT.address)
       setIsNFTMinted(true)
+      setContractAddress(mintedNFT.address)
     }
   }
 
