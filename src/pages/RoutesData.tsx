@@ -1,33 +1,35 @@
-import { CreateCollection } from "./CreateCollection";
-import { CreateSingleNFT } from "./CreateSingleNFT";
-import { Collection } from "./Collection";
-import { Home } from "./Home";
-import Profile from "./Profile/Profile";
-import Handle from "./Profile/Handle";
-import { SocialFeed } from "./SocialFeed";
-import ShowThisThread from "./ShowThisThread/ShowThisThread";
-import NFTViewer from "./NFTViewer/NFTViewer";
-import SharePost from "./Share/SharePost";
-import TransferSuccess from "./TranferSuccess/TransferSuccess";
-import NFTSettings from "./NFTSettings/NFTSettings";
-import ProfileCreatorDashboard from "./ProfileCreatorDashboard";
+import { CreateCollection } from './CreateCollection'
+import { CreateSingleNFT } from './CreateSingleNFT'
+import { Collection } from './Collection'
+import { Home } from './Home'
+import Profile from './Profile/Profile'
+import Handle from './Profile/Handle'
+import { SocialFeed } from './SocialFeed'
+import ShowThisThread from './ShowThisThread/ShowThisThread'
+import NFTViewer from './NFTViewer/NFTViewer'
+import ShareImact from './Share/ShareImact'
+import TransferSuccess from './TranferSuccess/TransferSuccess'
+import NFTSettings from './NFTSettings/NFTSettings'
+import ProfileCreatorDashboard from './ProfileCreatorDashboard'
+import ComposeImact from './Compose/ComposeImact'
 
 export const ROUTES = {
-  HOME: "/",
-  FEED: "/testnet/feed",
-  THREAD: "/testnet/feed/show-this-thread/:thread_id",
-  CREATE_SINGLE_NFT: "/testnet/create-single-nft",
-  NFT_VIEWER_OWNER: "/testnet/viewer-owner-LNFT",
-  NFT_VIEWER_BUYER: "/testnet/viewer-buyer-LNFT",
-  SHARE_POST: "/testnet/impact-shareLNFT",
-  TRANSFER_SUCCESS: "/testnet/viewer-owner-transferLNFT",
-  PROFILE_HANDLE: "/testnet/profile-handle",
-  PROFILE_DASHBOARD: "/testnet/profile-dashboard",
-  PROFILE_CREATOR_DASHBOARD: "/testnet/profile-creator-dashboard",
-  CREATE_COLLECTION: "/testnet/create-collection",
-  COLLECTION_INFO: "/testnet/collection/:collection_name",
-  NFT_SETTINGS: "/testnet/settings-LNFT",
-};
+  HOME: '/',
+  FEED: '/testnet/feed',
+  THREAD: '/testnet/feed/show-this-thread/:thread_id',
+  CREATE_SINGLE_NFT: '/testnet/create-single-nft',
+  NFT_VIEWER_OWNER: '/testnet/viewer-owner-LNFT',
+  NFT_VIEWER_BUYER: '/testnet/viewer-buyer-LNFT',
+  SHARE_IMPACT: '/testnet/impact-shareLNFT',
+  TRANSFER_SUCCESS: '/testnet/viewer-owner-transferLNFT',
+  PROFILE_HANDLE: '/testnet/profile-handle',
+  PROFILE_DASHBOARD: '/testnet/profile-dashboard',
+  PROFILE_CREATOR_DASHBOARD: '/testnet/profile-creator-dashboard',
+  CREATE_COLLECTION: '/testnet/create-collection',
+  COLLECTION_INFO: '/testnet/collection/:collection_name',
+  NFT_SETTINGS: '/testnet/settings-LNFT',
+  COMPOSE_IMPACT: '/testnet/impact-composer',
+}
 
 export const RoutesData = [
   {
@@ -67,20 +69,20 @@ export const RoutesData = [
     path: ROUTES.PROFILE_HANDLE,
   },
   {
-    view: <NFTViewer mode="owner" />,
+    view: <NFTViewer mode='owner' />,
     path: ROUTES.NFT_VIEWER_OWNER,
   },
   {
-    view: <NFTViewer mode="buyer" />,
+    view: <NFTViewer mode='buyer' />,
     path: ROUTES.NFT_VIEWER_BUYER,
   },
   {
-    view: <SharePost />,
-    path: ROUTES.SHARE_POST,
+    view: <ShareImact />,
+    path: ROUTES.SHARE_IMPACT,
   },
   {
-    view: <TransferSuccess />,
-    path: ROUTES.TRANSFER_SUCCESS,
+    view: <ComposeImact />,
+    path: ROUTES.COMPOSE_IMPACT,
   },
   {
     view: <TransferSuccess />,
@@ -90,4 +92,4 @@ export const RoutesData = [
     view: <NFTSettings />,
     path: ROUTES.NFT_SETTINGS,
   },
-];
+]

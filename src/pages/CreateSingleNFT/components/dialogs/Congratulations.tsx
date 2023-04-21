@@ -61,7 +61,7 @@ const Congratulations = ({ name, contract, imageCid }: { name: string; contract:
         </Box>
 
         <Flex justifyContent='space-between' width='60%' margin='2rem auto'>
-          <Link to={ROUTES.SHARE_POST}>
+          <Link to={ROUTES.SHARE_IMPACT}>
             <Impact>
               <ImpactCreatorIcon fill='white' width='20px' height='20px' />
               <ImpactText>(Impact)</ImpactText>
