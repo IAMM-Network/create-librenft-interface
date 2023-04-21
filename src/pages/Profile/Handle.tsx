@@ -132,27 +132,27 @@ const getAccounts = async () => {
 
     console.log(`chkAddres: ${chkAddress}`);
 
-    // const profileLens: UserProfileLens = {
-    //   publicAddress: chkAddress,
-    //   handle: handle,
-    //   imageURI: 'https://ipfs.io/ipfs/QmSaumNXYoXxb2gGFDDjPaf6SRiKJg2f7bxnTPxjtM1jhC',
-    //   followNFTURI: 'https://ipfs.io/ipfs/QmTFLSXdEQ6qsSzaXaCSNtiv6wA56qq87ytXJ182dXDQJS',
-    //   profileType: profType
-    // }
+    const profileLens: UserProfileLens = {
+      publicAddress: chkAddress,
+      handle: handle,
+      imageURI: 'https://ipfs.io/ipfs/QmSaumNXYoXxb2gGFDDjPaf6SRiKJg2f7bxnTPxjtM1jhC',
+      followNFTURI: 'https://ipfs.io/ipfs/QmTFLSXdEQ6qsSzaXaCSNtiv6wA56qq87ytXJ182dXDQJS',
+      profileType: profType
+    }
     
-    // //create profile
-    // const usrProfile = await ProfileService.createUserProfile(profileLens);
-    // console.log(usrProfile);
+    //create profile
+    const usrProfile = await ProfileService.createUserProfile(profileLens);
+    console.log(usrProfile);
 
-    // if(usrProfile.status === 'ok'){
+    if(usrProfile.status === 'ok'){
 
-    //   console.log('User Profile Created');
+      console.log('User Profile Created');
 
-    //   setUserProfilePic(usrProfile.data.imageURI);
-    //   setProfileId(usrProfile.data.profileId);
-    //   setStatus(CreateHandleTypes.GettingNonce);
+      setUserProfilePic(usrProfile.data.imageURI);
+      setProfileId(usrProfile.data.profileId);
+      setStatus(CreateHandleTypes.GettingNonce);
 
-      const _profileId = BigNumber.from("34"); //usrProfile.data.profileId; //
+      const _profileId = BigNumber.from(usrProfile.data.profileId); // BigNumber.from("34"); //
       const _dispatcher = '0x0AbEf1980B0B7F9Ef0dBC682D969cc96d76CD7eC';
       let _deadline: BigNumber;;
       const _chainId = 71401;
@@ -176,7 +176,7 @@ const getAccounts = async () => {
         const oneDayInSeconds = 86400;
         const blockPlusOneDay = currentTime + oneDayInSeconds;
 
-        _deadline = BigNumber.from(1682135449); //BigNumber.from(blockPlusOneDay); // 
+        _deadline = BigNumber.from(blockPlusOneDay); // BigNumber.from(1682135449); //
         console.log(_deadline);
 
         const SetProfileSigStr: SetDefaultProfileWithSigData = {
@@ -327,14 +327,14 @@ const getAccounts = async () => {
           signedMessage: _signedMessage
         }
 
-        await ProfileService.setDispatcher(_dispatcherData);
+        //await ProfileService.setDispatcher(_dispatcherData);
 
 
       }
 
-    //}
+    }
 
-    //navigate(ROUTES.PROFILE_CREATOR_DASHBOARD);
+    navigate(ROUTES.PROFILE_CREATOR_DASHBOARD);
   }
 
   const validateHandle = (handle: string): boolean => {

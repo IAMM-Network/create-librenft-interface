@@ -81,6 +81,8 @@ export { default as CircleAddIcon } from './Icons/CircleAddIcon'
 export { default as MostIcon} from './Icons/MostIcon'
 export { default as AnnouncementIcon} from './Icons/AnnouncementIcon'
 export { default as QuestionIcon} from './Icons/QuestionIcon'
+export { default as ViewerIcon} from './Icons/ViewerIcon'
+export { default as ManagementIcon} from './Icons/ManagementIcon'
 
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'
