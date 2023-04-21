@@ -45,9 +45,9 @@ const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { isConnected, setIsConnected, networkId } = useContext(Context)
 
-  const isPurple = pathname === ROUTES.FEED || pathname === ROUTES.SHARE_POST
+  const isPurple = pathname === ROUTES.FEED || pathname === ROUTES.SHARE_IMPACT || pathname === ROUTES.COMPOSE_IMPACT
   const isFeed = pathname === ROUTES.FEED
-  const isSharePost = pathname === ROUTES.SHARE_POST
+  const canImpact = pathname === ROUTES.SHARE_IMPACT || pathname === ROUTES.COMPOSE_IMPACT
 
   const getRender = (): boolean => {
     if (pathname === '/testnet/collection/iamm') return false
@@ -108,7 +108,7 @@ const Header: React.FC = () => {
                   <ProfileImage src='/profile-1.png' alt='profile-image' />
                   <SocialFeedText>Social Feed</SocialFeedText>
                 </FeedLeft>
-              ) : isSharePost ? (
+              ) : canImpact ? (
                 <Flex alignItems={'center'} width={'100%'} justifyContent={'space-between'}>
                   <FeedLeft>
                     <div style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>

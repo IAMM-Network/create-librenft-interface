@@ -14,7 +14,7 @@ import {
   PlaskIcon,
 } from '../../../components/Svg'
 import { ROUTES } from '../../RoutesData'
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom'
 import Actions from '../../../util/enums'
 
 interface ButtonProps {
@@ -85,28 +85,25 @@ const ButtonText = styled.div`
   margin-right: 10px;
 `
 
-
 export default function FloatingButton({ open, setOpen, isConnected, isCollector }: ButtonProps) {
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const setAction = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    const button: HTMLButtonElement = event.currentTarget;
-    const action = parseInt(button.value);
-    
-    switch(action) {
+    event.preventDefault()
+    const button: HTMLButtonElement = event.currentTarget
+    const action = parseInt(button.value)
+
+    switch (action) {
       case Actions.Impact:
-        navigate(ROUTES.SHARE_POST)
-        break;
+        navigate(ROUTES.SHARE_IMPACT)
+        break
       case Actions.CreateLNFT:
         navigate(ROUTES.CREATE_SINGLE_NFT)
-        break;
+        break
       case Actions.SharePost:
-        navigate(ROUTES.SHARE_POST)
-        break;
+        navigate(ROUTES.SHARE_IMPACT)
+        break
     }
-
   }
 
   return (
@@ -115,9 +112,11 @@ export default function FloatingButton({ open, setOpen, isConnected, isCollector
         <Menus>
           <Menu>
             <ButtonText>Impact</ButtonText>
-            <Button>
-              <ImpactIcon width={16} height={16} />
-            </Button>
+            <Link to={ROUTES.COMPOSE_IMPACT}>
+              <Button>
+                <ImpactIcon width={16} height={16} />
+              </Button>
+            </Link>
           </Menu>
           <Menu>
             <ButtonText>Discover</ButtonText>
@@ -141,10 +140,12 @@ export default function FloatingButton({ open, setOpen, isConnected, isCollector
       ) : open && !isCollector ? (
         <Menus>
           <Menu>
-            <ButtonText >Impact</ButtonText>
-            <Button value={Actions.SharePost} onClick={setAction}>
-              <ImpactCreatorIcon width={16} height={16} />
-            </Button>
+            <ButtonText>Impact</ButtonText>
+            <Link to={ROUTES.COMPOSE_IMPACT}>
+              <Button>
+                <ImpactCreatorIcon width={16} height={16} />
+              </Button>
+            </Link>
           </Menu>
           <Menu>
             <ButtonText>Create LNFT</ButtonText>
