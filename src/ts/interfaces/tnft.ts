@@ -32,18 +32,18 @@ interface Impact {
   nsfw: boolean
 }
 
-interface EIP712Signature {
+export interface EIP712Signature {
   v: number;
   r: string;
   s: string;
-  deadline: BigNumberish;
+  deadline: number;
 }
 export interface Dispatcher {    
   publicAddress: string;
-  profileId: BigNumber;
+  profileId: number;
   dispatcher: string;
   chainId: number;
-  nonce: BigNumber;
+  nonce: number;
   contracName: string;
   contractAddress: string;
   signedMessage: EIP712Signature;

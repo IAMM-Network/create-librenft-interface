@@ -40,6 +40,7 @@ const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectio
 
       if(usrProfile.status === 'ok'){
         setUserProfilePic(usrProfile.data.imageURI);
+        setHandle(usrProfile.data.handle)
         props?.toggle?.(false);
       } else {
         props?.toggle?.(false);

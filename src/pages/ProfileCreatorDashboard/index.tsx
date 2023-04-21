@@ -7,11 +7,16 @@ import {
   Tap,
   ContentContainer,
   NFTWrap,
+  OptsWrap,
+  LiOpt
 } from "./index.style";
-import { SearchIcon } from "../../components/Svg";
+import { SearchIcon, ViewerIcon, ManagementIcon } from "../../components/Svg";
 import MenuIcon from "../../components/Svg/Icons/MenuIcon";
 import { Container } from "../../components/Layout";
 import { Context } from '../../contexts/UserProfile'
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../RoutesData";
+import { style } from "styled-system";
 
 const profileData = {
   name: "God Woken",
@@ -59,11 +64,29 @@ const ProfileCreatorDashboard = () => {
   const taps = ["Created", "Collected", "Likes", "Impacts", "Activity"];
   const [activeTap, setActiveTap] = useState(taps[0]);
   const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic, userAddress, setUserAddress, handle, setHandle } = useContext(Context)
+  const navigate = useNavigate();
+  const enum NFTOptions {
+    view,
+    edit
+  }
+
+  const HandleOptions = (option: NFTOptions) => {
+
+    console.log(option);
+    switch(option){
+      case (NFTOptions.view) :
+        navigate(ROUTES.NFT_VIEWER_OWNER)
+        break;
+      case(NFTOptions.edit) :
+      navigate(ROUTES.NFT_SETTINGS)
+    }
+
+  }
 
   return (
     <Container style={{ width: "100%" }}>
-      <ProfileContainer url="/background-1.jpg">
-        <BackgroundImage url="/background-1.jpg" />
+      <ProfileContainer url={userProfilePic}>
+        <BackgroundImage url={"/background-1.jpg"} />
         <div className="wrapper">
           <div className="interactionWrap">
             <div className="profileImage" />
@@ -129,14 +152,24 @@ const ProfileCreatorDashboard = () => {
         </div>
         <div className="nftContainer">
           <NFTWrap url="/background-1.jpg">
-            <div className="bg" />
+            <div className="bg">
+              <OptsWrap>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view)}}><ViewerIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit)}}><ManagementIcon/></LiOpt>
+              </OptsWrap>
+            </div>
             <div className="content">
               <p>Collection Name</p>
               <p>ID #8888</p>
             </div>
           </NFTWrap>
           <NFTWrap url="/background-1.jpg">
-            <div className="bg" />
+            <div className="bg">
+              <OptsWrap>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view)}}><ViewerIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit)}}><ManagementIcon/></LiOpt>
+              </OptsWrap>
+            </div>
             <div className="content">
               <p>Token Name</p>
               <p>ID #8888</p>
