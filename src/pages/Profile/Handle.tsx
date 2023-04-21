@@ -6,7 +6,7 @@ import { TitleSection, Title, Description, ColumSection, FormLabel, Input } from
 import Header from './components/Header'
 import Menu from './components/Menu'
 import { useNavigate } from "react-router-dom";
-import { Dispatcher, UserProfileLens, profileType, SetDefaultProfileWithSigData } from '../../ts/interfaces/tnft'
+import { Dispatcher, UserProfileLens, profileType, SetDefaultProfileWithSigData, EIP712Signature } from '../../ts/interfaces/tnft'
 import { Context } from '../../contexts/UserProfile'
 import { BigNumber, BigNumberish, ethers, utils } from 'ethers/lib'
 import ProfileService from '../../services/Profiles'
@@ -132,29 +132,27 @@ const getAccounts = async () => {
 
     console.log(`chkAddres: ${chkAddress}`);
 
-    const profileLens: UserProfileLens = {
-      publicAddress: chkAddress,
-      handle: handle,
-      imageURI: 'https://ipfs.io/ipfs/QmY9dUwYu67puaWBMxRKW98LPbXCznPwHUbhX5NeWnCJbX',
-      followNFTURI: 'https://ipfs.io/ipfs/QmTFLSXdEQ6qsSzaXaCSNtiv6wA56qq87ytXJ182dXDQJS',
-      profileType: profType
-    }
+    // const profileLens: UserProfileLens = {
+    //   publicAddress: chkAddress,
+    //   handle: handle,
+    //   imageURI: 'https://ipfs.io/ipfs/QmSaumNXYoXxb2gGFDDjPaf6SRiKJg2f7bxnTPxjtM1jhC',
+    //   followNFTURI: 'https://ipfs.io/ipfs/QmTFLSXdEQ6qsSzaXaCSNtiv6wA56qq87ytXJ182dXDQJS',
+    //   profileType: profType
+    // }
     
-    //create profile
-    const usrProfile = await ProfileService.createUserProfile(profileLens);
-    console.log(usrProfile);
+    // //create profile
+    // const usrProfile = await ProfileService.createUserProfile(profileLens);
+    // console.log(usrProfile);
 
-    if(usrProfile.status === 'ok'){
+    // if(usrProfile.status === 'ok'){
 
+    //   console.log('User Profile Created');
 
-      console.log('User Profile Created');
+    //   setUserProfilePic(usrProfile.data.imageURI);
+    //   setProfileId(usrProfile.data.profileId);
+    //   setStatus(CreateHandleTypes.GettingNonce);
 
-
-      setUserProfilePic(usrProfile.data.imageURI);
-      setProfileId(usrProfile.data.profileId);
-      setStatus(CreateHandleTypes.GettingNonce);
-
-      const _profileId = usrProfile.data.profileId; //21
+      const _profileId = BigNumber.from("34"); //usrProfile.data.profileId; //
       const _dispatcher = '0x0AbEf1980B0B7F9Ef0dBC682D969cc96d76CD7eC';
       let _deadline: BigNumber;;
       const _chainId = 71401;
@@ -167,6 +165,7 @@ const getAccounts = async () => {
       if(getNonceResponse) {           
 
         console.log('Configuring Dispatcher ');
+        console.log(_profileId);
         setStatus(CreateHandleTypes.SettingDispatcher);
 
         _nonce = BigNumber.from(getNonceResponse.data); // BigNumber.from(0); 
@@ -177,7 +176,7 @@ const getAccounts = async () => {
         const oneDayInSeconds = 86400;
         const blockPlusOneDay = currentTime + oneDayInSeconds;
 
-        _deadline = BigNumber.from(blockPlusOneDay); // BigNumber.from(1681835738) //
+        _deadline = BigNumber.from(1682135449); //BigNumber.from(blockPlusOneDay); // 
         console.log(_deadline);
 
         const SetProfileSigStr: SetDefaultProfileWithSigData = {
@@ -187,7 +186,7 @@ const getAccounts = async () => {
             v: 0,
             r: '',
             s: '',
-            deadline: _deadline,
+            deadline: _deadline.toNumber(),
           },
         }        
 
@@ -232,7 +231,7 @@ const getAccounts = async () => {
           // { name: "bone", type: "bytes1" },
           // { name: "btwo", type: "bytes1" },
           //{ name: "domainSeparator", type: "DomainSeparator" },
-          { name: "setdispfunchash", type: "bytes32" },
+          { name: "digest", type: "bytes32" },
         ]
 
         const domainData = {          
@@ -251,42 +250,41 @@ const getAccounts = async () => {
           salt: keccak256(toUtf8Bytes('EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)')),           
         }
 
-        var dispatcherFuncData = {          
-            profileId: _profileId,
+        var dispatcherFuncData = {         
+            salt: SET_DISPATCHER_WITH_SIG_TYPEHASH, 
+            profileId: _profileId.toString(),
             dispatcher: _dispatcher,
-            nonce: 0,
-            deadline: 1681835738,
-            salt: SET_DISPATCHER_WITH_SIG_TYPEHASH,
+            nonce: _nonce.toString(),
+            deadline: _deadline.toString(),            
         };
 
         var message = {
           // bone: '0x19',
           // btwo: '0x01',
           //domainSeparator: domainSeparatorData,
-          setdispfunchash: dispatcherTH
+          digest: digest
         }
 
         const value = {
           types: {
-              //EIP712Domain: domainSeparator,
-              DispatcherFunc: dispatcherFunc
+              //EIP712Domain: domain,
+              DigestType: digestType
           },
-          domain: domainSeparatorData,
-          primaryType: "DispatcherFunc",
-          message: dispatcherFuncData
+          domain: domainData,
+          primaryType: "DigestType",
+          message: message
         };
 
         const data = JSON.stringify(value);
 
         //EIP712
-
         //SIGN
         console.log(digest);
 
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         //const provider = new ethers.providers.BrowserProvider(window.ethereum);
         const signer = provider.getSigner();
-        const from = await getAccounts();
+        // const from = await getAccounts();
 
         var _params = [chkAddress.toLowerCase(), data];
         var _method = 'eth_signTypedData_v4';
@@ -296,25 +294,47 @@ const getAccounts = async () => {
         
         console.log('--Signing--'); 
         signature = await window.ethereum.request({method: _method, params: _params});
-        //signature = await signer._signTypedData(domainSeparatorData, value.types, dispatcherFuncData);
+        //signature = await signer._signTypedData(domainData, value.types, message);
+        //signature = await signer.signMessage(digest);
         //signature = await signer.provider.sendAsync?('eth_signTypedData_V4', [Buffer.from(digest.slice(2), 'hex')]);
+
 
         console.log(signature);
 
         signature = signature.substring(2);
-        const r = "0x" + signature.substring(0, 64);
-        const s = "0x" + signature.substring(64, 128);
-        const v = parseInt(signature.substring(128, 130), 16);
-        console.log("r:", r);
-        console.log("s:", s);
-        console.log("v:", v);
+        const _r = "0x" + signature.substring(0, 64);
+        const _s = "0x" + signature.substring(64, 128);
+        const _v = parseInt(signature.substring(128, 130), 16);
+        console.log("r:", _r);
+        console.log("s:", _s);
+        console.log("v:", _v);
+
+        const _signedMessage: EIP712Signature = {
+          v: _v,
+          r: _r,
+          s: _s,
+          deadline: _deadline.toNumber()
+        }
+
+        const _dispatcherData: Dispatcher = {
+          publicAddress: chkAddress,
+          profileId: _profileId.toNumber(),
+          dispatcher: _dispatcher,
+          chainId: _chainId,
+          nonce: _nonce.toNumber(),
+          contracName: _contracName,
+          contractAddress: _contractAddress,
+          signedMessage: _signedMessage
+        }
+
+        await ProfileService.setDispatcher(_dispatcherData);
 
 
       }
 
-    }
+    //}
 
-    navigate(ROUTES.PROFILE_CREATOR_DASHBOARD);
+    //navigate(ROUTES.PROFILE_CREATOR_DASHBOARD);
   }
 
   const validateHandle = (handle: string): boolean => {
