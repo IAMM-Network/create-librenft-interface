@@ -24,9 +24,9 @@ class NFTService {
 
     console.log(postDeployProps)
 
-    // let response = await saveDeployData(postDeployProps);
+    let response = await saveDeployData(postDeployProps);
 
-    // console.log(response);
+    console.log(response);
 
     return contract
   }
@@ -135,27 +135,23 @@ interface PostDeployProps {
   abi: string
   // Whitelist of addresses that can mint NFTs
   // required for generating merkle proofs
-  whitelist: {
-    addresses: string[]
-  }
+  whiteList: string[]  
 }
 
 async function setupPostDeployProps(contract: Contract, whitelist: string[], abiUuid: string): Promise<PostDeployProps> {
   return {
     // Randomly generated uuid for the NFT contract
-    uuid: uuidv4(),
+    uuid: "0336ee50-fe69-40cc-814e-03d762de739d",//uuidv4(),
     address: contract.address,
     ownerAddress: await contract.signer.getAddress(),
-    abi: abiUuid,
-    whitelist: {
-      addresses: whitelist,
-    },
+    abi: "0336ee50-fe69-40cc-814e-03d762de739d",
+    whiteList: whitelist,    
   }
 }
 
 // Post the deploy props as json body to a backend API using fetch
 async function saveDeployData(props: PostDeployProps) {
-  const response = await fetch('https://librenft-profiles.vercel.app/api/contracts', {
+  const response = await fetch('https://services.iamm.network/api/contracts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
