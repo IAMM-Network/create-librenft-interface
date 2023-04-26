@@ -302,6 +302,7 @@ const CreateSingleNFT = () => {
       setMintedContract(mintedNFT.address)
       setIsNFTMinted(true)
       setContractAddress(mintedNFT.address)
+      sessionStorage.setItem('contractAddress', mintedNFT.address)
     }
   }
 
