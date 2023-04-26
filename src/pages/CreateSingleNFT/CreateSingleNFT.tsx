@@ -344,7 +344,6 @@ const CreateSingleNFT = () => {
             setNftConfig={setNftConfig}
             setIsUnlockableContent={setIsUnlockableContent}
             setIsTimeLock={setIsTimeLock}
-            setSelectedTimeframe={setSelectedTimeframe}
             onClose={() => setIsTimeLock(false)}
           />
         )}
