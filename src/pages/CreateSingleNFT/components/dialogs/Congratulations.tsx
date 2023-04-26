@@ -12,6 +12,7 @@ import {
 } from '../../../../components/Svg'
 import { CongratulationsTitle, CongratulationsWrapper, Hr } from '../styles'
 import { ROUTES } from '../../../RoutesData'
+import { useEffect } from 'react'
 
 const Impact = styled.div`
   display: flex;
@@ -31,7 +32,15 @@ const CongratsImage = require('../../../../assets/images/congrats-img.png')
 
 const Congratulations = ({ name, contract, imageCid }: { name: string; contract: string; imageCid: string }) => {
   const navigate = useNavigate()
-  const imgURL= 'https://gateway.pinata.cloud/ipfs/' + imageCid;
+  const imgURL = 'https://gateway.pinata.cloud/ipfs/' + imageCid
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [])
+
   return (
     <CongratulationsWrapper justifyContent='center'>
       <Flex flexDirection='column' alignContent='center'>

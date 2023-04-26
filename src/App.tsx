@@ -6,6 +6,7 @@ import { RoutesData } from './pages/RoutesData'
 
 import './App.css'
 import { Context as UserProfile } from './contexts/UserProfile'
+import ScrollToTop from './util/scrollToTop'
 
 const App: FC = () => {
   /// METAMASK
@@ -22,9 +23,7 @@ const App: FC = () => {
     getNetworkId()
   }, [getNetworkId])
 
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
 
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
@@ -41,11 +40,13 @@ const App: FC = () => {
         <BrowserRouter>
           <Header />
           <div className='appBody'>
-            <Routes>
-              {RoutesData.map(e => (
-                <Route key={e.path} path={e.path} element={e.view} />
-              ))}
-            </Routes>
+            <ScrollToTop>
+              <Routes>
+                {RoutesData.map(e => (
+                  <Route key={e.path} path={e.path} element={e.view} />
+                ))}
+              </Routes>
+            </ScrollToTop>
           </div>
         </BrowserRouter>
         <div className='footer'>
