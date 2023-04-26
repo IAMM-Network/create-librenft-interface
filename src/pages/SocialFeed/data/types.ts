@@ -9,6 +9,7 @@ export interface PostProps {
   commentCount: number
   shareCount: number
   likeCount: number
+  clickCount: number
   threads: string[] //postIds
   canTip: boolean
 }
@@ -33,6 +34,7 @@ export const getPostMockData = (count: number) => {
     createdAt: randomDate(new Date(Date.now() - idx * 24 * 60 * 60 * 1000), new Date(Date.now() - idx - 1 * 24 * 60 * 60 * 1000)),
     commentCount: randomIntFromInterval(1, 10),
     shareCount: randomIntFromInterval(1, 50),
+    clickCount: randomIntFromInterval(1, 50),
     likeCount: randomIntFromInterval(1, 100),
     threads: idx % 3 === 0 ? ['1', '2', '3'] : [],
     canTip: idx % 2 === 0 ? true : false,
