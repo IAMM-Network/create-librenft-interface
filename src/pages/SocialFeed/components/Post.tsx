@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { PostProps } from '../data/types'
 import TimeAgo from 'timeago-react'
-import { HeartIcon, MessageIcon, NervosIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon } from '../../../components/Svg'
+import { HeartIcon, MessageIcon, NervosIcon, SpeechBubbleIcon, RetweetIcon, ShareIcon, ClickIcon } from '../../../components/Svg'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '../../RoutesData'
 
@@ -196,6 +196,10 @@ export default function Post({ item }: { item: PostProps }) {
               <FooterItem>
                 <HeartIcon width='16px' height='16px' />
                 <FooterText>{item.likeCount}</FooterText>
+              </FooterItem>
+              <FooterItem>
+                <ClickIcon width='16px' height='16px' />
+                <FooterText>{item.clickCount}</FooterText>
               </FooterItem>
               <FooterItem>
                 <ShareIcon width='16px' height='16px' />
