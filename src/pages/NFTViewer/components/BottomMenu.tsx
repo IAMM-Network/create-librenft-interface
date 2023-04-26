@@ -9,6 +9,7 @@ import { Text } from '../styles'
 import NFTABI from '../../../data/LibreNFT721.json'
 import NFTService from '../../../services/NFTService'
 import { Context as UserProfile } from '../../../contexts/UserProfile'
+import TransferSuccess from '../../TranferSuccess/TransferSuccess'
 
 const ethers = require('ethers')
 
@@ -20,18 +21,26 @@ interface BottomMenuProps {
 const TempImage = require('../../../assets/images/congrats-img.png')
 
 export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<BottomMenuProps>) {
-  const { contractAddress } = useContext(UserProfile)
+  const { userAddress, contractAddress } = useContext(UserProfile)
   const [price, setPrice] = useState(0)
   const [onSale, setOnSale] = useState<boolean>(false)
+
+  const [transferSuccess, setTransferSuccess] = useState<boolean>(false)
+  const [transferAddress, setTransferAddress] = useState<string>('')
+
   const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+  const sessionContractAddress = sessionStorage.getItem('contractAddress') || contractAddress;
+
+  // TODO: get token id
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(e.target.value))
   }
 
   const handleSaleConfirm = async () => {
-    console.log(contractAddress)
-    await NFTService.putOnSale(contractAddress, NFTABI.abi, provider, price, 0)
+    console.log(sessionContractAddress)
+    await NFTService.putOnSale(sessionContractAddress, NFTABI.abi, provider, price, 0)
     setOnSale(true)
     setModalMode('owner')
   }
@@ -41,7 +50,25 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
     setModalMode('owner')
   }
 
-  return mode === 'buyer' ? (
+  const handleTransferAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTransferAddress(e.target.value)
+  }
+
+  const handleTransferSuccess = async (to: string, id: number) => {
+    console.log(sessionContractAddress)
+    if (sessionContractAddress == null || !sessionContractAddress?.length || !ethers.utils.isAddress(to)) {
+      alert('Cannot find contract address')
+    } else {
+      await NFTService.safeTransferFrom(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id)
+      setTransferSuccess(true)
+      setModalMode('owner')
+    }
+  }
+
+  // Should be separated into different components later
+  return transferSuccess ? (
+    <TransferSuccess />
+  ) : mode === 'buyer' ? (
     <Wrapper>
       <PrimaryButton>BUY NOW</PrimaryButton>
       <SecondaryButton>ADD TO WATCHLIST</SecondaryButton>
@@ -108,16 +135,19 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
           <img style={{ margin: '10px auto 40px auto' }} src={TempImage} width={160} height={160} alt='nft-asset' />
           <Flex flexDirection={'column'} style={{ width: '100%' }} width={'100%'}>
             <Text style={{ textAlign: 'left' }} size='12px' weight={400}>
-              TRANSFER &quot;libreNFT #${randomIntFromInterval(0, 10000)}&quot; to:
+              TRANSFER &quot;libreNFT {'#0888'}&quot; to:
             </Text>
-            <TransferInpput name='input' placeholder='e.g. ckb1qz... or @handle, or destination.eth/.lens' type={'text'} />
+            <TransferInpput
+              onChange={handleTransferAddressChange}
+              name='input'
+              placeholder='e.g. ckb1qz... or @handle, or destination.eth/.lens'
+              type={'text'}
+            />
           </Flex>
         </Flex>
         <Flex>
           <RedButton onClick={() => setModalMode('owner')}>NOT NOW</RedButton>
-          <Link style={{ textDecoration: 'none' }} to={ROUTES.TRANSFER_SUCCESS}>
-            <GreenButton>CONFIRM</GreenButton>
-          </Link>
+          <GreenButton onClick={() => handleTransferSuccess(transferAddress, 0)}>CONFIRM</GreenButton>
         </Flex>
       </Flex>
     </Wrapper>

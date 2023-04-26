@@ -21,7 +21,6 @@ export const ROUTES = {
   NFT_VIEWER_OWNER: '/testnet/viewer-owner-LNFT',
   NFT_VIEWER_BUYER: '/testnet/viewer-buyer-LNFT',
   SHARE_IMPACT: '/testnet/impact-shareLNFT',
-  TRANSFER_SUCCESS: '/testnet/viewer-owner-transferLNFT',
   PROFILE_HANDLE: '/testnet/profile-handle',
   PROFILE_DASHBOARD: '/testnet/profile-dashboard',
   PROFILE_CREATOR_DASHBOARD: '/testnet/profile-creator-dashboard',
@@ -83,10 +82,6 @@ export const RoutesData = [
   {
     view: <ComposeImact />,
     path: ROUTES.COMPOSE_IMPACT,
-  },
-  {
-    view: <TransferSuccess />,
-    path: ROUTES.TRANSFER_SUCCESS,
   },
   {
     view: <NFTSettings />,
