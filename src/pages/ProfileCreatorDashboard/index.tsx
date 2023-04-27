@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import LogoIcon from "../../components/Svg/Icons/LogoIcon";
 import {
   BackgroundImage,
@@ -16,6 +16,7 @@ import { Container } from "../../components/Layout";
 import { Context } from '../../contexts/UserProfile'
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../RoutesData";
+import ContractService from "../../services/Contracts"
 import { style } from "styled-system";
 
 const profileData = {
@@ -65,12 +66,16 @@ const ProfileCreatorDashboard = () => {
   const [activeTap, setActiveTap] = useState(taps[0]);
   const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic, userAddress, setUserAddress, handle, setHandle } = useContext(Context)
   const navigate = useNavigate();
+  const [accounts, setAccounts] = useState<string[]>([])
+  const [contracts, setContracts] = useState<string[]>([])
+
+
   const enum NFTOptions {
     view,
     edit
   }
 
-  const HandleOptions = (option: NFTOptions) => {
+  const HandleOptions = (option: NFTOptions, address: string) => {
 
     console.log(option);
     switch(option){
@@ -82,6 +87,20 @@ const ProfileCreatorDashboard = () => {
     }
 
   }
+
+  useEffect(() => {
+    const getContracts = async () => {
+      const accountsSer: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      if (accountsSer.length > 0) {
+        setAccounts(accountsSer)
+        const contractsResp = await ContractService.geOwnerContracts(accountsSer[0])
+        const contracts: string[] = contractsResp.data.map((contract:any) => {return contract.address})
+        console.log(contracts)
+        setContracts(contracts)
+      }
+    }
+    if (isConnected) getContracts()
+  }, [isConnected])
 
   return (
     <Container style={{ width: "100%" }}>
@@ -151,7 +170,21 @@ const ProfileCreatorDashboard = () => {
           </button>
         </div>
         <div className="nftContainer">
-          <NFTWrap url="/background-1.jpg">
+          {contracts.map((address) => (
+            <NFTWrap url="/background-1.jpg">
+            <div className="bg">
+              <OptsWrap>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view, address)}}><ViewerIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit, address)}}><ManagementIcon/></LiOpt>
+              </OptsWrap>
+            </div>
+            <div className="content">
+              <p>Collection Name</p>
+              <p>{address.substring(0,10)}</p>
+            </div>
+          </NFTWrap>
+          ))}
+          {/* <NFTWrap url="/background-1.jpg">
             <div className="bg">
               <OptsWrap>
                   <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view)}}><ViewerIcon/></LiOpt>
@@ -174,7 +207,7 @@ const ProfileCreatorDashboard = () => {
               <p>Token Name</p>
               <p>ID #8888</p>
             </div>
-          </NFTWrap>
+          </NFTWrap> */}
         </div>
       </ContentContainer>
     </Container>
