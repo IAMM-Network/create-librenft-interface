@@ -147,7 +147,7 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
         </Flex>
         <Flex>
           <RedButton onClick={() => setModalMode('owner')}>NOT NOW</RedButton>
-          <GreenButton onClick={() => handleTransferSuccess(transferAddress, 0)}>CONFIRM</GreenButton>
+          <GreenButton onClick={() => handleTransferSuccess(transferAddress, 1)}>CONFIRM</GreenButton>
         </Flex>
       </Flex>
     </Wrapper>

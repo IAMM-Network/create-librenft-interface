@@ -50,10 +50,16 @@ class NFTService {
   }
 
   static async safeTransferFrom(contractAddress: string, tokenAbi: any, connection: any, from: string, to: string, id: number) {
+    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`tokenAbi: ${tokenAbi}`)
+    console.log(`connection: ${connection}`)
+    console.log(`from: ${from}`)
+    console.log(`to: ${to}`)
+    console.log(`id: ${id}`)
     const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
     const signer = connection.getSigner()
     const contract = tokenContract.connect(signer)
-    const transfer = await contract.safeTransferFrom(from, to, id)
+    const transfer = await contract['safeTransferFrom(address,address,uint256)'](from, to, id)
     const transferData = Promise.resolve(transfer)
     transferData.then(value => {
       console.log(value)
