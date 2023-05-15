@@ -8,7 +8,7 @@ import { getDate, getUnixTime } from '../util/date'
 const { v4: uuidv4 } = require('uuid')
 
 class NFTService {
-  static async mintNFT(cid: string, config: any, name: string, rentable: DayRange, timeframe: DayRange) {
+  static async mintNFT(cid: string, config: any, name: string, rentable: DayRange, timeframe: DayRange, imageURL: string, propsJson: string) {
     let deployProps: DeployProps = {
       cid: cid,
       config: config,
@@ -20,7 +20,7 @@ class NFTService {
     const contract = await deployNFT(deployProps)
 
     const contractAbiUuid = uuidv4()
-    const postDeployProps = await setupPostDeployProps(contract, config.whitelist, contractAbiUuid)
+    const postDeployProps = await setupPostDeployProps(contract, config.whitelist, contractAbiUuid, cid, imageURL, propsJson)
 
     console.log(postDeployProps)
 
@@ -153,9 +153,15 @@ interface PostDeployProps {
   // Whitelist of addresses that can mint NFTs
   // required for generating merkle proofs
   whiteList: string[]  
+  //ImageURL
+  tokenImageURL: string
+  // ipfs cid of metadata
+  cid: string
+  //metadata json stringified
+  metadata: string
 }
 
-async function setupPostDeployProps(contract: Contract, whitelist: string[], abiUuid: string): Promise<PostDeployProps> {
+async function setupPostDeployProps(contract: Contract, whitelist: string[], abiUuid: string, cidProps: string, imageURL: string, propsJson: string): Promise<PostDeployProps> {
   return {
     // Randomly generated uuid for the NFT contract
     uuid: "0336ee50-fe69-40cc-814e-03d762de739d",//uuidv4(),
@@ -163,6 +169,9 @@ async function setupPostDeployProps(contract: Contract, whitelist: string[], abi
     ownerAddress: await contract.signer.getAddress(),
     abi: "0336ee50-fe69-40cc-814e-03d762de739d",
     whiteList: whitelist,    
+    tokenImageURL: imageURL,
+    cid: cidProps,
+    metadata: propsJson
   }
 }
 

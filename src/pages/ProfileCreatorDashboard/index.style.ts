@@ -269,7 +269,7 @@ export const NFTWrap = styled.div<INFTWrap>`
     height: 148px;
     background-image: url(${(props: INFTWrap) => props.url});
     background-repeat: no-repeat;
-    background-size: auto;
+    background-size: cover;
     background-position: center;
     border: 1px solid #4f4f4f;
   }

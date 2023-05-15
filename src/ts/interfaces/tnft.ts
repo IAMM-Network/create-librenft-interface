@@ -70,3 +70,20 @@ export interface SetDefaultProfileWithSigData {
   dispatcher: string;
   sig: EIP712Signature;
 }
+
+export interface contractABI {
+  uuid?: string;
+  version: number;
+  abi?: string;
+  type: number;
+}
+
+export interface contract extends contractABI {
+  address: string;
+  owner: string;
+  abi: string;
+  whiteList: string[];
+  tokenImageURL: string;
+  cid: string;
+  metadata: string;
+}

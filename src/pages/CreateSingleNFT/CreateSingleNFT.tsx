@@ -296,6 +296,8 @@ const CreateSingleNFT = () => {
       nftMetadata.name,
       selectedRentableTimeFrame,
       selectedRentableTimeFrame,
+      sanitizedJson.image_url,
+      JSON.stringify(sanitizedJson)
     )
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT)
