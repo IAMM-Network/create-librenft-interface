@@ -64,7 +64,7 @@ const profileData = {
 const ProfileCreatorDashboard = () => {
   const taps = ["Created", "Collected", "Likes", "Impacts", "Activity"];
   const [activeTap, setActiveTap] = useState(taps[0]);
-  const { isConnected, setIsConnected, networkId, userProfilePic, setUserProfilePic, userAddress, setUserAddress, handle, setHandle } = useContext(Context)
+  const { isConnected, userProfilePic, handle, contractAddress, setContractAddress } = useContext(Context)
   const navigate = useNavigate();
   const [accounts, setAccounts] = useState<string[]>([])
   const [contracts, setContracts] = useState<string[]>([])
@@ -78,6 +78,8 @@ const ProfileCreatorDashboard = () => {
   const HandleOptions = (option: NFTOptions, address: string) => {
 
     console.log(option);
+    sessionStorage.setItem('contractAddress', address)
+    setContractAddress(address)
     switch(option){
       case (NFTOptions.view) :
         navigate(ROUTES.NFT_VIEWER_OWNER)
