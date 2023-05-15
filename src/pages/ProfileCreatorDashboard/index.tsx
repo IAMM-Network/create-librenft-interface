@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../RoutesData";
 import ContractService from "../../services/Contracts"
 import { style } from "styled-system";
+import { contract } from "../../ts/interfaces/tnft";
 
 const profileData = {
   name: "God Woken",
@@ -67,7 +68,7 @@ const ProfileCreatorDashboard = () => {
   const { isConnected, userProfilePic, handle, contractAddress, setContractAddress } = useContext(Context)
   const navigate = useNavigate();
   const [accounts, setAccounts] = useState<string[]>([])
-  const [contracts, setContracts] = useState<string[]>([])
+  const [contracts, setContracts] = useState<contract[]>([])
 
 
   const enum NFTOptions {
@@ -96,7 +97,7 @@ const ProfileCreatorDashboard = () => {
       if (accountsSer.length > 0) {
         setAccounts(accountsSer)
         const contractsResp = await ContractService.geOwnerContracts(accountsSer[0])
-        const contracts: string[] = contractsResp.data.map((contract:any) => {return contract.address})
+        const contracts: contract[] = contractsResp.data.map((contract:contract) => {return contract})
         console.log(contracts)
         setContracts(contracts)
       }
@@ -172,17 +173,17 @@ const ProfileCreatorDashboard = () => {
           </button>
         </div>
         <div className="nftContainer">
-          {contracts.map((address) => (
-            <NFTWrap url="/background-1.jpg">
+          {contracts.map((contract) => (
+            <NFTWrap url={contract.tokenImageURL}>
             <div className="bg">
               <OptsWrap>
-                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view, address)}}><ViewerIcon/></LiOpt>
-                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit, address)}}><ManagementIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view, contract.address)}}><ViewerIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit, contract.address)}}><ManagementIcon/></LiOpt>
               </OptsWrap>
             </div>
             <div className="content">
               <p>Collection Name</p>
-              <p>{address.substring(0,10)}</p>
+              <p>{JSON.parse(contract.metadata)?.name}</p>
             </div>
           </NFTWrap>
           ))}
