@@ -50,9 +50,9 @@ const App: FC = () => {
     return accounts
   }, [setIsConnected, setUserProfilePic, setUserAddress])
 
-  useEffect(() => {
-    getAccounts()
-  }, [getAccounts])
+  // useEffect(() => {
+  //   getAccounts()
+  // }, [getAccounts])
 
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
