@@ -290,6 +290,8 @@ const CreateSingleNFT = () => {
     console.log(cid)
     setStatus(CreateSingleNftTypes.Minting)
 
+    const strMetadata = JSON.stringify(sanitizedJson)
+
     const mintedNFT = await NFTService.mintNFT(
       String(cid),
       nftConfig,
@@ -297,7 +299,7 @@ const CreateSingleNFT = () => {
       selectedRentableTimeFrame,
       selectedRentableTimeFrame,
       sanitizedJson.image_url,
-      JSON.stringify(sanitizedJson)
+      strMetadata
     )
     if (typeof mintedNFT !== 'undefined') {
       console.log(mintedNFT)
@@ -305,6 +307,7 @@ const CreateSingleNFT = () => {
       setIsNFTMinted(true)
       setContractAddress(mintedNFT.address)
       sessionStorage.setItem('contractAddress', mintedNFT.address)
+      sessionStorage.setItem('contractMetadata', strMetadata)      
     }
   }
 

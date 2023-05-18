@@ -76,10 +76,11 @@ const ProfileCreatorDashboard = () => {
     edit
   }
 
-  const HandleOptions = (option: NFTOptions, address: string) => {
+  const HandleOptions = (option: NFTOptions, address: string, metadata: string) => {
 
     console.log(option);
     sessionStorage.setItem('contractAddress', address)
+    sessionStorage.setItem('contractMetadata', metadata)
     setContractAddress(address)
     switch(option){
       case (NFTOptions.view) :
@@ -177,8 +178,8 @@ const ProfileCreatorDashboard = () => {
             <NFTWrap url={contract.tokenImageURL}>
             <div className="bg">
               <OptsWrap>
-                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view, contract.address)}}><ViewerIcon/></LiOpt>
-                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit, contract.address)}}><ManagementIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.view, contract.address, contract.metadata)}}><ViewerIcon/></LiOpt>
+                  <LiOpt value={NFTOptions.view} onClick={(e) => {HandleOptions(NFTOptions.edit, contract.address, contract.metadata)}}><ManagementIcon/></LiOpt>
               </OptsWrap>
             </div>
             <div className="content">
