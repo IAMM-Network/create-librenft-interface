@@ -35,14 +35,15 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
           </Flex>
 
           <Flex marginBottom="20px" flexDirection='row' alignContent='center' alignItems='center' justifyContent='space-between'>
-              <NFTTitle>libre NFT #{randomIntFromInterval(0, 10000)}</NFTTitle>
+              {/* <NFTTitle>libre NFT #{randomIntFromInterval(0, 10000)}</NFTTitle> */}
+              <NFTTitle>{JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.name}</NFTTitle> 
               <Like>
                 <HeartIcon fill='transparent' width='14px' height='14px' />
                 <LikeCount>{randomIntFromInterval(50, 100)}</LikeCount>
               </Like>
           </Flex>
           
-          <img src={TempImage} alt='nft-asset' />
+          <img src={JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.image_url} alt='nft-asset' style={{height:320,width:320,alignSelf:'center'}} />
 
           <Flex margin="20px" flexDirection='row' alignContent='center' alignItems='center' justifyContent='center'>
             <Text weight={400} size='14px' style={{ marginRight: '10px' }}>
@@ -68,7 +69,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
               <AcceptOfferButton onClick={() => setModalMode(mode === 'buyer' ? 'buyer' : 'acceptOffer')}>{mode === 'buyer' ? 'MAKE OFFER' :  'ACCEPT OFFER'}</AcceptOfferButton>
             </Offer>
             <Accordion title="Description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+              {JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.description}
             </Accordion>
 
             <Accordion title="Listings">
