@@ -40,7 +40,7 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
 
   const handleSaleConfirm = async () => {
     console.log(sessionContractAddress)
-    await NFTService.putOnSale(sessionContractAddress, NFTABI.abi, provider, price, 0)
+    await NFTService.putOnSale(sessionContractAddress, NFTABI.abi, provider, price, 1) //TODO: Load token ID from session storage
     setOnSale(true)
     setModalMode('owner')
   }
@@ -59,7 +59,8 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
     if (sessionContractAddress == null || !sessionContractAddress?.length || !ethers.utils.isAddress(to)) {
       alert('Cannot find contract address')
     } else {
-      await NFTService.safeTransferFrom(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id)
+      //await NFTService.safeTransferFrom(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id)
+      await NFTService.mintTo(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id, price)
       setTransferSuccess(true)
       setModalMode('owner')
     }

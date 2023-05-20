@@ -32,6 +32,12 @@ class NFTService {
   }
 
   static async putOnSale(contractAddress: string, tokenAbi: any, connection: any, price: number, tokenId: number) {
+    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`tokenAbi: ${tokenAbi}`)
+    console.log(`connection: ${connection}`)
+    console.log(`tokenId: ${tokenId}`)
+    console.log(`price: ${price}`)
+    console.log(`price: ${ethers.utils.parseEther(String(price))}`)
     const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
     const signer = connection.getSigner()
     const contract = tokenContract.connect(signer)
@@ -42,7 +48,7 @@ class NFTService {
       console.log(value)
     })
 
-    const setPriceTransaction = await contract.setPrice(tokenId, price)
+    const setPriceTransaction = await contract.setPrice(tokenId, ethers.utils.parseEther(String(price)))
     const setPriceData = Promise.resolve(setPriceTransaction)
     setPriceData.then(value => {
       console.log(value)
@@ -65,6 +71,27 @@ class NFTService {
       console.log(value)
     })
   }
+
+  static async mintTo(contractAddress: string, tokenAbi: any, connection: any, from: string, to: string, id: number, price: number) {
+    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`tokenAbi: ${tokenAbi}`)
+    console.log(`connection: ${connection}`)
+    console.log(`from: ${from}`)
+    console.log(`to: ${to}`)
+    console.log(`id: ${id}`)
+    console.log(`price: ${ethers.utils.parseEther(String(price))}`)
+    const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
+    const signer = connection.getSigner()
+    const contract = tokenContract.connect(signer)
+    //let _merkleProof = ethers.utils.formatBytes32String("")
+    let _merkleProof : String[] = []
+    const mint = await contract.mintTo(id, to, _merkleProof, {value: ethers.utils.parseEther("1")})
+    const mintData = Promise.resolve(mint)
+    mintData.then(value => {
+      console.log(value)
+    })
+  }
+
 }
 
 interface DeployProps {
@@ -112,6 +139,8 @@ async function deployNFT(props: DeployProps): Promise<Contract> {
         Number(props.rentable.to && props.rentable.to.year),
       ),
     ) || 0
+
+  console.log(`Payment token: ${props.config.payment_token}`)
 
   const contract = await factory.deploy(props.name, 'IAMM', 'ipfs://', props.cid, {
     _unlockable: props.config.unlockable,
