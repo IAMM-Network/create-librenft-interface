@@ -33,7 +33,6 @@ class NFTService {
 
   static async putOnSale(contractAddress: string, tokenAbi: any, connection: any, price: number, tokenId: number) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`tokenAbi: ${tokenAbi}`)
     console.log(`connection: ${connection}`)
     console.log(`tokenId: ${tokenId}`)
     console.log(`price: ${price}`)
@@ -57,7 +56,6 @@ class NFTService {
 
   static async safeTransferFrom(contractAddress: string, tokenAbi: any, connection: any, from: string, to: string, id: number) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`tokenAbi: ${tokenAbi}`)
     console.log(`connection: ${connection}`)
     console.log(`from: ${from}`)
     console.log(`to: ${to}`)
@@ -74,7 +72,6 @@ class NFTService {
 
   static async mintTo(contractAddress: string, tokenAbi: any, connection: any, from: string, to: string, id: number, price: number) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`tokenAbi: ${tokenAbi}`)
     console.log(`connection: ${connection}`)
     console.log(`from: ${from}`)
     console.log(`to: ${to}`)
@@ -91,6 +88,17 @@ class NFTService {
       console.log(value)
     })
   }
+
+  static async getTokenProps(contractAddress: string, tokenAbi: any, connection: any, id: number) {
+    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`connection: ${connection}`)
+    const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
+    const signer = connection.getSigner()
+    const contract = tokenContract.connect(signer)
+    const props = await contract.getTokenProps(id)
+
+    return props
+  } 
 
 }
 

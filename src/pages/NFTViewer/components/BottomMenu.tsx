@@ -60,7 +60,9 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
       alert('Cannot find contract address')
     } else {
       //await NFTService.safeTransferFrom(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id)
-      await NFTService.mintTo(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id, price)
+      const tokenPrice = price > 0 ? price : Number(sessionStorage.getItem('tokenPrice')) 
+      console.log(`Token price: ${tokenPrice}`)
+      await NFTService.mintTo(sessionContractAddress, NFTABI.abi, provider, userAddress, to, id, tokenPrice)
       setTransferSuccess(true)
       setModalMode('owner')
     }

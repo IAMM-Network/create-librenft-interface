@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Flex } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { 
@@ -9,8 +9,13 @@ import Menu from '../Profile/components/Menu'
 import { randomIntFromInterval } from '../SocialFeed/data/types'
 import Accordion from './components/Accordion'
 import BottomMenu from './components/BottomMenu'
+import { Context as UserProfile } from '../../contexts/UserProfile'
+import NFTABI from '../../data/LibreNFT721.json'
+import NFTService from '../../services/NFTService'
 
 import { AcceptOfferButton, Like, LikeCount, NFTTitle, NFTViewerTitle, NFTViewerTitleButton, Offer, Overlay, Text } from './styles'
+
+const ethers = require('ethers')
 
 const TempImage = require('../../assets/images/congrats-img.png')
 
@@ -18,10 +23,27 @@ export type modalMode = 'buyer' | 'owner' | 'putOnSale' | 'acceptOffer' | 'trans
 
 const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract: string; imageCid: string, mode: 'buyer' | 'owner' }) => {
   const [modalMode, setModalMode] = useState<modalMode>(mode)
+  const { isConnected, userAddress, contractAddress } = useContext(UserProfile)
+  const [price, setPrice] = useState(0)
+  const [paymentToken, setPaymentToken] = useState('pCKB')
 
   const handleOverlay = () => {
     setModalMode(mode)
   }
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+  useEffect(() => {
+    const getProps = async () => {
+      const props = await NFTService.getTokenProps(contractAddress, NFTABI.abi, provider, 1)
+      let _tokenPrice = props?._tokenPrice? Number(props._tokenPrice/10**18) : 0
+      setPrice(_tokenPrice)
+      sessionStorage.setItem('tokenPrice', String(_tokenPrice)) 
+      console.log(`Token price: ${_tokenPrice}`) 
+      props?._paymentToken ? setPaymentToken('pCKB') : setPaymentToken('custom')    
+    }
+    if (isConnected) getProps()
+  }, [isConnected, contractAddress, provider])
 
   return (
     <>
@@ -57,12 +79,12 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
           <Flex margin="20px 0" flexDirection='column' style={{ gap: '10px' }}>
             <Offer>
               <Flex flexDirection='column'>
-                <Text style={{ textAlign: 'left' }}>Highest offer</Text>
+                <Text style={{ textAlign: 'left' }}>Token Price</Text>
                 <Flex>
                     <NervosIcon width='15px' height='15px'/>
                     <Flex alignItems={'baseline'}>
-                      <Text style={{  marginRight: '3px', marginLeft: '5px' }} weight={600} size='21px'>8.8888</Text>
-                      <Text weight={400} size='12px'>($888.88)</Text>
+                      <Text style={{  marginRight: '3px', marginLeft: '5px' }} weight={600} size='21px'>{price}</Text>
+                      <Text weight={400} size='12px'>({paymentToken})</Text>
                     </Flex>
                   </Flex>
               </Flex>
