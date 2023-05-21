@@ -16,13 +16,13 @@ const TransferSuccess = () => {
         </Box>
 
         <Box marginY='1rem'>
-          <img width={160} height={160} src={TempImage} alt='nft-asset' />
+          <img width={160} height={160} src={JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.image_url} alt='nft-asset' />
         </Box>
         
         <SuccessGreenCheckIcon width={30} height={30} />
 
         <Box style={{ marginTop: '20px', marginBottom: '20px' }}>
-          <Text style={{ marginBottom: '20px', fontWeight: '600' }}>&quot;libreNFT #0888&quot;</Text>
+          <Text style={{ marginBottom: '20px', fontWeight: '600' }}>&quot;libreNFT {JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.name}</Text>
           <Text style={{ marginBottom: '20px' }}>successfully transferred to</Text>
           <Text style={{ marginBottom: '20px', fontWeight: '600' }}>@handle!</Text>
         </Box>

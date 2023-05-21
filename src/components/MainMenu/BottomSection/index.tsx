@@ -41,6 +41,7 @@ const BottomSection: React.FC<CommonLinkSectionProps> = (props: CommonLinkSectio
       setIsConnected(true)
       setUserAddress(accounts[0])
 
+      console.log('Getting profile...')
       const usrProfile = await ProfileService.getProfile(accounts[0])
 
       if (usrProfile.status === 'ok') {
