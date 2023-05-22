@@ -98,6 +98,39 @@ class NFTService {
     const props = await contract.getTokenProps(id)
 
     return props
+  }
+
+  static async getContractOwner(contractAddress: string, tokenAbi: any, connection: any) {
+    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`connection: ${connection}`)
+    const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
+    const signer = connection.getSigner()
+    const contract = tokenContract.connect(signer)
+    const owner = await contract.owner()
+
+    return owner
+  } 
+
+  static async getTokenOwner(contractAddress: string, tokenAbi: any, connection: any, id: number ){
+    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`connection: ${connection}`)
+    const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
+    const signer = connection.getSigner()
+    const contract = tokenContract.connect(signer)
+    try {
+      let owner
+      contract.ownerOf(id)
+      .then((tokenOwner:string)=> {
+        owner = tokenOwner
+      }).catch(
+        owner = ethers.utils.getAddress('0x0000000000000000000000000000000000000000')
+      )
+      return owner
+    }
+    catch(error) {
+      return ethers.utils.getAddress('0x0000000000000000000000000000000000000000')
+    }
+    
   } 
 
 }

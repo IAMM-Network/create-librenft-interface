@@ -16,11 +16,12 @@ const ethers = require('ethers')
 interface BottomMenuProps {
   mode: modalMode
   setModalMode: (mode: modalMode) => void
+  posDisabled: boolean
 }
 
 const TempImage = require('../../../assets/images/congrats-img.png')
 
-export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<BottomMenuProps>) {
+export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWithChildren<BottomMenuProps>) {
   const { userAddress, contractAddress } = useContext(UserProfile)
   const [price, setPrice] = useState(0)
   const [onSale, setOnSale] = useState<boolean>(false)
@@ -79,7 +80,7 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
   ) : mode === 'owner' ? (
     <Wrapper>
       {!onSale ? (
-        <PrimaryButton onClick={() => setModalMode('putOnSale')}>
+        <PrimaryButton disabled={posDisabled}  onClick={() => setModalMode('putOnSale')}>
           PUT
           <br />
           ON SALE
@@ -90,7 +91,8 @@ export default function BottomMenu({ mode, setModalMode }: PropsWithChildren<Bot
           <br />
           SALE
         </RedButton>
-      )}
+      )
+      }
       <SecondaryButton onClick={() => setModalMode('transfer')}>
         TRANSFER
         <br />
