@@ -80,7 +80,7 @@ export const Offer = styled.div`
   border-radius: 8px;
 `
 
-export const AcceptOfferButton = styled.button`
+export const AcceptOfferButton = styled.button<{ disabled: boolean; }>`
   display: flex;
   width: 120px;
   height: 45px;
@@ -89,7 +89,7 @@ export const AcceptOfferButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 4px 26px;
-  background: #5a36f8;
+  background: ${({ disabled }) => (disabled ? '#696969' : '#5a36f8')};
   border-radius: 11px;
   border: none;
   margin-inline: 15px;
