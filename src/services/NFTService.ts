@@ -56,7 +56,6 @@ class NFTService {
 
   static async safeTransferFrom(contractAddress: string, tokenAbi: any, connection: any, from: string, to: string, id: number) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`connection: ${connection}`)
     console.log(`from: ${from}`)
     console.log(`to: ${to}`)
     console.log(`id: ${id}`)
@@ -72,7 +71,6 @@ class NFTService {
 
   static async mintTo(contractAddress: string, tokenAbi: any, connection: any, from: string, to: string, id: number, price: number) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`connection: ${connection}`)
     console.log(`from: ${from}`)
     console.log(`to: ${to}`)
     console.log(`id: ${id}`)
@@ -91,7 +89,6 @@ class NFTService {
 
   static async getTokenProps(contractAddress: string, tokenAbi: any, connection: any, id: number) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`connection: ${connection}`)
     const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
     const signer = connection.getSigner()
     const contract = tokenContract.connect(signer)
@@ -102,7 +99,6 @@ class NFTService {
 
   static async getContractOwner(contractAddress: string, tokenAbi: any, connection: any) {
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`connection: ${connection}`)
     const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
     const signer = connection.getSigner()
     const contract = tokenContract.connect(signer)
@@ -113,18 +109,21 @@ class NFTService {
 
   static async getTokenOwner(contractAddress: string, tokenAbi: any, connection: any, id: number ){
     console.log(`Contract Address: ${contractAddress}`)
-    console.log(`connection: ${connection}`)
     const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
     const signer = connection.getSigner()
     const contract = tokenContract.connect(signer)
     try {
       let owner
-      contract.ownerOf(id)
+      await contract.ownerOf(id)
       .then((tokenOwner:string)=> {
+        console.log(tokenOwner)
         owner = tokenOwner
-      }).catch(
-        owner = ethers.utils.getAddress('0x0000000000000000000000000000000000000000')
-      )
+      }, (error:any) => {
+        if(error.message.indexOf('invalid token ID') > -1){
+          owner = ethers.utils.getAddress('0x0000000000000000000000000000000000000000')
+          console.log('TokenID Not Minted')
+        }
+      })
       return owner
     }
     catch(error) {

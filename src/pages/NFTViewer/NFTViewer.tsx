@@ -27,6 +27,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
   const [price, setPrice] = useState(0)
   const [paymentToken, setPaymentToken] = useState('pCKB')
   const [putOnSaleDisabled, setPutOnSaleDisabled] = useState(false)
+  const [transferDisabled, setTransferDisabled] = useState(false)
 
 
   const handleOverlay = () => {
@@ -38,11 +39,13 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
   useEffect(() => {
     const getProps = async () => {
       const props = await NFTService.getTokenProps(contractAddress, NFTABI.abi, provider, 1) //TODO: Get token ID 
+      console.log(props)
       let _tokenPrice = props?._tokenPrice? Number(props._tokenPrice/10**18) : 0
       setPrice(_tokenPrice)
       sessionStorage.setItem('tokenPrice', String(_tokenPrice)) 
       console.log(`Token price: ${_tokenPrice}`) 
       props?._paymentToken ? setPaymentToken('pCKB') : setPaymentToken('custom')    
+      let _isOnSale = props?._isOnSale
 
       const contractOwner = await NFTService.getContractOwner(contractAddress, NFTABI.abi, provider)
       console.log(`Contract Owner: ${contractOwner.toLowerCase()} | user Address: ${userAddress.toLowerCase()}`)
@@ -53,8 +56,17 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
           //Check if the contract owner is the token owner
           const tokenOwner = await NFTService.getTokenOwner(contractAddress, NFTABI.abi, provider, 1) //TODO: Get token ID 
           console.log(`Token Owner: ${tokenOwner}`)
-          if(userAddress.toLowerCase() !== contractOwner.toLowerCase()){
+          if(userAddress.toLowerCase() !== tokenOwner?.toLowerCase() && tokenOwner?.toLowerCase() !== '0x0000000000000000000000000000000000000000'){
             setPutOnSaleDisabled(true)
+            setTransferDisabled(true)
+            console.log('Put on sale & transfer disabled')
+          }
+          else {
+            setPutOnSaleDisabled(false)
+            if(!_isOnSale)
+              setTransferDisabled(true)
+            else
+              setTransferDisabled(false)
           }
         }catch(error) {
           setPutOnSaleDisabled(false)
@@ -108,7 +120,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
                     </Flex>
                   </Flex>
               </Flex>
-              <AcceptOfferButton onClick={() => setModalMode(mode === 'buyer' ? 'buyer' : 'acceptOffer')}>{mode === 'buyer' ? 'MAKE OFFER' :  'ACCEPT OFFER'}</AcceptOfferButton>
+              <AcceptOfferButton disabled={true} onClick={() => setModalMode(mode === 'buyer' ? 'buyer' : 'acceptOffer')}>{mode === 'buyer' ? 'MAKE OFFER' :  'ACCEPT OFFER'}</AcceptOfferButton>
             </Offer>
             <Accordion title="Description">
               {JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.description}
@@ -146,7 +158,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
         </Flex>
       </Container>
       <Menu />
-      <BottomMenu mode={modalMode} setModalMode={setModalMode} posDisabled={putOnSaleDisabled}/>
+      <BottomMenu mode={modalMode} setModalMode={setModalMode} posDisabled={putOnSaleDisabled} transferDisabled={transferDisabled} setTransferDisabled={setTransferDisabled}/>
       {(modalMode === 'transfer' || modalMode === 'putOnSale') && <Overlay onClick={handleOverlay}/>}
     </>
   )

@@ -17,11 +17,13 @@ interface BottomMenuProps {
   mode: modalMode
   setModalMode: (mode: modalMode) => void
   posDisabled: boolean
+  transferDisabled: boolean
+  setTransferDisabled: (disabled: boolean) => void
 }
 
 const TempImage = require('../../../assets/images/congrats-img.png')
 
-export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWithChildren<BottomMenuProps>) {
+export default function BottomMenu({ mode, setModalMode, posDisabled, transferDisabled, setTransferDisabled }: PropsWithChildren<BottomMenuProps>) {
   const { userAddress, contractAddress } = useContext(UserProfile)
   const [price, setPrice] = useState(0)
   const [onSale, setOnSale] = useState<boolean>(false)
@@ -44,6 +46,7 @@ export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWit
     await NFTService.putOnSale(sessionContractAddress, NFTABI.abi, provider, price, 1) //TODO: Load token ID from session storage
     setOnSale(true)
     setModalMode('owner')
+    setTransferDisabled(false)
   }
 
   const handleCancelSales = () => {
@@ -74,8 +77,8 @@ export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWit
     <TransferSuccess />
   ) : mode === 'buyer' ? (
     <Wrapper>
-      <PrimaryButton>BUY NOW</PrimaryButton>
-      <SecondaryButton>ADD TO WATCHLIST</SecondaryButton>
+      <PrimaryButton disabled={false}>BUY NOW</PrimaryButton>
+      <SecondaryButton disabled={false}>ADD TO WATCHLIST</SecondaryButton>
     </Wrapper>
   ) : mode === 'owner' ? (
     <Wrapper>
@@ -86,14 +89,14 @@ export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWit
           ON SALE
         </PrimaryButton>
       ) : (
-        <RedButton onClick={() => setModalMode('cancelSale')}>
+        <RedButton disabled={false} onClick={() => setModalMode('cancelSale')}>
           CANCEL
           <br />
           SALE
         </RedButton>
       )
       }
-      <SecondaryButton onClick={() => setModalMode('transfer')}>
+      <SecondaryButton disabled={transferDisabled} onClick={() => setModalMode('transfer')}>
         TRANSFER
         <br />
         NOW
@@ -118,16 +121,16 @@ export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWit
           </Text>
         </Flex>
         <Flex>
-          <RedButton onClick={() => setModalMode('owner')}>x</RedButton>
-          <GreenButton onClick={handleSaleConfirm}>✓</GreenButton>
+          <RedButton disabled={false} onClick={() => setModalMode('owner')}>x</RedButton>
+          <GreenButton disabled={false} onClick={handleSaleConfirm}>✓</GreenButton>
         </Flex>
       </Flex>
     </Wrapper>
   ) : mode === 'cancelSale' ? (
     <Wrapper>
       <Flex>
-        <RedButton onClick={() => setModalMode('owner')}>MAYBE NOT</RedButton>
-        <GreenButton onClick={handleCancelSales}>I'M SURE</GreenButton>
+        <RedButton disabled={false} onClick={() => setModalMode('owner')}>MAYBE NOT</RedButton>
+        <GreenButton disabled={false} onClick={handleCancelSales}>I'M SURE</GreenButton>
       </Flex>
     </Wrapper>
   ) : mode === 'transfer' ? (
@@ -151,8 +154,8 @@ export default function BottomMenu({ mode, setModalMode, posDisabled }: PropsWit
           </Flex>
         </Flex>
         <Flex>
-          <RedButton onClick={() => setModalMode('owner')}>NOT NOW</RedButton>
-          <GreenButton onClick={() => handleTransferSuccess(transferAddress, 1)}>CONFIRM</GreenButton>
+          <RedButton disabled={false} onClick={() => setModalMode('owner')}>NOT NOW</RedButton>
+          <GreenButton disabled={false} onClick={() => handleTransferSuccess(transferAddress, 1)}>CONFIRM</GreenButton>
         </Flex>
       </Flex>
     </Wrapper>
@@ -170,14 +173,14 @@ const Wrapper = styled.div`
   z-index: 20000;
 `
 
-const PrimaryButton = styled.button`
+const PrimaryButton = styled.button<{ disabled: boolean; }>`
   display: flex;
   width: 120px;
   height: 45px;
   color: white;
   justify-content: center;
   align-items: center;
-  background: #8b40f4;
+  background: ${({ disabled }) => (disabled ? '#696969' : '#8b40f4')};
   border-radius: 11px;
   border: none;
   margin-inline: 15px;
@@ -189,10 +192,10 @@ const PrimaryButton = styled.button`
   box-sizing: border-box;
 `
 
-const SecondaryButton = styled(PrimaryButton)`
-  background: transparent;
+const SecondaryButton = styled(PrimaryButton)<{ disabled: boolean; }>`
+  background: ${({ disabled }) => (disabled ? '#696969' : 'transparent')};
   border: 1px solid #8b40f4;
-  color: #8b40f4;
+  color: ${({ disabled }) => (disabled ? 'white' : '#8b40f4')};
 `
 
 const RedButton = styled(PrimaryButton)`
