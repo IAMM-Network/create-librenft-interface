@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { Flex } from '../../components/Box'
+import { Flex, Grid } from '../../components/Box'
 import { Container } from '../../components/Layout'
 import { 
   ThreeDotsVerticalIcon,
@@ -12,8 +12,13 @@ import BottomMenu from './components/BottomMenu'
 import { Context as UserProfile } from '../../contexts/UserProfile'
 import NFTABI from '../../data/LibreNFT721.json'
 import NFTService from '../../services/NFTService'
+import styled from 'styled-components'
+import { Toggle } from 'react-toggle-component'
 
 import { AcceptOfferButton, Like, LikeCount, NFTTitle, NFTViewerTitle, NFTViewerTitleButton, Offer, Overlay, Text } from './styles'
+import { CircleCheckIcon, FractionalIcon, RentableIcon, TransferableIcon } from '../../components/Svg'
+import Checkbox from '../../components/Checkbox/Checkbox'
+import { WhoPaysTheMint } from '../../data/nftConfig'
 
 const ethers = require('ethers')
 
@@ -28,6 +33,10 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
   const [paymentToken, setPaymentToken] = useState('pCKB')
   const [putOnSaleDisabled, setPutOnSaleDisabled] = useState(false)
   const [transferDisabled, setTransferDisabled] = useState(false)
+
+  const [transferable, setTransferable] = useState(false)
+  const [isFractional, setIsFractional] = useState(false)
+  const [rentable, setRentable] = useState(false)
 
 
   const handleOverlay = () => {
@@ -46,6 +55,9 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
       console.log(`Token price: ${_tokenPrice}`) 
       props?._paymentToken ? setPaymentToken('pCKB') : setPaymentToken('custom')    
       let _isOnSale = props?._isOnSale
+      setTransferable(props?._isTransferable)
+      props?._fractionalTotalSupply > 1 ? setIsFractional(true) : setIsFractional(false)
+      setRentable(props?._rentable)
 
       const contractOwner = await NFTService.getContractOwner(contractAddress, NFTABI.abi, provider)
       console.log(`Contract Owner: ${contractOwner.toLowerCase()} | user Address: ${userAddress.toLowerCase()}`)
@@ -126,8 +138,99 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
               {JSON.parse(sessionStorage.getItem('contractMetadata')??'')?.description}
             </Accordion>
 
-            <Accordion title="Listings">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+            <Accordion title="Ownership Locks">
+              <Section>
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                  <Grid alignSelf='start' justifySelf='start'>
+                    <RentableIcon width={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text margin='0px' weight={600}>
+                      Rentable
+                    </Text>
+                    <Text margin='0'>
+                      This function will let you set up an specific rent time & date, allowing another user to utilize your NFT.
+                    </Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right'>
+                    <Toggle
+                      height='20px'
+                      checked={rentable}
+                      leftBackgroundColor='#696969'
+                      rightBackgroundColor='#8B40F4'
+                      leftBorderColor='#696969'
+                      rightBorderColor='#8B40F4'
+                      knobColor='#1A1A1A'
+                      name='toggle-rentable'
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                  <Grid alignSelf='start' justifySelf='start'>
+                    <FractionalIcon width={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text margin='0px' weight={600}>
+                      Fractional
+                    </Text>
+                    <Text margin='0'>Allow your single NFT to be divided and collected in a specific number of fractions.</Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right'>
+                    <Toggle
+                      height='20px'
+                      checked={isFractional}
+                      leftBackgroundColor='#696969'
+                      rightBackgroundColor='#8B40F4'
+                      leftBorderColor='#696969'
+                      rightBorderColor='#8B40F4'
+                      knobColor='#1A1A1A'
+                      name='toggle-isfractional'
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                  <Grid alignSelf='start' justifySelf='start'>
+                    <TransferableIcon width={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text margin='0px' weight={600}>
+                      Transferable
+                    </Text>
+                    <Text margin='0'>
+                      Enable your NFT to be transferable, if not enable NFT wont be transferable after minting to owner/buyer.
+                    </Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='center' justifyContent='right'>
+                    <Toggle
+                      height='20px'
+                      checked={transferable}
+                      leftBackgroundColor='#696969'
+                      rightBackgroundColor='#8B40F4'
+                      leftBorderColor='#696969'
+                      rightBorderColor='#8B40F4'
+                      knobColor='#1A1A1A'
+                      name='toggle-transferable'
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid margin='0.5rem 0' width='100%' gridTemplateColumns='1fr 8fr 3fr' alignItems='start'>
+                  <Grid alignSelf='start' justifySelf='start'>
+                    <CircleCheckIcon width={15} fill='#8B40F4' />
+                  </Grid>
+                  <Grid flexDirection='column' width='100%'>
+                    <Text margin='0px' weight={600}>
+                      Who pays the mint
+                    </Text>
+                    <Text margin='0'>Choose who is paying for the NFT minting transaction fee/cost.</Text>
+                  </Grid>
+                  <Grid width='100%' alignItems='start' justifyContent='end' marginTop='-12px'>
+                    <Checkbox payers={WhoPaysTheMint} disabled={[1]} />
+                  </Grid>
+                </Grid>
+              </Section>
             </Accordion>
 
             <Accordion title="Offers">
@@ -171,3 +274,9 @@ NFTViewer.defaultProps = {
 }
 
 export default NFTViewer
+
+ const Section = styled(Flex)`
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 1rem;
+`
