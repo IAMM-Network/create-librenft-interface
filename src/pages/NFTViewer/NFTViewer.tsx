@@ -34,6 +34,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
   const [putOnSaleDisabled, setPutOnSaleDisabled] = useState(false)
   const [transferDisabled, setTransferDisabled] = useState(false)
 
+  const [onSale, setOnSale] = useState<boolean>(false)
   const [transferable, setTransferable] = useState(false)
   const [isFractional, setIsFractional] = useState(false)
   const [rentable, setRentable] = useState(false)
@@ -55,6 +56,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
       console.log(`Token price: ${_tokenPrice}`) 
       props?._paymentToken ? setPaymentToken('pCKB') : setPaymentToken('custom')    
       let _isOnSale = props?._isOnSale
+      setOnSale(_isOnSale)
       setTransferable(props?._isTransferable)
       props?._fractionalTotalSupply > 1 ? setIsFractional(true) : setIsFractional(false)
       setRentable(props?._rentable)
@@ -77,8 +79,10 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
             setPutOnSaleDisabled(false)
             if(!_isOnSale)
               setTransferDisabled(true)
-            else
+            else {
               setTransferDisabled(false)
+            }
+              
           }
         }catch(error) {
           setPutOnSaleDisabled(false)
@@ -261,7 +265,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
         </Flex>
       </Container>
       <Menu />
-      <BottomMenu mode={modalMode} setModalMode={setModalMode} posDisabled={putOnSaleDisabled} transferDisabled={transferDisabled} setTransferDisabled={setTransferDisabled}/>
+      <BottomMenu mode={modalMode} setModalMode={setModalMode} onSale={onSale} setOnSale={setOnSale} posDisabled={putOnSaleDisabled} transferDisabled={transferDisabled} setTransferDisabled={setTransferDisabled}/>
       {(modalMode === 'transfer' || modalMode === 'putOnSale') && <Overlay onClick={handleOverlay}/>}
     </>
   )
