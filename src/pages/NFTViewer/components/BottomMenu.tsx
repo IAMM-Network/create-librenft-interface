@@ -16,6 +16,8 @@ const ethers = require('ethers')
 interface BottomMenuProps {
   mode: modalMode
   setModalMode: (mode: modalMode) => void
+  onSale: boolean
+  setOnSale: (onSale: boolean) => void
   posDisabled: boolean
   transferDisabled: boolean
   setTransferDisabled: (disabled: boolean) => void
@@ -23,10 +25,10 @@ interface BottomMenuProps {
 
 const TempImage = require('../../../assets/images/congrats-img.png')
 
-export default function BottomMenu({ mode, setModalMode, posDisabled, transferDisabled, setTransferDisabled }: PropsWithChildren<BottomMenuProps>) {
+export default function BottomMenu({ mode, setModalMode, onSale, setOnSale, posDisabled, transferDisabled, setTransferDisabled }: PropsWithChildren<BottomMenuProps>) {
   const { userAddress, contractAddress } = useContext(UserProfile)
   const [price, setPrice] = useState(0)
-  const [onSale, setOnSale] = useState<boolean>(false)
+  //const [onSale, setOnSale] = useState<boolean>(false)
 
   const [transferSuccess, setTransferSuccess] = useState<boolean>(false)
   const [transferAddress, setTransferAddress] = useState<string>('')
@@ -82,19 +84,19 @@ export default function BottomMenu({ mode, setModalMode, posDisabled, transferDi
     </Wrapper>
   ) : mode === 'owner' ? (
     <Wrapper>
-      {!onSale ? (
+      {!onSale && !posDisabled ? (
         <PrimaryButton disabled={posDisabled}  onClick={() => setModalMode('putOnSale')}>
           PUT
           <br />
           ON SALE
         </PrimaryButton>
-      ) : (
+      ) : !posDisabled ? (
         <RedButton disabled={false} onClick={() => setModalMode('cancelSale')}>
           CANCEL
           <br />
           SALE
         </RedButton>
-      )
+      ) : (<></>)
       }
       <SecondaryButton disabled={transferDisabled} onClick={() => setModalMode('transfer')}>
         TRANSFER
