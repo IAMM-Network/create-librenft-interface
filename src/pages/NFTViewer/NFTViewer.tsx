@@ -16,7 +16,7 @@ import styled from 'styled-components'
 import { Toggle } from 'react-toggle-component'
 
 import { AcceptOfferButton, Like, LikeCount, NFTTitle, NFTViewerTitle, NFTViewerTitleButton, Offer, Overlay, Text } from './styles'
-import { CircleCheckIcon, FractionalIcon, RentableIcon, TransferableIcon } from '../../components/Svg'
+import { CircleCheckIcon, FractionalIcon, RentableIcon, TransferableIcon, ToggleOnIcon, ToggleOffIcon } from '../../components/Svg'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import { WhoPaysTheMint } from '../../data/nftConfig'
 
@@ -59,6 +59,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
       setOnSale(_isOnSale)
       setTransferable(props?._isTransferable)
       props?._fractionalTotalSupply > 1 ? setIsFractional(true) : setIsFractional(false)
+      console.log(`props rentable: ${props?._rentable}`)
       setRentable(props?._rentable)
 
       const contractOwner = await NFTService.getContractOwner(contractAddress, NFTABI.abi, provider)
@@ -157,16 +158,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
                     </Text>
                   </Grid>
                   <Grid width='100%' alignItems='center' justifyContent='right'>
-                    <Toggle
-                      height='20px'
-                      checked={rentable}
-                      leftBackgroundColor='#696969'
-                      rightBackgroundColor='#8B40F4'
-                      leftBorderColor='#696969'
-                      rightBorderColor='#8B40F4'
-                      knobColor='#1A1A1A'
-                      name='toggle-rentable'
-                    />
+                    { rentable ? <ToggleOnIcon></ToggleOnIcon> : <ToggleOffIcon></ToggleOffIcon> }
                   </Grid>
                 </Grid>
 
@@ -181,16 +173,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
                     <Text margin='0'>Allow your single NFT to be divided and collected in a specific number of fractions.</Text>
                   </Grid>
                   <Grid width='100%' alignItems='center' justifyContent='right'>
-                    <Toggle
-                      height='20px'
-                      checked={isFractional}
-                      leftBackgroundColor='#696969'
-                      rightBackgroundColor='#8B40F4'
-                      leftBorderColor='#696969'
-                      rightBorderColor='#8B40F4'
-                      knobColor='#1A1A1A'
-                      name='toggle-isfractional'
-                    />
+                    {isFractional ? <ToggleOnIcon></ToggleOnIcon> : <ToggleOffIcon></ToggleOffIcon> }
                   </Grid>
                 </Grid>
 
@@ -207,16 +190,7 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
                     </Text>
                   </Grid>
                   <Grid width='100%' alignItems='center' justifyContent='right'>
-                    <Toggle
-                      height='20px'
-                      checked={transferable}
-                      leftBackgroundColor='#696969'
-                      rightBackgroundColor='#8B40F4'
-                      leftBorderColor='#696969'
-                      rightBorderColor='#8B40F4'
-                      knobColor='#1A1A1A'
-                      name='toggle-transferable'
-                    />
+                    {transferable ? <ToggleOnIcon></ToggleOnIcon> : <ToggleOffIcon></ToggleOffIcon> }                  
                   </Grid>
                 </Grid>
 

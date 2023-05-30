@@ -17,6 +17,8 @@ class NFTService {
       timeframe: timeframe,
     }
 
+    console.log(`Rentable: ${deployProps.config.rentable}`)
+
     const contract = await deployNFT(deployProps)
 
     const contractAbiUuid = uuidv4()
@@ -88,7 +90,7 @@ class NFTService {
   }
 
   static async getTokenProps(contractAddress: string, tokenAbi: any, connection: any, id: number) {
-    console.log(`Contract Address: ${contractAddress}`)
+    console.log(`getTokenProps for Contract Address: ${contractAddress}`)
     const tokenContract = new ethers.Contract(contractAddress, tokenAbi, connection)
     const signer = connection.getSigner()
     const contract = tokenContract.connect(signer)
@@ -186,6 +188,7 @@ async function deployNFT(props: DeployProps): Promise<Contract> {
     _unlockable: props.config.unlockable,
     _transferable: props.config.transferable,
     _tokenPrice: props.config.price,
+    _rentable: props.config.rentable,
     _rentableFrom: rentableFrom,
     _rentableTo: rentableTo,
     _fractions: props.config.fractional,

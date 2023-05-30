@@ -84,5 +84,9 @@ export { default as QuestionIcon} from './Icons/QuestionIcon'
 export { default as ViewerIcon} from './Icons/ViewerIcon'
 export { default as ManagementIcon} from './Icons/ManagementIcon'
 
+export { default as ToggleOnIcon} from './Icons/ToggleOnIcon'
+export { default as ToggleOffIcon} from './Icons/ToggleOffIcon'
+
+
 export { default as Svg } from './Svg'
 export type { SvgProps } from './types'

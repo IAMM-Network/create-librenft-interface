@@ -72,7 +72,7 @@ const OwnershipLock = ({
                     rightBorderColor='#8B40F4'
                     knobColor='#1A1A1A'
                     name='toggle-rentable'
-                    onToggle={e => {
+                    onToggle={e => { console.log(`Rentable: ${(e.target as HTMLInputElement).checked }`)
                       setNftConfig({ ...nftConfig, rentable: (e.target as HTMLInputElement).checked })
                     }}
                   />
