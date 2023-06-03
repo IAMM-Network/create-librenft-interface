@@ -57,9 +57,11 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
       props?._paymentToken ? setPaymentToken('pCKB') : setPaymentToken('custom')    
       let _isOnSale = props?._isOnSale
       setOnSale(_isOnSale)
-      setTransferable(props?._isTransferable)
-      props?._fractionalTotalSupply > 1 ? setIsFractional(true) : setIsFractional(false)
+      let _isTransferable = props?._transferable
+      setTransferable(_isTransferable)
+      props?._fractions > 0 ? setIsFractional(true) : setIsFractional(false)
       console.log(`props rentable: ${props?._rentable}`)
+      console.log(`props transferable: ${props?._transferable}`)
       setRentable(props?._rentable)
 
       const contractOwner = await NFTService.getContractOwner(contractAddress, NFTABI.abi, provider)
@@ -100,8 +102,8 @@ const NFTViewer = ({ name, contract, imageCid, mode }: { name: string; contract:
         <Flex flexDirection='column' alignContent='center' paddingTop='104px' paddingBottom="100px">
           <Flex marginBottom="40px" flexDirection='row' alignContent='center' alignItems='center' justifyContent='space-between'>
               <NFTViewerTitle>Libre NFT Viewer</NFTViewerTitle>
-              <NFTViewerTitleButton>
-                <ThreeDotsVerticalIcon fill='transparent' width='20px' height='20px' />
+              <NFTViewerTitleButton >
+                {/* <ThreeDotsVerticalIcon fill='transparent' width='20px' height='20px' /> */}
               </NFTViewerTitleButton>
           </Flex>
 

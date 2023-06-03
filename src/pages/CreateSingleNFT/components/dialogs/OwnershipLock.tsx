@@ -72,7 +72,7 @@ const OwnershipLock = ({
                     rightBorderColor='#8B40F4'
                     knobColor='#1A1A1A'
                     name='toggle-rentable'
-                    onToggle={e => { console.log(`Rentable: ${(e.target as HTMLInputElement).checked }`)
+                    onToggle={e => { 
                       setNftConfig({ ...nftConfig, rentable: (e.target as HTMLInputElement).checked })
                     }}
                   />
@@ -100,7 +100,7 @@ const OwnershipLock = ({
                     knobColor='#1A1A1A'
                     name='toggle-isfractional'
                     onToggle={e => {
-                      if (isFractional) setNftConfig({ ...nftConfig, fractional: 1 })
+                      isFractional? setNftConfig({ ...nftConfig, fractional: 0 }) : setNftConfig({ ...nftConfig, fractional: 1 })
                       setIsFractional((e.target as HTMLInputElement).checked)
                     }}
                   />
@@ -129,7 +129,7 @@ const OwnershipLock = ({
                     rightBorderColor='#8B40F4'
                     knobColor='#1A1A1A'
                     name='toggle-transferable'
-                    onToggle={e => {
+                    onToggle={e => { console.log(`transferable: ${(e.target as HTMLInputElement).checked }`)
                       setNftConfig({ ...nftConfig, transferable: (e.target as HTMLInputElement).checked })
                     }}
                   />
