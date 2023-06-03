@@ -183,6 +183,7 @@ async function deployNFT(props: DeployProps): Promise<Contract> {
     ) || 0
 
   console.log(`Payment token: ${props.config.payment_token}`)
+  console.log(`_transferable: ${props.config.transferable}`)
 
   const contract = await factory.deploy(props.name, 'IAMM', 'ipfs://', props.cid, {
     _unlockable: props.config.unlockable,

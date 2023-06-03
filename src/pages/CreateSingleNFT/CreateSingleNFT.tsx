@@ -101,7 +101,7 @@ export const defaultNftMetadata = {
 }
 
 const nftDefaultConfig = {
-  fractional: 1,
+  fractional: 0,
   rentable: false,
   transferable: false,
   timeframe: false,
